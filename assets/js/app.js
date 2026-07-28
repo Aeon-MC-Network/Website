@@ -112,9 +112,7 @@ const App = {
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
         <!-- Logo -->
         <a href="index.html" class="flex items-center gap-2.5 shrink-0" aria-label="AeonMC Homepage">
-          <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center text-white shadow-lg shadow-indigo-500/20">
-            <i class="fas fa-cube text-base"></i>
-          </div>
+          <img src="assets/img/logo.jpg" alt="AeonMC Logo" class="w-9 h-9 rounded-xl object-cover border border-indigo-500/30 shadow-lg shadow-indigo-500/20">
           <div class="flex items-center text-xl tracking-tight">
             <span class="font-extrabold text-white">AEON</span>
             <span class="font-extrabold text-indigo-500 ml-0.5">MC</span>
