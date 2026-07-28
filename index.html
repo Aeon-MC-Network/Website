@@ -3,276 +3,124 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AeonMC - Official Minecraft Server</title>
-  <meta name="description" content="AeonMC Season 1 is now live! Join now at play.aeonmc.com for custom jobs, balanced economy, procedural dungeons, and an unbeatable survival experience.">
-  <meta name="keywords" content="Minecraft, Minecraft Server, AeonMC, Survival, Jobs, Economy, play.aeonmc.com">
+  <title>AeonMC Network - Official Minecraft Server</title>
+  <meta name="description" content="Official website for AeonMC Season 1. Experience custom jobs, hand-crafted procedural dungeons, balanced economy, and cross-platform survival. Connect at play.aeonmc.com!">
+  <meta name="keywords" content="Minecraft, Minecraft Server, AeonMC, Survival, Custom Jobs, Dungeons, play.aeonmc.com">
   <meta name="theme-color" content="#020617">
 
-  <!-- Google Fonts: Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-
-  <!-- Tailwind CSS CDN -->
+  
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
-          fontFamily: {
-            sans: ['Inter', 'system-ui', 'sans-serif'],
-          },
-          colors: {
-            slate: {
-              950: '#020617',
-            }
-          }
+          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+          colors: { slate: { 950: '#020617' } }
         }
       }
     }
   </script>
-
-  <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen flex flex-col selection:bg-indigo-500 selection:text-white relative overflow-x-hidden">
 
-  <!-- Subtle Radial Ambient Background Glow -->
+  <!-- Ambient Glow -->
   <div class="fixed inset-0 pointer-events-none z-0">
     <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-indigo-600/10 blur-[140px] rounded-full"></div>
-    <div class="absolute bottom-0 left-1/3 w-[600px] h-[400px] bg-indigo-900/10 blur-[160px] rounded-full"></div>
   </div>
 
-  <!-- Header / Navigation Bar -->
-  <header class="sticky top-0 z-50 backdrop-blur-md bg-slate-950/80 border-b border-slate-800/80 transition-all duration-300">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-      <!-- Brand Logo -->
-      <a href="index.html" class="flex items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded-lg p-1">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center text-white shadow-lg shadow-indigo-500/20 group-hover:scale-105 transition-transform duration-300">
-          <i class="fas fa-cube text-lg"></i>
-        </div>
-        <div class="flex items-center text-2xl tracking-tight">
-          <span class="font-extrabold text-white">AEON</span>
-          <span class="font-extrabold text-indigo-500 ml-0.5">MC</span>
-        </div>
-      </a>
+  <!-- Header Placeholder -->
+  <header id="mainHeader" class="sticky top-0 z-50 backdrop-blur-md bg-slate-950/80 border-b border-slate-800/80 transition-all"></header>
 
-      <!-- Navigation Actions -->
-      <div class="flex items-center gap-3 sm:gap-4">
-        <!-- Vote Portal Link -->
-        <a href="https://vote.aeonmc.com" target="_blank" rel="noopener noreferrer" 
-           class="px-4 py-2 sm:px-5 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold text-slate-300 bg-slate-900/90 border border-slate-800 hover:border-slate-700 hover:text-white hover:bg-slate-800 transition-all duration-200 shadow-sm flex items-center gap-2">
-          <i class="fas fa-vote-yea text-indigo-400"></i>
-          <span>Vote</span>
-        </a>
-
-        <!-- Tebex Store Link -->
-        <a href="https://aeon-mc.tebex.store" target="_blank" rel="noopener noreferrer" 
-           class="px-4 py-2 sm:px-5 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-500 shadow-lg shadow-indigo-600/30 hover:shadow-indigo-500/50 transition-all duration-200 transform hover:-translate-y-0.5 flex items-center gap-2">
-          <i class="fas fa-shopping-cart text-white"></i>
-          <span>Store</span>
-        </a>
-      </div>
-    </div>
-  </header>
-
-  <!-- Hero Section -->
-  <main class="flex-grow flex flex-col justify-center relative z-10 py-16 sm:py-24">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
+  <!-- Hero & Main -->
+  <main class="flex-grow relative z-10 py-12 sm:py-20">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
       
-      <!-- Season 1 Live Badge -->
-      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-950/60 border border-indigo-500/30 text-indigo-300 text-xs sm:text-sm font-semibold tracking-wide uppercase shadow-inner shadow-indigo-500/10 mb-8 backdrop-blur-sm">
+      <!-- Season Badge -->
+      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-950/60 border border-indigo-500/30 text-indigo-300 text-xs sm:text-sm font-semibold tracking-wide uppercase shadow-inner mb-8">
         <span class="w-2 h-2 rounded-full bg-indigo-400 animate-pulse"></span>
-        <span>Season 1 Live Now</span>
+        <span>Season 1 Live Now • Java & Bedrock Cross-Platform</span>
       </div>
 
-      <!-- Main Headline -->
+      <!-- Headline -->
       <h1 class="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-white max-w-4xl leading-[1.1] mb-6">
         Next-Generation <br class="hidden sm:inline" />
         <span class="bg-gradient-to-r from-white via-slate-100 to-indigo-400 bg-clip-text text-transparent">
-          Minecraft Survival
+          Minecraft Survival Network
         </span>
       </h1>
 
-      <!-- Value Proposition Subtitle -->
       <p class="text-lg sm:text-xl text-slate-400 max-w-2xl font-normal leading-relaxed mb-10">
-        Experience AeonMC Season 1 — Featuring custom jobs, a non-inflationary economy, procedural dungeons, and a thriving community.
+        Experience AeonMC — Featuring custom jobs, hand-crafted procedural dungeons, balanced player economy, and active community features.
       </p>
 
-      <!-- One-Click Server IP Copy Widget -->
+      <!-- One-Click IP Copy Widget -->
       <div class="w-full max-w-lg mb-8">
-        <div class="p-2 sm:p-2.5 rounded-2xl bg-slate-900/80 backdrop-blur-md border border-slate-800 shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-3 group hover:border-slate-700 transition-colors">
-          
-          <div class="flex items-center gap-3 px-3 py-1.5 w-full sm:w-auto justify-center sm:justify-start">
+        <div class="p-2.5 rounded-2xl bg-slate-900/80 backdrop-blur-md border border-slate-800 shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-3 hover:border-slate-700 transition-colors">
+          <div class="flex items-center gap-3 px-3 py-1.5 justify-center sm:justify-start">
             <div class="w-9 h-9 rounded-xl bg-slate-800 flex items-center justify-center text-indigo-400 shrink-0">
               <i class="fas fa-server text-sm"></i>
             </div>
-            <span id="serverIpText" class="font-mono text-slate-100 text-base sm:text-lg font-bold tracking-wide">play.aeonmc.com</span>
+            <span class="font-mono text-slate-100 text-base sm:text-lg font-bold tracking-wide">play.aeonmc.com</span>
           </div>
-
-          <button id="copyIpBtn" 
-                  onclick="copyServerIp()" 
-                  class="w-full sm:w-auto px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white font-semibold text-sm transition-all duration-200 flex items-center justify-center gap-2 shadow-md shadow-indigo-600/20 shrink-0">
+          <button id="copyIpBtn" data-copy-ip class="w-full sm:w-auto px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm transition-all flex items-center justify-center gap-2 shadow-md shadow-indigo-600/20">
             <i id="copyBtnIcon" class="fas fa-copy text-xs"></i>
             <span id="copyBtnText">Copy IP</span>
           </button>
-
         </div>
       </div>
 
-      <!-- Live Server Status Telemetry Badge -->
+      <!-- Live Server Telemetry Badge -->
       <div class="inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-slate-900/70 border border-slate-800/80 backdrop-blur-md shadow-lg text-sm text-slate-300">
-        <!-- Status Indicator Pulsing Dot -->
         <span class="relative flex h-3 w-3">
           <span id="statusPingPulse" class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
           <span id="statusPingDot" class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
         </span>
-
         <span class="font-medium text-slate-400">Server Status:</span>
         <span id="statusText" class="font-bold text-emerald-400">ONLINE</span>
         <span class="text-slate-700">•</span>
         <span id="playerCountText" class="font-semibold text-slate-200">
-          <span class="inline-block animate-pulse">Checking online players...</span>
+          <span class="inline-block animate-pulse">Checking live players...</span>
         </span>
       </div>
 
-      <!-- Server Feature Highlights Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl mt-20 text-left">
-        <div class="p-6 rounded-2xl bg-slate-900/50 backdrop-blur-md border border-slate-800/80 hover:border-slate-700/80 transition-all duration-300 group hover:-translate-y-1">
-          <div class="w-12 h-12 rounded-xl bg-indigo-950/80 border border-indigo-500/20 flex items-center justify-center text-indigo-400 text-xl mb-4 group-hover:bg-indigo-600 group-hover:text-white transition-colors duration-300">
+      <!-- Grid Highlights -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl mt-16 text-left">
+        <div class="p-6 rounded-2xl bg-slate-900/50 backdrop-blur-md border border-slate-800/80 hover:border-slate-700/80 transition-all group">
+          <div class="w-12 h-12 rounded-xl bg-indigo-950/80 border border-indigo-500/20 flex items-center justify-center text-indigo-400 text-xl mb-4 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
             <i class="fas fa-briefcase"></i>
           </div>
           <h3 class="text-lg font-bold text-white mb-2">Custom Jobs System</h3>
-          <p class="text-sm text-slate-400 leading-relaxed">Earn steady income through 8 calibrated job matrices designed for long-term economy balance.</p>
+          <p class="text-sm text-slate-400 leading-relaxed">Earn balanced income through 8 calibrated job matrices designed for long-term economy stability.</p>
         </div>
 
-        <div class="p-6 rounded-2xl bg-slate-900/50 backdrop-blur-md border border-slate-800/80 hover:border-slate-700/80 transition-all duration-300 group hover:-translate-y-1">
-          <div class="w-12 h-12 rounded-xl bg-indigo-950/80 border border-indigo-500/20 flex items-center justify-center text-indigo-400 text-xl mb-4 group-hover:bg-indigo-600 group-hover:text-white transition-colors duration-300">
+        <div class="p-6 rounded-2xl bg-slate-900/50 backdrop-blur-md border border-slate-800/80 hover:border-slate-700/80 transition-all group">
+          <div class="w-12 h-12 rounded-xl bg-indigo-950/80 border border-indigo-500/20 flex items-center justify-center text-indigo-400 text-xl mb-4 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
             <i class="fas fa-dungeon"></i>
           </div>
           <h3 class="text-lg font-bold text-white mb-2">Procedural Dungeons</h3>
-          <p class="text-sm text-slate-400 leading-relaxed">Conquer mythic boss chambers with instanced per-player loot containers and exclusive rewards.</p>
+          <p class="text-sm text-slate-400 leading-relaxed">Explore hand-crafted boss chambers with Lootr instanced chests and mythic gear drops.</p>
         </div>
 
-        <div class="p-6 rounded-2xl bg-slate-900/50 backdrop-blur-md border border-slate-800/80 hover:border-slate-700/80 transition-all duration-300 group hover:-translate-y-1">
-          <div class="w-12 h-12 rounded-xl bg-indigo-950/80 border border-indigo-500/20 flex items-center justify-center text-indigo-400 text-xl mb-4 group-hover:bg-indigo-600 group-hover:text-white transition-colors duration-300">
+        <div class="p-6 rounded-2xl bg-slate-900/50 backdrop-blur-md border border-slate-800/80 hover:border-slate-700/80 transition-all group">
+          <div class="w-12 h-12 rounded-xl bg-indigo-950/80 border border-indigo-500/20 flex items-center justify-center text-indigo-400 text-xl mb-4 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
             <i class="fas fa-coins"></i>
           </div>
           <h3 class="text-lg font-bold text-white mb-2">Balanced Player Economy</h3>
-          <p class="text-sm text-slate-400 leading-relaxed">Trade freely via player warps, chest shops, and an active Auction House with zero pay-to-win mechanics.</p>
+          <p class="text-sm text-slate-400 leading-relaxed">Trade with player warps, chest shops, and Auction House listings with zero pay-to-win mechanics.</p>
         </div>
       </div>
 
     </div>
   </main>
 
-  <!-- Minimal Footer -->
-  <footer class="border-t border-slate-800/80 py-8 relative z-10 bg-slate-950/60 backdrop-blur-sm">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
-      <div class="text-xs text-slate-500">
-        &copy; 2026 <span class="font-semibold text-slate-300">AeonMC</span>. All rights reserved.
-      </div>
-      <div class="text-[11px] text-slate-600 max-w-md">
-        Not an official Minecraft product. Not approved by or associated with Mojang or Microsoft.
-      </div>
-    </div>
-  </footer>
+  <footer id="mainFooter" class="border-t border-slate-800/80 py-8 relative z-10 bg-slate-950/60 backdrop-blur-sm"></footer>
 
-  <!-- Client JavaScript Logic -->
-  <script>
-    // 1. One-Click IP Copy Feature
-    function copyServerIp() {
-      const serverIp = "play.aeonmc.com";
-      navigator.clipboard.writeText(serverIp).then(() => {
-        const btn = document.getElementById('copyIpBtn');
-        const text = document.getElementById('copyBtnText');
-        const icon = document.getElementById('copyBtnIcon');
-
-        // Original State
-        const originalText = "Copy IP";
-        const originalClass = "bg-indigo-600 hover:bg-indigo-500 shadow-indigo-600/20";
-        
-        // Copied State (Emerald Feedback)
-        text.textContent = "Copied!";
-        icon.className = "fas fa-check text-xs";
-        btn.className = "w-full sm:w-auto px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 active:scale-95 text-slate-950 font-bold text-sm transition-all duration-200 flex items-center justify-center gap-2 shadow-md shadow-emerald-500/20 shrink-0";
-
-        // Reset after 2 seconds
-        setTimeout(() => {
-          text.textContent = originalText;
-          icon.className = "fas fa-copy text-xs";
-          btn.className = "w-full sm:w-auto px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white font-semibold text-sm transition-all duration-200 flex items-center justify-center gap-2 shadow-md shadow-indigo-600/20 shrink-0";
-        }, 2000);
-      }).catch(err => {
-        console.error('Failed to copy IP to clipboard:', err);
-      });
-    }
-
-    // 2. Live Server Telemetry Status Fetcher (mcsrvstat.us v3 with mcstatus.io fallback)
-    async function fetchServerStatus() {
-      const serverHost = "play.aeonmc.com";
-      const statusText = document.getElementById('statusText');
-      const playerCountText = document.getElementById('playerCountText');
-      const pingDot = document.getElementById('statusPingDot');
-      const pingPulse = document.getElementById('statusPingPulse');
-
-      try {
-        // Attempt Primary API: mcsrvstat.us v3
-        const response = await fetch(`https://api.mcsrvstat.us/3/${serverHost}`);
-        if (response.ok) {
-          const data = await response.json();
-          if (data.online) {
-            updateStatusUI(true, data.players ? data.players.online : 0, data.players ? data.players.max : 2000);
-            return;
-          }
-        }
-      } catch (err) {
-        console.warn('Primary mcsrvstat.us v3 ping failed, trying fallback API...', err);
-      }
-
-      try {
-        // Fallback API: mcstatus.io
-        const responseFallback = await fetch(`https://api.mcstatus.io/v2/status/java/${serverHost}`);
-        if (responseFallback.ok) {
-          const dataFallback = await responseFallback.json();
-          if (dataFallback.online) {
-            updateStatusUI(true, dataFallback.players ? dataFallback.players.online : 0, dataFallback.players ? dataFallback.players.max : 2000);
-            return;
-          }
-        }
-      } catch (err) {
-        console.warn('Fallback mcstatus.io ping failed:', err);
-      }
-
-      // Offline / Error Fallback
-      updateStatusUI(false, 0, 2000);
-    }
-
-    function updateStatusUI(isOnline, onlineCount, maxCount) {
-      const statusText = document.getElementById('statusText');
-      const playerCountText = document.getElementById('playerCountText');
-      const pingDot = document.getElementById('statusPingDot');
-      const pingPulse = document.getElementById('statusPingPulse');
-
-      if (isOnline) {
-        statusText.textContent = "ONLINE";
-        statusText.className = "font-bold text-emerald-400";
-        playerCountText.textContent = `${onlineCount} / ${maxCount} Players`;
-        pingDot.className = "relative inline-flex rounded-full h-3 w-3 bg-emerald-500";
-        pingPulse.className = "animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75";
-      } else {
-        statusText.textContent = "OFFLINE";
-        statusText.className = "font-bold text-rose-400";
-        playerCountText.textContent = `0 / ${maxCount} Players`;
-        pingDot.className = "relative inline-flex rounded-full h-3 w-3 bg-rose-500";
-        pingPulse.className = "animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75";
-      }
-    }
-
-    // Initialize telemetry fetch on load and refresh every 30 seconds
-    fetchServerStatus();
-    setInterval(fetchServerStatus, 30000);
-  </script>
-
+  <script src="assets/js/storage.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/app.js"></script>
 </body>
 </html>
