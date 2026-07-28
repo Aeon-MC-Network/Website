@@ -33,7 +33,7 @@
       <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
         <div>
           <h1 class="text-3xl font-black text-white">Media & Creator Showcase</h1>
-          <p class="text-slate-400 text-xs sm:text-sm mt-1">Community screenshots, creator videos, and gameplay showcases.</p>
+          <p class="text-slate-400 text-xs sm:text-sm mt-1">Community screenshots, creator video embeds, and gameplay showcases.</p>
         </div>
 
         <div class="flex items-center gap-3">
@@ -55,22 +55,44 @@
     </div>
   </main>
 
-  <!-- Add Media Modal -->
+  <!-- Requirement 3: Add Media Modal (Link Embed & Static Upload Modes) -->
   <div id="addMediaModal" role="dialog" aria-modal="true" class="hidden fixed inset-0 z-50 items-center justify-center bg-slate-950/80 backdrop-blur-md p-4">
-    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
       <button onclick="MediaPage.closeModal('addMediaModal')" aria-label="Close Modal" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i class="fas fa-times"></i></button>
-      <h3 class="text-lg font-bold text-white mb-4"><i class="fas fa-image text-purple-400 mr-2"></i> Submit Media Showcase</h3>
+      <h3 class="text-lg font-bold text-white mb-4"><i class="fas fa-video text-purple-400 mr-2"></i> Submit Media Showcase</h3>
       
+      <!-- Input Mode Switcher Tabs -->
+      <div class="flex rounded-xl bg-slate-950 p-1 mb-4 border border-slate-800">
+        <button type="button" onclick="MediaPage.setMode('embed')" id="modeEmbedBtn" class="flex-1 py-2 rounded-lg text-xs font-bold text-white bg-indigo-600 transition-colors flex items-center justify-center gap-1.5">
+          <i class="fab fa-youtube"></i> Link Embed (YouTube / TikTok)
+        </button>
+        <button type="button" onclick="MediaPage.setMode('upload')" id="modeUploadBtn" class="flex-1 py-2 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition-colors flex items-center justify-center gap-1.5">
+          <i class="fas fa-file-upload"></i> Static Upload / Image
+        </button>
+      </div>
+
       <form onsubmit="MediaPage.saveMedia(event)" class="space-y-4">
         <div>
           <label class="block text-xs font-semibold text-slate-300 mb-1">Title</label>
-          <input type="text" id="mediaTitleInput" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs" required>
+          <input type="text" id="mediaTitleInput" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs focus:border-indigo-500 focus:outline-none" placeholder="e.g. AeonMC Dungeon Raid Speedrun" required>
         </div>
-        <div>
-          <label class="block text-xs font-semibold text-slate-300 mb-1">Image or Thumbnail URL</label>
-          <input type="url" id="mediaUrlInput" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs" placeholder="https://..." required>
+
+        <!-- Mode 1: Link Embed -->
+        <div id="embedModeContainer" class="space-y-2">
+          <label class="block text-xs font-semibold text-slate-300">Video Embed URL (YouTube, TikTok, Twitch)</label>
+          <input type="url" id="mediaEmbedUrl" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs focus:border-indigo-500 focus:outline-none" placeholder="https://www.youtube.com/watch?v=... or https://youtu.be/...">
+          <p class="text-[11px] text-slate-500">Paste your video link. AeonMC automatically formats responsive video players.</p>
         </div>
-        <button type="submit" class="w-full py-3 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs">Publish Media Item</button>
+
+        <!-- Mode 2: Static Upload -->
+        <div id="uploadModeContainer" class="hidden space-y-3">
+          <label class="block text-xs font-semibold text-slate-300">Upload Image / Video File or Image URL</label>
+          <input type="file" id="mediaFileInput" accept="image/*,video/*" onchange="MediaPage.handleFileSelect(event)" class="w-full text-xs text-slate-400 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-slate-800 file:text-indigo-400 hover:file:bg-slate-700">
+          <div class="text-center text-[10px] text-slate-500 font-bold uppercase">— OR —</div>
+          <input type="url" id="mediaDirectUrl" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs focus:border-indigo-500 focus:outline-none" placeholder="Direct Image URL (https://...)">
+        </div>
+
+        <button type="submit" class="w-full py-3 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs shadow-lg shadow-purple-600/20 transition-all">Publish Media Item</button>
       </form>
     </div>
   </div>
@@ -83,8 +105,58 @@
   <script src="assets/js/app.js"></script>
   <script>
     const MediaPage = {
+      activeMode: 'embed',
+      uploadedFileBase64: null,
+
       init() {
         this.renderMedia();
+      },
+
+      setMode(mode) {
+        this.activeMode = mode;
+        const embedBtn = document.getElementById('modeEmbedBtn');
+        const uploadBtn = document.getElementById('modeUploadBtn');
+        const embedContainer = document.getElementById('embedModeContainer');
+        const uploadContainer = document.getElementById('uploadModeContainer');
+
+        if (mode === 'embed') {
+          embedBtn.className = "flex-1 py-2 rounded-lg text-xs font-bold text-white bg-indigo-600 transition-colors flex items-center justify-center gap-1.5";
+          uploadBtn.className = "flex-1 py-2 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition-colors flex items-center justify-center gap-1.5";
+          embedContainer.classList.remove('hidden');
+          uploadContainer.classList.add('hidden');
+        } else {
+          uploadBtn.className = "flex-1 py-2 rounded-lg text-xs font-bold text-white bg-indigo-600 transition-colors flex items-center justify-center gap-1.5";
+          embedBtn.className = "flex-1 py-2 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition-colors flex items-center justify-center gap-1.5";
+          uploadContainer.classList.remove('hidden');
+          embedContainer.classList.add('hidden');
+        }
+      },
+
+      handleFileSelect(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          this.uploadedFileBase64 = event.target.result;
+        };
+        reader.readAsDataURL(file);
+      },
+
+      parseEmbedURL(url) {
+        if (!url) return null;
+
+        // YouTube
+        let ytMatch = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
+        if (ytMatch && ytMatch[1]) {
+          return {
+            type: 'youtube',
+            embedUrl: `https://www.youtube.com/embed/${ytMatch[1]}`,
+            thumbUrl: `https://img.youtube.com/vi/${ytMatch[1]}/hqdefault.jpg`
+          };
+        }
+
+        return { type: 'generic', url: url };
       },
 
       renderMedia() {
@@ -99,16 +171,38 @@
           const isAuthor = currentUser && currentUser.username.toLowerCase() === m.author.toLowerCase();
           const canDelete = isStaff || isAuthor;
 
+          let previewHTML = '';
+
+          if (m.embedType === 'youtube' && m.embedUrl) {
+            previewHTML = `
+              <div class="relative aspect-video overflow-hidden bg-black">
+                <iframe src="${m.embedUrl}" class="w-full h-full border-0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+              </div>
+            `;
+          } else if (m.url && (m.url.startsWith('data:video') || m.url.endsWith('.mp4'))) {
+            previewHTML = `
+              <div class="relative aspect-video overflow-hidden bg-black">
+                <video src="${m.url}" controls class="w-full h-full object-cover"></video>
+              </div>
+            `;
+          } else {
+            const imgSrc = m.url || 'assets/img/og-banner.jpg';
+            previewHTML = `
+              <div class="relative aspect-video overflow-hidden">
+                <img src="${imgSrc}" alt="${m.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+              </div>
+            `;
+          }
+
           return `
             <div class="rounded-2xl bg-slate-900/60 border border-slate-800 overflow-hidden group hover:border-purple-500/40 transition-all flex flex-col justify-between">
-              <div class="relative aspect-video overflow-hidden">
-                <img src="${m.url}" alt="${m.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-transparent flex flex-col justify-end p-4">
-                  <h4 class="text-sm font-bold text-white">${m.title}</h4>
-                  <p class="text-[11px] text-purple-300 font-semibold">By ${m.author}</p>
-                </div>
-              </div>
+              ${previewHTML}
               
+              <div class="p-4 space-y-1">
+                <h4 class="text-sm font-bold text-white group-hover:text-purple-400 transition-colors">${m.title}</h4>
+                <p class="text-[11px] text-purple-300 font-semibold">By ${m.author}</p>
+              </div>
+
               ${canDelete ? `
                 <div class="p-3 bg-slate-950/80 border-t border-slate-800/80 flex justify-end">
                   <button onclick="MediaPage.deleteMedia('${m.id}')" class="px-3 py-1 rounded-lg bg-rose-600/20 border border-rose-500/30 hover:bg-rose-600 text-rose-300 hover:text-white font-bold text-[11px] transition-all flex items-center gap-1">
@@ -142,24 +236,42 @@
         if (!Auth.isLoggedIn()) return;
 
         const title = document.getElementById('mediaTitleInput').value.trim();
-        const url = document.getElementById('mediaUrlInput').value.trim();
-
         const user = Auth.getCurrentUser();
         const mediaItems = StorageDB.get(STORAGE_KEYS.MEDIA) || [];
+
+        let finalUrl = '';
+        let embedData = null;
+
+        if (this.activeMode === 'embed') {
+          const rawUrl = document.getElementById('mediaEmbedUrl').value.trim();
+          embedData = this.parseEmbedURL(rawUrl);
+          finalUrl = embedData.type === 'youtube' ? embedData.thumbUrl : rawUrl;
+        } else {
+          const directUrl = document.getElementById('mediaDirectUrl').value.trim();
+          finalUrl = this.uploadedFileBase64 || directUrl;
+        }
+
+        if (!finalUrl && (!embedData || !embedData.embedUrl)) {
+          App.showToast('Please provide a valid video link or upload file.', 'error');
+          return;
+        }
 
         mediaItems.unshift({
           id: "m-" + Date.now(),
           title: title,
           author: user.username,
-          url: url
+          url: finalUrl,
+          embedType: embedData ? embedData.type : 'static',
+          embedUrl: embedData ? embedData.embedUrl : null
         });
 
         StorageDB.set(STORAGE_KEYS.MEDIA, mediaItems);
         StorageDB.logAction(user.username, "Add Media", `Published media item: ${title}`);
 
+        this.uploadedFileBase64 = null;
         this.closeModal('addMediaModal');
         this.renderMedia();
-        App.showToast('Media item published!', 'success');
+        App.showToast('Media item published successfully!', 'success');
       },
 
       deleteMedia(id) {
