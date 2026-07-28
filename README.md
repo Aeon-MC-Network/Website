@@ -1,19 +1,18 @@
 # AeonMC Website & Platform
 
 [![Stack](https://img.shields.io/badge/Stack-HTML5%20%7C%20TailwindCSS%20%7C%20JS-indigo)](https://aeonmc.com)
-[![Server Specs](https://img.shields.io/badge/Node-dal--241001.bloom.host-amber)](https://aeonmc.com)
 [![Status](https://img.shields.io/badge/Hosting-Cloudflare%20Pages%20%2F%20GitHub%20Pages-emerald)](https://aeonmc.com)
+[![Compatibility](https://img.shields.io/badge/Minecraft-Java%20%26%20Bedrock-blue)](https://aeonmc.com)
 
 Official web portal and community platform for **AeonMC Network**.
 
 ---
 
-## 🌐 Server Specifications & Configuration
+## 🌐 Server Connection Information
 
-- **Node Host**: `dal-241001.bloom.host`
 - **Server IP**: `play.aeonmc.com`
-- **Port**: `8804`
-- **Platform**: Java & Bedrock Cross-Platform Survival
+- **Port**: `8804` (Bedrock default / Plan Telemetry)
+- **Compatibility**: Java & Bedrock Cross-Platform Survival
 
 ---
 
@@ -54,11 +53,19 @@ Official web portal and community platform for **AeonMC Network**.
 
 ---
 
-## 🚀 One-Click Demo Accounts
+## 🛠️ Local Development & Build Commands
 
-Click **Login** on the top navigation bar to test role permissions instantly:
+1. **Install Dependencies**:
+   ```bash
+   npm install
+   ```
 
-- **Admin**: `Admin` / `admin123`
-- **Mod**: `Moderator` / `mod123`
-- **Content Creator**: `SparkYT` / `creator123`
-- **Player**: `StevePlayer` / `player123`
+2. **Build Production Tailwind CSS**:
+   ```bash
+   npm run build:css
+   ```
+
+3. **Watch CSS Changes**:
+   ```bash
+   npm run watch:css
+   ```
