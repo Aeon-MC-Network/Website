@@ -38,6 +38,40 @@ const App = {
 
     const userBadgeClass = roleBadgeClasses[role] || 'bg-slate-800 text-slate-300';
 
+    const navLinks = [
+      { name: 'Home', href: 'index.html' },
+      { name: 'Vote', href: 'vote.html' },
+      { name: 'Forums', href: 'forums.html' },
+      { name: 'News', href: 'news.html' },
+      { name: 'Media', href: 'media.html' },
+      { name: 'Wiki', href: 'wiki.html' },
+      { name: 'Contact', href: 'contact.html' }
+    ];
+
+    // Conditionally add Staff Portal link if user is Mod or Admin
+    if (isStaff) {
+      navLinks.push({ name: 'Staff Portal', href: 'staff.html', isStaffOnly: true });
+    }
+
+    const navItemsHTML = navLinks.map(link => {
+      const isActive = currentPage === link.href || (currentPage === '' && link.href === 'index.html');
+      const staffStyle = link.isStaffOnly ? 'text-amber-400 hover:text-amber-300 font-bold' : '';
+      return `
+        <a href="${link.href}" class="px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${staffStyle} ${isActive ? 'text-white bg-indigo-600/20 border border-indigo-500/30' : 'text-slate-400 hover:text-white hover:bg-slate-900'}">
+          ${link.isStaffOnly ? '<i class="fas fa-shield-alt mr-1"></i>' : ''}${link.name}
+        </a>
+      `;
+    }).join('');
+
+    const mobileNavItemsHTML = navLinks.map(link => {
+      const isActive = currentPage === link.href;
+      return `
+        <a href="${link.href}" class="block px-4 py-2.5 rounded-xl text-sm font-semibold transition-colors ${isActive ? 'text-white bg-indigo-600/30 border border-indigo-500/30' : 'text-slate-300 hover:bg-slate-800'}">
+          ${link.isStaffOnly ? '<i class="fas fa-shield-alt text-amber-400 mr-2"></i>' : ''}${link.name}
+        </a>
+      `;
+    }).join('');
+
     const authWidgetHTML = user ? `
       <div class="relative inline-block text-left">
         <button id="userMenuBtn" class="flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-slate-900 border border-slate-800 hover:border-slate-700 transition-all">
@@ -47,7 +81,7 @@ const App = {
           <i class="fas fa-chevron-down text-[10px] text-slate-400"></i>
         </button>
 
-        <div id="userMenuDropdown" class="hidden absolute right-0 mt-2 w-48 rounded-xl bg-slate-900 border border-slate-800 shadow-2xl p-1.5 z-50">
+        <div id="userMenuDropdown" class="hidden absolute right-0 mt-2 w-52 rounded-xl bg-slate-900 border border-slate-800 shadow-2xl p-1.5 z-50">
           <div class="px-3 py-2 text-[11px] text-slate-400 border-b border-slate-800/80">
             Logged in as <strong class="text-white">${user.username}</strong>
           </div>
@@ -68,25 +102,6 @@ const App = {
       </div>
     `;
 
-    const navLinks = [
-      { name: 'Home', href: 'index.html' },
-      { name: 'Vote', href: 'vote.html' },
-      { name: 'Forums', href: 'forums.html' },
-      { name: 'News', href: 'news.html' },
-      { name: 'Media', href: 'media.html' },
-      { name: 'Wiki', href: 'wiki.html' },
-      { name: 'Contact', href: 'contact.html' }
-    ];
-
-    const navItemsHTML = navLinks.map(link => {
-      const isActive = currentPage === link.href || (currentPage === '' && link.href === 'index.html');
-      return `
-        <a href="${link.href}" class="px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${isActive ? 'text-white bg-indigo-600/20 border border-indigo-500/30' : 'text-slate-400 hover:text-white hover:bg-slate-900'}">
-          ${link.name}
-        </a>
-      `;
-    }).join('');
-
     headerContainer.innerHTML = `
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
         <!-- Logo -->
@@ -101,7 +116,7 @@ const App = {
         </a>
 
         <!-- Desktop Links -->
-        <nav class="hidden md:flex items-center gap-1">
+        <nav class="hidden lg:flex items-center gap-1">
           ${navItemsHTML}
         </nav>
 
@@ -111,11 +126,24 @@ const App = {
             <i class="fas fa-shopping-cart"></i> Store
           </a>
           ${authWidgetHTML}
+
+          <!-- Mobile Hamburger Toggle -->
+          <button id="mobileMenuBtn" class="lg:hidden p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white">
+            <i class="fas fa-bars text-base"></i>
+          </button>
         </div>
+      </div>
+
+      <!-- Mobile Dropdown Navigation -->
+      <div id="mobileNavContainer" class="hidden lg:hidden border-t border-slate-800/80 bg-slate-950/95 backdrop-blur-md px-4 py-4 space-y-2">
+        ${mobileNavItemsHTML}
+        <a href="https://aeon-mc.tebex.store/" target="_blank" class="block w-full py-2.5 rounded-xl text-center font-bold text-xs text-white bg-indigo-600 hover:bg-indigo-500 shadow-md">
+          <i class="fas fa-shopping-cart mr-2"></i> Visit Store
+        </a>
       </div>
     `;
 
-    // Dropdown toggle listener
+    // User dropdown listener
     const dropdownBtn = document.getElementById('userMenuBtn');
     const dropdownMenu = document.getElementById('userMenuDropdown');
     if (dropdownBtn && dropdownMenu) {
@@ -128,27 +156,34 @@ const App = {
         dropdownMenu.classList.add('hidden');
       });
     }
+
+    // Mobile menu listener
+    const mobileBtn = document.getElementById('mobileMenuBtn');
+    const mobileContainer = document.getElementById('mobileNavContainer');
+    if (mobileBtn && mobileContainer) {
+      mobileBtn.addEventListener('click', () => {
+        mobileContainer.classList.toggle('hidden');
+      });
+    }
   },
 
   renderFooter() {
     const footerContainer = document.getElementById('mainFooter');
-    if (!headerContainer && !footerContainer) return;
-    if (footerContainer) {
-      footerContainer.innerHTML = `
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
-          <div class="text-xs text-slate-500">
-            &copy; 2026 <span class="font-semibold text-slate-300">AeonMC Network</span>. All rights reserved. Node: <code class="text-indigo-400">dal-241001.bloom.host</code>
-          </div>
-          <div class="text-[11px] text-slate-600 max-w-md">
-            Not an official Minecraft product. Not approved by or associated with Mojang or Microsoft.
-          </div>
+    if (!footerContainer) return;
+
+    footerContainer.innerHTML = `
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
+        <div class="text-xs text-slate-500">
+          &copy; 2026 <span class="font-semibold text-slate-300">AeonMC Network</span>. All rights reserved. Node: <code class="text-indigo-400">dal-241001.bloom.host</code>
         </div>
-      `;
-    }
+        <div class="text-[11px] text-slate-600 max-w-md">
+          Not an official Minecraft product. Not approved by or associated with Mojang or Microsoft.
+        </div>
+      </div>
+    `;
   },
 
   bindGlobalEvents() {
-    // Copy IP button handlers
     document.querySelectorAll('[data-copy-ip]').forEach(btn => {
       btn.addEventListener('click', () => {
         this.copyServerIP();
@@ -163,7 +198,6 @@ const App = {
     navigator.clipboard.writeText(ip).then(() => {
       this.showToast(`Server IP copied: ${ip}`, 'success');
       
-      // Update IP copy button text if present on page
       const btnText = document.getElementById('copyBtnText');
       const btnIcon = document.getElementById('copyBtnIcon');
       const btn = document.getElementById('copyIpBtn');
@@ -349,7 +383,13 @@ const App = {
     this.closeAuthModal();
     this.renderHeader();
     this.showToast(`Logged in as Demo ${roleName}`, 'success');
-    window.location.reload();
+
+    // If currently on staff.html, trigger StaffPage re-check immediately
+    if (window.location.pathname.includes('staff.html') && typeof StaffPage !== 'undefined') {
+      StaffPage.init();
+    } else {
+      window.location.reload();
+    }
   },
 
   handleLoginSubmit(e) {
@@ -362,7 +402,12 @@ const App = {
       this.closeAuthModal();
       this.renderHeader();
       this.showToast(`Welcome back, ${res.user.username}!`, 'success');
-      window.location.reload();
+      
+      if (window.location.pathname.includes('staff.html') && typeof StaffPage !== 'undefined') {
+        StaffPage.init();
+      } else {
+        window.location.reload();
+      }
     } else {
       this.showToast(res.message, 'error');
     }
@@ -379,7 +424,12 @@ const App = {
       this.closeAuthModal();
       this.renderHeader();
       this.showToast(`Account created! Welcome, ${res.user.username}!`, 'success');
-      window.location.reload();
+      
+      if (window.location.pathname.includes('staff.html') && typeof StaffPage !== 'undefined') {
+        StaffPage.init();
+      } else {
+        window.location.reload();
+      }
     } else {
       this.showToast(res.message, 'error');
     }
@@ -389,7 +439,12 @@ const App = {
     Auth.logout();
     this.renderHeader();
     this.showToast('Logged out successfully.', 'info');
-    window.location.reload();
+    
+    if (window.location.pathname.includes('staff.html') && typeof StaffPage !== 'undefined') {
+      StaffPage.init();
+    } else {
+      window.location.reload();
+    }
   },
 
   showToast(msg, type = 'info') {

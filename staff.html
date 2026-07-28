@@ -20,13 +20,14 @@
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col relative overflow-x-hidden">
 
+  <!-- Header -->
   <header id="mainHeader" class="sticky top-0 z-50 backdrop-blur-md bg-slate-950/80 border-b border-slate-800/80"></header>
 
   <main class="flex-grow relative z-10 py-8">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
       <!-- Access Control Shield Check -->
-      <div id="staffAccessDenied" class="hidden p-12 rounded-3xl bg-slate-900/80 border border-rose-500/30 text-center max-w-lg mx-auto my-12 shadow-2xl">
+      <div id="staffAccessDenied" class="hidden p-10 sm:p-14 rounded-3xl bg-slate-900/80 border border-rose-500/30 text-center max-w-lg mx-auto my-12 shadow-2xl">
         <div class="w-16 h-16 rounded-2xl bg-rose-950 border border-rose-500/40 flex items-center justify-center text-rose-400 text-3xl mx-auto mb-4">
           <i class="fas fa-lock"></i>
         </div>
@@ -34,8 +35,18 @@
         <p class="text-slate-400 text-xs sm:text-sm mb-6 leading-relaxed">
           The AeonMC Staff Portal is restricted to Moderator and Administrator accounts. Please log in with a staff account to proceed.
         </p>
+        
+        <!-- Quick Demo Login Buttons inside Access Denied Box -->
+        <div class="bg-slate-950 border border-slate-800 rounded-xl p-3 mb-6">
+          <div class="text-[11px] font-bold uppercase tracking-wider text-indigo-400 mb-2">⚡ Test Staff Accounts</div>
+          <div class="flex justify-center gap-2">
+            <button onclick="App.quickLogin('Mod')" class="px-4 py-2 rounded-lg bg-amber-600/30 hover:bg-amber-600/50 text-amber-200 text-xs font-bold border border-amber-500/30 transition-colors">Login as Mod</button>
+            <button onclick="App.quickLogin('Admin')" class="px-4 py-2 rounded-lg bg-rose-600/30 hover:bg-rose-600/50 text-rose-200 text-xs font-bold border border-rose-500/30 transition-colors">Login as Admin</button>
+          </div>
+        </div>
+
         <button onclick="App.openLoginModal()" class="px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-lg shadow-indigo-600/20">
-          Log In With Staff Account
+          Login With Custom Account
         </button>
       </div>
 
@@ -54,7 +65,7 @@
 
           <!-- Quick Plan Analytics Link -->
           <a href="http://plan.aeonmc.com:8804" target="_blank" rel="noopener noreferrer" 
-             class="px-4 py-2.5 rounded-xl bg-indigo-600/80 hover:bg-indigo-600 text-white font-bold text-xs transition-all flex items-center gap-2 shadow-lg shadow-indigo-600/20">
+             class="px-4 py-2.5 rounded-xl bg-indigo-600/80 hover:bg-indigo-600 text-white font-bold text-xs transition-all flex items-center gap-2 shadow-lg shadow-indigo-600/20 shrink-0">
             <i class="fas fa-chart-line"></i>
             <span>Plan Analytics (plan.aeonmc.com:8804)</span>
             <i class="fas fa-external-link-alt text-[10px] opacity-70"></i>
@@ -95,19 +106,38 @@
             
             <!-- Tab 1: Staff Homepage -->
             <div id="staffTab-home" class="staff-tab-content space-y-6">
-              <div class="p-6 rounded-2xl bg-slate-900/60 border border-slate-800">
-                <h3 class="text-lg font-bold text-white mb-2"><i class="fas fa-clipboard-list text-amber-400 mr-2"></i> Active Shift Notes & Directives</h3>
-                <p class="text-xs text-slate-400 leading-relaxed mb-4">
-                  Welcome back, staff member! Please maintain active presence in game (<code class="text-indigo-300">play.aeonmc.com</code>) and check Discord tickets regularly.
+              <div class="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-4">
+                <h3 class="text-lg font-bold text-white"><i class="fas fa-clipboard-list text-amber-400 mr-2"></i> Active Shift Notes & Directives</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">
+                  Welcome back to the staff portal! Please maintain active presence in game (<code class="text-indigo-300">play.aeonmc.com</code>) and inspect private support tickets on the forum board regularly.
                 </p>
+                
                 <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-300 space-y-2">
                   <div class="flex items-center gap-2 text-amber-400 font-bold">
                     <i class="fas fa-info-circle"></i>
-                    <span>Weekly Priority: Support & Ban Appeals Review</span>
+                    <span>Weekly Staff Priority: Confidential Support Desk</span>
                   </div>
                   <p class="text-slate-400 text-[11px] leading-relaxed">
-                    Ensure all confidential player tickets on the forum board are answered within 12 hours. Use Plan analytics to monitor server performance during peak hours.
+                    All player bug reports and ban appeal tickets submitted under "Support & Ban Appeals" are private and visible only to staff. Aim for a response time of under 12 hours.
                   </p>
+                </div>
+
+                <!-- Embedded Plan Analytics Card Link -->
+                <div class="p-5 rounded-xl bg-gradient-to-r from-indigo-950/40 to-slate-900 border border-indigo-500/30 flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center text-white text-lg">
+                      <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div>
+                      <h4 class="text-sm font-bold text-white">Plan Telemetry Dashboard</h4>
+                      <p class="text-xs text-slate-400">Server health, memory allocation, and player retention statistics.</p>
+                    </div>
+                  </div>
+                  <a href="http://plan.aeonmc.com:8804" target="_blank" rel="noopener noreferrer" 
+                     class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs transition-colors shrink-0 flex items-center gap-2">
+                    <span>Open Plan Analytics</span>
+                    <i class="fas fa-external-link-alt text-[10px]"></i>
+                  </a>
                 </div>
               </div>
             </div>
@@ -119,7 +149,7 @@
                 <div class="space-y-4">
                   <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-1">
                     <div class="flex items-center justify-between text-xs">
-                      <strong class="text-white">Admin Policy Update #4</strong>
+                      <strong class="text-white">Admin Policy Directive #4</strong>
                       <span class="text-slate-500">July 27, 2026</span>
                     </div>
                     <p class="text-xs text-slate-400 leading-relaxed">Updated ban appeal procedures: All appeals must be handled in private ticket threads visible only to the player and staff.</p>
@@ -143,7 +173,7 @@
               <div class="p-6 rounded-2xl bg-slate-900/60 border border-slate-800">
                 <div class="flex items-center justify-between mb-4">
                   <h3 class="text-lg font-bold text-white"><i class="fas fa-users-cog text-rose-400 mr-2"></i> Administrative User Directory & Role Assignment</h3>
-                  <span class="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-rose-950 text-rose-400 border border-rose-500/30">Admin Only</span>
+                  <span class="text-[10px] uppercase font-bold px-2.5 py-0.5 rounded bg-rose-950 text-rose-400 border border-rose-500/30">Admin Exclusive</span>
                 </div>
                 <p class="text-xs text-slate-400 mb-4">Inspect registered network accounts and update user site roles (Player, Content Creator, Mod, Admin).</p>
                 
@@ -151,9 +181,9 @@
                   <table class="w-full text-left border-collapse text-xs">
                     <thead>
                       <tr class="border-b border-slate-800 text-slate-400 font-bold uppercase text-[10px]">
-                        <th class="py-3 px-3">User</th>
-                        <th class="py-3 px-3">Email</th>
-                        <th class="py-3 px-3">Role</th>
+                        <th class="py-3 px-3">User Profile</th>
+                        <th class="py-3 px-3">Email Address</th>
+                        <th class="py-3 px-3">Current Role</th>
                         <th class="py-3 px-3">Assign New Role</th>
                       </tr>
                     </thead>
@@ -182,7 +212,9 @@
   <script>
     const StaffPage = {
       init() {
-        if (!Auth.isStaff()) {
+        const isStaff = Auth.isStaff();
+
+        if (!isStaff) {
           document.getElementById('staffAccessDenied').classList.remove('hidden');
           document.getElementById('staffPortalContent').classList.add('hidden');
           return;
@@ -193,6 +225,8 @@
 
         if (Auth.isAdmin()) {
           document.getElementById('adminTabNav').classList.remove('hidden');
+        } else {
+          document.getElementById('adminTabNav').classList.add('hidden');
         }
 
         this.renderStaffApps();
@@ -232,9 +266,23 @@
               </div>
               <p class="text-xs text-slate-400 mt-1">${a.position} • ${a.experience}</p>
             </div>
-            <button onclick="App.showToast('Application reviewed!', 'success')" class="px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shrink-0">Review</button>
+            <div class="flex gap-2">
+              <button onclick="StaffPage.updateAppStatus('${a.id}', 'Approved')" class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs">Approve</button>
+              <button onclick="StaffPage.updateAppStatus('${a.id}', 'Rejected')" class="px-3 py-1.5 rounded-lg bg-rose-600/30 hover:bg-rose-600 text-rose-300 hover:text-white font-bold text-xs">Reject</button>
+            </div>
           </div>
         `).join('');
+      },
+
+      updateAppStatus(appId, status) {
+        const apps = StorageDB.get(STORAGE_KEYS.STAFF_APPS) || [];
+        const app = apps.find(a => a.id === appId);
+        if (app) {
+          app.status = status;
+          StorageDB.set(STORAGE_KEYS.STAFF_APPS, apps);
+          this.renderStaffApps();
+          App.showToast(`Application marked as ${status}`, 'success');
+        }
       },
 
       renderUserDirectory() {
@@ -245,13 +293,16 @@
 
         tbody.innerHTML = users.map(u => `
           <tr class="border-b border-slate-800/60 hover:bg-slate-900/40">
-            <td class="py-3 px-3 flex items-center gap-2">
-              <img src="${u.avatar}" class="w-6 h-6 rounded-full">
-              <span class="font-bold text-white">${u.username}</span>
+            <td class="py-3 px-3 flex items-center gap-2.5">
+              <img src="${u.avatar}" class="w-7 h-7 rounded-full border border-slate-700">
+              <div>
+                <span class="font-bold text-white block text-xs">${u.username}</span>
+                <span class="text-[10px] text-slate-500">${u.id}</span>
+              </div>
             </td>
             <td class="py-3 px-3 text-slate-400">${u.email}</td>
             <td class="py-3 px-3">
-              <span class="px-2 py-0.5 rounded text-[10px] font-bold border bg-slate-900 text-indigo-400">${u.role}</span>
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold border bg-slate-950 text-indigo-400">${u.role}</span>
             </td>
             <td class="py-3 px-3">
               <select onchange="StaffPage.changeRole('${u.id}', this.value)" class="px-2.5 py-1 rounded-lg bg-slate-950 border border-slate-800 text-white text-xs focus:border-indigo-500">
@@ -270,6 +321,7 @@
         if (res.success) {
           App.showToast(`Updated user role to ${newRole}`, 'success');
           this.renderUserDirectory();
+          App.renderHeader();
         } else {
           App.showToast(res.message, 'error');
         }
