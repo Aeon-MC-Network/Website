@@ -9,6 +9,7 @@ const STORAGE_KEYS = {
   NEWS: 'aeonmc_news',
   FORUMS: 'aeonmc_forum_threads',
   MEDIA: 'aeonmc_media',
+  WIKI: 'aeonmc_wiki_articles',
   SETTINGS: 'aeonmc_settings',
   STAFF_APPS: 'aeonmc_staff_apps',
   CREATOR_APPS: 'aeonmc_creator_apps',
@@ -18,7 +19,6 @@ const STORAGE_KEYS = {
 // Initial Seed Settings matching YAML spec
 const DEFAULT_SETTINGS = {
   serverName: "AeonMC Network",
-  serverNode: "dal-241001.bloom.host",
   serverIP: "play.aeonmc.com",
   serverPort: 8804,
   planAnalyticsURL: "plan.aeonmc.com:8804",
@@ -81,7 +81,7 @@ const DEFAULT_NEWS = [
     author: "Admin",
     date: "July 28, 2026",
     excerpt: "Welcome to AeonMC Season 1! Discover procedural dungeons, custom jobs matrices, and a balanced economy.",
-    content: "We are excited to announce the launch of AeonMC Season 1! Our custom survival network features 8 balanced jobs, hand-crafted procedural dungeons, Lootr instanced chests, and Votify daily rewards. Connect now at play.aeonmc.com!",
+    content: "We are excited to announce the launch of AeonMC Season 1! Our community-driven development server features 8 balanced jobs, hand-crafted procedural dungeons, Lootr instanced chests, and Votify daily rewards. Connect now at play.aeonmc.com!",
     image: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?q=80&w=1200&auto=format&fit=crop"
   },
   {
@@ -90,7 +90,7 @@ const DEFAULT_NEWS = [
     tag: "Community",
     author: "Admin",
     date: "July 26, 2026",
-    excerpt: "Are you a YouTuber or Twitch streamer? Apply for the Content Creator rank on our Media hub!",
+    excerpt: "Are you a YouTuber or Twitch streamer? Apply for the Content Creator rank on our Contact desk!",
     content: "We are opening applications for Content Creators! Partners receive exclusive in-game Creator badges, priority queue access, and media spotlights on our website.",
     image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=1200&auto=format&fit=crop"
   },
@@ -100,94 +100,87 @@ const DEFAULT_NEWS = [
     tag: "Patch Notes",
     author: "Moderator",
     date: "July 24, 2026",
-    excerpt: "Adjustments to miner job payouts, forum moderation permissions, and Plan analytics integration.",
-    content: "In this update, we tuned job income equations to prevent hyperinflation, introduced private support ticket visibility, and upgraded our Plan analytics integration on plan.aeonmc.com:8804.",
-    image: "https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=1200&auto=format&fit=crop"
+    excerpt: "Calibrated payout matrices for Woodcutter and Mining jobs to ensure long-term server economic health.",
+    content: "Our dev team has released Patch 1.0.1 targeting job earnings. XP scales linearly with level progression, preventing inflation while rewarding dedicated active players.",
+    image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=1200&auto=format&fit=crop"
   }
 ];
 
-const DEFAULT_FORUMS = [
+const DEFAULT_FORUM_THREADS = [
   {
     id: "thread-1",
-    category: "News & Announcements",
-    title: "📌 AeonMC Official Code of Conduct & Connection Guide",
+    category: "General Discussion",
+    title: "Welcome to AeonMC Community Forums! Introduce Yourself",
     author: "Admin",
     authorRole: "Admin",
-    date: "2026-07-27",
-    views: 3420,
+    date: "2026-07-28",
+    views: 142,
     isSticky: true,
-    isLocked: true,
+    isLocked: false,
     isPrivate: false,
     replies: [
       {
         id: "rep-1",
         author: "Admin",
         authorRole: "Admin",
-        date: "2026-07-27",
-        content: "Please ensure all players maintain respectful behavior. Official Server IP: play.aeonmc.com | Store: https://aeon-mc.tebex.store/."
+        date: "2026-07-28",
+        content: "Welcome everyone! Feel free to introduce your in-game username, preferred job, and faction build plans below."
+      },
+      {
+        id: "rep-2",
+        author: "StevePlayer",
+        authorRole: "Player",
+        date: "2026-07-28",
+        content: "Hey all! Excited to start grinding dungeons with my friends!"
       }
     ]
   },
   {
     id: "thread-2",
-    category: "General Discussion",
-    title: "What is your main job strategy for Season 1?",
+    category: "Support & Ban Appeals",
+    title: "Private Ticket #1042 - Missing Vote Keys",
     author: "StevePlayer",
     authorRole: "Player",
     date: "2026-07-27",
-    views: 184,
+    views: 12,
     isSticky: false,
     isLocked: false,
-    isPrivate: false,
+    isPrivate: true,
     replies: [
       {
-        id: "rep-2",
-        author: "SparkYT",
-        authorRole: "Content Creator",
+        id: "rep-3",
+        author: "StevePlayer",
+        authorRole: "Player",
         date: "2026-07-27",
-        content: "Combining Miner and Weaponsmith early game gives huge economic returns!"
+        content: "I voted on TopG and Minecraft Buzz but my inventory was full. Can a staff member check Votify logs?"
+      },
+      {
+        id: "rep-4",
+        author: "Moderator",
+        authorRole: "Mod",
+        date: "2026-07-27",
+        content: "Hello Steve! I have credited 2x Vote Keys directly to your claim virtual vault. Type /claim gift to redeem."
       }
     ]
   },
   {
     id: "thread-3",
     category: "Content Creator Hub",
-    title: "🎬 AeonMC Season 1 Episode 1: Building My Base!",
+    title: "AeonMC Dungeon Run Episode 1 - Defeating Mythic Boss!",
     author: "SparkYT",
     authorRole: "Content Creator",
-    date: "2026-07-26",
-    views: 520,
+    date: "2026-07-25",
+    views: 89,
     isSticky: false,
     isLocked: false,
     isPrivate: false,
     replies: [
       {
-        id: "rep-3",
-        author: "StevePlayer",
-        authorRole: "Player",
-        date: "2026-07-26",
-        content: "Awesome video! Subscribed!"
-      }
-    ]
-  },
-  {
-    id: "thread-4",
-    category: "Support & Ban Appeals",
-    title: "🔒 [Private Support Ticket] Account Rank Sync Query",
-    author: "StevePlayer",
-    authorRole: "Player",
-    date: "2026-07-25",
-    views: 12,
-    isSticky: false,
-    isLocked: false,
-    isPrivate: true, // Visible only to author and Staff/Admins
-    replies: [
-      {
-        id: "rep-4",
-        author: "Moderator",
-        authorRole: "Mod",
+        id: "rep-5",
+        author: "SparkYT",
+        authorRole: "Content Creator",
         date: "2026-07-25",
-        content: "Your ticket has been reviewed and rank permissions updated!"
+        content: "Check out our full party clear of Tier 3 Procedural Dungeon! Drop a like and subscribe!"
       }
     ]
   }
@@ -195,102 +188,147 @@ const DEFAULT_FORUMS = [
 
 const DEFAULT_MEDIA = [
   {
-    id: "media-1",
-    title: "Season 1 Spawn & Central Hub",
+    id: "m-1",
+    title: "AeonMC Spawn Hub & Custom Market Architecture",
     author: "SparkYT",
-    type: "image",
-    url: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?q=80&w=1200&auto=format&fit=crop",
-    status: "approved"
+    url: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?q=80&w=800&auto=format&fit=crop"
   },
   {
-    id: "media-2",
-    title: "Procedural Dungeon Boss Room",
+    id: "m-2",
+    title: "Hand-Crafted Procedural Dungeon Boss Chamber",
     author: "Admin",
-    type: "image",
-    url: "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=1200&auto=format&fit=crop",
-    status: "approved"
+    url: "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=800&auto=format&fit=crop"
+  },
+  {
+    id: "m-3",
+    title: "Player Claim Settlement & Custom Warp Market",
+    author: "StevePlayer",
+    url: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=800&auto=format&fit=crop"
+  }
+];
+
+const DEFAULT_WIKI = [
+  {
+    id: "wiki-1",
+    category: "Custom Jobs",
+    title: "Jobs Reborn System & XP Matrices",
+    description: "Choose from 8 calibrated jobs (Miner, Hunter, Weaponsmith, Brewer, Woodcutter, Digger, Builder, Enchanter). Income payouts scale dynamically with AuraSkills levels.",
+    content: "AeonMC features a custom calibrated Jobs Reborn economy system. Players can join up to 3 jobs simultaneously.\n\n### Available Jobs\n1. **Miner**: Earn money by mining ores in deep caves.\n2. **Woodcutter**: Earn income by harvesting timber in custom tree biomes.\n3. **Hunter**: Defeat hostile mobs and Mythic Mobs boss mobs.\n4. **Weaponsmith**: Craft weapons and enchant gear.\n\n### Commands\n- `/jobs join [job]` - Join a new job.\n- `/jobs stats` - View active job level and income bonuses.",
+    author: "Admin",
+    date: "July 28, 2026",
+    ratings: [5, 5, 4],
+    comments: [
+      { id: "wc-1", author: "StevePlayer", date: "July 28, 2026", rating: 5, text: "Super detailed guide! Miner job pays really well." }
+    ]
+  },
+  {
+    id: "wiki-2",
+    category: "Dungeons",
+    title: "Hand-Crafted Procedural Dungeons & Lootr Mechanics",
+    description: "Battle through 5 dungeon tiers featuring custom mythic mob boss fights. Chest loot is instanced per-player via Lootr so everyone receives unique rewards.",
+    content: "Explore AeonMC's procedural dungeons! Dungeons reset periodically and feature Lootr chests.\n\n### Key Dungeon Features\n- **Instanced Chests**: Every player opening a chest gets their own unique loot drop!\n- **Mythic Boss Fights**: Face custom boss mechanics in Tier 3 to Tier 5 chambers.\n- **Dungeon Keys**: Craft or earn keys through daily voting.\n\n### Commands\n- `/dungeons` - Teleport to dungeon portal lobby.",
+    author: "Admin",
+    date: "July 28, 2026",
+    ratings: [5, 5, 5],
+    comments: [
+      { id: "wc-2", author: "SparkYT", date: "July 28, 2026", rating: 5, text: "The instanced chests mean no kill-stealing or loot hoards. Fantastic design!" }
+    ]
+  },
+  {
+    id: "wiki-3",
+    category: "Economy",
+    title: "Player Economy, Player Warps & Auction House",
+    description: "Trade items safely using player warps, chest shops, and Auction House listings with zero pay-to-win mechanics.",
+    content: "AeonMC's economy is entirely player-driven.\n\n### Player Trading Tools\n- **Auction House**: `/ah` allows buying and selling items across the network.\n- **Chest Shops**: Create your own shop at your claim using signs.\n- **Player Warps**: Set public market warps via `/pw set [name]`.",
+    author: "Moderator",
+    date: "July 27, 2026",
+    ratings: [4, 5],
+    comments: []
+  },
+  {
+    id: "wiki-4",
+    category: "Protection",
+    title: "GriefPrevention Land Claiming & Permissions",
+    description: "Protect your builds using GriefPrevention claim blocks earned per hour played and via daily voting.",
+    content: "Claim your territory easily using a golden shovel.\n\n### Claiming Basics\n1. Right click two opposite corners with a golden shovel to form a claim rectangle.\n2. Use `/trust [player]` to grant build access.\n3. Earn 100 bonus claim blocks for every hour played!",
+    author: "Admin",
+    date: "July 25, 2026",
+    ratings: [5, 4],
+    comments: []
   }
 ];
 
 const DEFAULT_STAFF_APPS = [
   {
-    id: "app-1",
-    username: "StevePlayer",
-    discord: "Steve#1234",
-    timezone: "EST (UTC-5)",
-    position: "Helper / Moderator",
-    experience: "Previous moderator on 2 survival SMP servers.",
-    status: "Pending",
-    date: "2026-07-28"
+    id: "sapp-1",
+    username: "Alex_Builder",
+    discord: "AlexBuilds#1234",
+    position: "Helper",
+    experience: "Managed moderation on 2 survival networks for over 1 year.",
+    date: "July 27, 2026",
+    status: "Pending"
   }
 ];
 
-const DEFAULT_LOGS = [
+const DEFAULT_CREATOR_APPS = [
   {
-    id: "log-1",
-    timestamp: "2026-07-28 14:00:00",
-    user: "Admin",
-    action: "Platform Initialized",
-    details: "Initialized AeonMC website dataset with auth roles, forums, and staff portal specs."
+    id: "capp-1",
+    username: "PixelCraft",
+    channel: "https://youtube.com/@pixelcraft",
+    metrics: "1,200 avg views per video, 15k subscribers",
+    date: "July 26, 2026",
+    status: "Pending"
   }
 ];
 
-// Data Storage Engine API
 const StorageDB = {
-  init() {
-    if (!localStorage.getItem(STORAGE_KEYS.SETTINGS)) {
-      localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(DEFAULT_SETTINGS));
-    }
-    if (!localStorage.getItem(STORAGE_KEYS.USERS)) {
-      localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(DEFAULT_USERS));
-    }
-    if (!localStorage.getItem(STORAGE_KEYS.NEWS)) {
-      localStorage.setItem(STORAGE_KEYS.NEWS, JSON.stringify(DEFAULT_NEWS));
-    }
-    if (!localStorage.getItem(STORAGE_KEYS.FORUMS)) {
-      localStorage.setItem(STORAGE_KEYS.FORUMS, JSON.stringify(DEFAULT_FORUMS));
-    }
-    if (!localStorage.getItem(STORAGE_KEYS.MEDIA)) {
-      localStorage.setItem(STORAGE_KEYS.MEDIA, JSON.stringify(DEFAULT_MEDIA));
-    }
-    if (!localStorage.getItem(STORAGE_KEYS.STAFF_APPS)) {
-      localStorage.setItem(STORAGE_KEYS.STAFF_APPS, JSON.stringify(DEFAULT_STAFF_APPS));
-    }
-    if (!localStorage.getItem(STORAGE_KEYS.LOGS)) {
-      localStorage.setItem(STORAGE_KEYS.LOGS, JSON.stringify(DEFAULT_LOGS));
-    }
-  },
-
   get(key) {
-    try {
-      const data = localStorage.getItem(key);
-      return data ? JSON.parse(data) : null;
-    } catch (e) {
-      console.error(`Error reading ${key} from localStorage`, e);
-      return null;
+    const data = localStorage.getItem(key);
+    if (data) {
+      try {
+        return JSON.parse(data);
+      } catch (e) {
+        console.error(`StorageDB parse error for ${key}:`, e);
+      }
     }
+
+    // Default Fallbacks
+    if (key === STORAGE_KEYS.USERS) return DEFAULT_USERS;
+    if (key === STORAGE_KEYS.SETTINGS) return DEFAULT_SETTINGS;
+    if (key === STORAGE_KEYS.NEWS) return DEFAULT_NEWS;
+    if (key === STORAGE_KEYS.FORUMS) return DEFAULT_FORUM_THREADS;
+    if (key === STORAGE_KEYS.MEDIA) return DEFAULT_MEDIA;
+    if (key === STORAGE_KEYS.WIKI) return DEFAULT_WIKI;
+    if (key === STORAGE_KEYS.STAFF_APPS) return DEFAULT_STAFF_APPS;
+    if (key === STORAGE_KEYS.CREATOR_APPS) return DEFAULT_CREATOR_APPS;
+    if (key === STORAGE_KEYS.LOGS) return [];
+
+    return null;
   },
 
-  set(key, value) {
-    try {
-      localStorage.setItem(key, JSON.stringify(value));
-    } catch (e) {
-      console.error(`Error writing ${key} to localStorage`, e);
-    }
+  set(key, val) {
+    localStorage.setItem(key, JSON.stringify(val));
   },
 
-  logAction(username, action, details) {
+  logAction(user, action, details) {
     const logs = this.get(STORAGE_KEYS.LOGS) || [];
-    const newLog = {
-      id: "log-" + Date.now(),
-      timestamp: new Date().toLocaleString(),
-      user: username,
+    logs.unshift({
+      id: "log_" + Date.now(),
+      timestamp: new Date().toISOString(),
+      user: user,
       action: action,
       details: details
-    };
-    logs.unshift(newLog);
-    this.set(STORAGE_KEYS.LOGS, logs.slice(0, 50));
+    });
+    this.set(STORAGE_KEYS.LOGS, logs.slice(0, 100)); // Keep last 100
   }
 };
 
-StorageDB.init();
+// Pre-populate storage if empty
+if (!localStorage.getItem(STORAGE_KEYS.USERS)) StorageDB.set(STORAGE_KEYS.USERS, DEFAULT_USERS);
+if (!localStorage.getItem(STORAGE_KEYS.SETTINGS)) StorageDB.set(STORAGE_KEYS.SETTINGS, DEFAULT_SETTINGS);
+if (!localStorage.getItem(STORAGE_KEYS.NEWS)) StorageDB.set(STORAGE_KEYS.NEWS, DEFAULT_NEWS);
+if (!localStorage.getItem(STORAGE_KEYS.FORUMS)) StorageDB.set(STORAGE_KEYS.FORUMS, DEFAULT_FORUM_THREADS);
+if (!localStorage.getItem(STORAGE_KEYS.MEDIA)) StorageDB.set(STORAGE_KEYS.MEDIA, DEFAULT_MEDIA);
+if (!localStorage.getItem(STORAGE_KEYS.WIKI)) StorageDB.set(STORAGE_KEYS.WIKI, DEFAULT_WIKI);
+if (!localStorage.getItem(STORAGE_KEYS.STAFF_APPS)) StorageDB.set(STORAGE_KEYS.STAFF_APPS, DEFAULT_STAFF_APPS);
+if (!localStorage.getItem(STORAGE_KEYS.CREATOR_APPS)) StorageDB.set(STORAGE_KEYS.CREATOR_APPS, DEFAULT_CREATOR_APPS);

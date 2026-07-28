@@ -3,9 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vote Portal & Rewards - AeonMC Network</title>
+  <title>Vote Portal & Rewards - AeonMC Community Development Network</title>
   <meta name="description" content="Vote daily for AeonMC on TopG, Minecraft Buzz, Minecraft Servers, Minecraft Server List, and MC Server Time to earn in-game cash and claim blocks!">
-  
+  <meta name="keywords" content="Minecraft, Vote, AeonMC, Rewards, Claim Blocks, Economy">
+
+  <!-- Open Graph / Social SEO -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://aeonmc.com/vote.html">
+  <meta property="og:title" content="Vote Portal & Rewards - AeonMC Network">
+  <meta property="og:description" content="Support AeonMC daily to claim in-game cash, land claim blocks, and Votify keys.">
+  <meta property="og:image" content="https://aeonmc.com/assets/img/og-banner.jpg">
+  <meta property="twitter:card" content="summary_large_image">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -29,21 +38,21 @@
       <div class="mb-10">
         <h1 class="text-3xl sm:text-5xl font-black text-white mb-4">Vote For AeonMC</h1>
         <p class="text-slate-400 max-w-xl mx-auto text-sm sm:text-base">
-          Support our network daily on our official listing partners to earn instant in-game cash, land claim blocks, and Votify crate keys!
+          Support our community-driven development network daily on our official listing partners to earn instant in-game cash, land claim blocks, and Votify crate keys!
         </p>
       </div>
 
-      <!-- Master Vote All Button -->
-      <div class="mb-10 p-6 rounded-2xl bg-indigo-950/40 border border-indigo-500/30 backdrop-blur-md shadow-2xl space-y-3">
-        <h3 class="text-lg font-bold text-white"><i class="fas fa-bolt text-indigo-400 mr-2"></i> Instant Multi-Vote</h3>
-        <p class="text-xs text-slate-300 max-w-md mx-auto">Open all 5 voting partner sites in new browser tabs simultaneously with one click.</p>
+      <!-- Master Vote All Button & Popup Multi-Tab Launcher -->
+      <div class="mb-10 p-6 rounded-2xl bg-indigo-950/40 border border-indigo-500/30 backdrop-blur-md shadow-2xl space-y-4">
+        <h3 class="text-lg font-bold text-white"><i class="fas fa-bolt text-indigo-400 mr-2"></i> Master Vote Launcher</h3>
+        <p class="text-xs text-slate-300 max-w-md mx-auto">Open all 5 voting partner sites cleanly without browser popup blocker interference.</p>
         <button onclick="VotePage.voteAll()" class="px-8 py-4 rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 text-white font-black text-sm uppercase tracking-wider transition-all shadow-xl shadow-indigo-600/30 flex items-center justify-center gap-3 mx-auto w-full sm:w-auto">
           <i class="fas fa-external-link-square-alt text-base"></i>
-          <span>Vote All (Open All 5 Links)</span>
+          <span>Vote All (Launch All 5 Sites)</span>
         </button>
       </div>
 
-      <!-- Requirement 9: Centered Stacked Action Buttons with Explicit Site Names -->
+      <!-- Centered Stacked Action Buttons with Explicit Site Names -->
       <div class="space-y-4 max-w-xl mx-auto mb-12">
         
         <!-- Button 1: TopG -->
@@ -111,6 +120,29 @@
     </div>
   </main>
 
+  <!-- Vote All Helper Modal for Reliable Multi-Tab Opening -->
+  <div id="voteAllModal" class="hidden fixed inset-0 z-50 items-center justify-center bg-slate-950/80 backdrop-blur-md p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl relative text-left">
+      <button onclick="VotePage.closeVoteModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i class="fas fa-times"></i></button>
+      
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center text-white text-lg font-bold">
+          <i class="fas fa-bolt"></i>
+        </div>
+        <div>
+          <h3 class="text-base font-bold text-white">Launching Voting Sites</h3>
+          <p class="text-xs text-slate-400">Click below to open each partner link</p>
+        </div>
+      </div>
+
+      <div class="space-y-2 mb-6" id="voteLinksList">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <button onclick="VotePage.closeVoteModal()" class="w-full py-2.5 rounded-xl bg-slate-800 text-slate-300 font-bold text-xs hover:bg-slate-700">Done Voting</button>
+    </div>
+  </div>
+
   <footer id="mainFooter" class="border-t border-slate-800/80 py-8 relative z-10 bg-slate-950/60 backdrop-blur-sm"></footer>
 
   <script src="assets/js/storage.js"></script>
@@ -118,20 +150,38 @@
   <script src="assets/js/app.js"></script>
   <script>
     const VotePage = {
+      sites: [
+        { name: 'TopG', url: 'https://topg.org/minecraft-servers/server-684378' },
+        { name: 'Minecraft Buzz', url: 'https://minecraft.buzz/server/aeon-mc' },
+        { name: 'Minecraft Servers', url: 'https://minecraftservers.org/server/690456' },
+        { name: 'Minecraft Server List', url: 'https://minecraft-server-list.com/server/522015/' },
+        { name: 'MC Server Time', url: 'https://mcservertime.com/server-aeon-mc.2859' }
+      ],
+
       voteAll() {
-        const urls = [
-          'https://topg.org/minecraft-servers/server-684378',
-          'https://minecraft.buzz/server/aeon-mc',
-          'https://minecraftservers.org/server/690456',
-          'https://minecraft-server-list.com/server/522015/',
-          'https://mcservertime.com/server-aeon-mc.2859'
-        ];
+        // Open first site directly in same click event
+        window.open(this.sites[0].url, '_blank');
 
-        urls.forEach(url => {
-          window.open(url, '_blank');
-        });
+        // Open launcher modal for remaining links to bypass popup blockers cleanly
+        const container = document.getElementById('voteLinksList');
+        container.innerHTML = this.sites.map((site, index) => `
+          <a href="${site.url}" target="_blank" onclick="this.classList.add('opacity-50')" class="flex items-center justify-between p-3 rounded-xl bg-slate-950 border border-slate-800 hover:border-indigo-500 text-xs font-semibold text-white transition-all">
+            <span>${index + 1}. Vote on ${site.name}</span>
+            <i class="fas fa-external-link-alt text-[10px] text-indigo-400"></i>
+          </a>
+        `).join('');
 
-        App.showToast('Opened all 5 voting partner links!', 'success');
+        const modal = document.getElementById('voteAllModal');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+
+        App.showToast('First voting site opened! Click remaining links in popup.', 'success');
+      },
+
+      closeVoteModal() {
+        const modal = document.getElementById('voteAllModal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
       }
     };
   </script>

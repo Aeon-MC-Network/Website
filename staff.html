@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Staff Portal - AeonMC Network</title>
-  <meta name="description" content="AeonMC Internal Staff Portal & Administration Dashboard. Restricted to Moderator and Administrator roles.">
-  
+  <title>Staff Portal & Administration - AeonMC Community Network</title>
+  <meta name="description" content="AeonMC Internal Staff Management Portal. Restricted to Moderator and Administrator accounts.">
+  <meta name="robots" content="noindex, nofollow">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -22,7 +23,7 @@
   <main class="flex-grow relative z-10 py-8">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
-      <!-- Access Control Shield Check (Clean: No Test Account Buttons) -->
+      <!-- Access Control Shield Check -->
       <div id="staffAccessDenied" class="hidden p-10 sm:p-14 rounded-3xl bg-slate-900/80 border border-rose-500/30 text-center max-w-lg mx-auto my-12 shadow-2xl">
         <div class="w-16 h-16 rounded-2xl bg-rose-950 border border-rose-500/40 flex items-center justify-center text-rose-400 text-3xl mx-auto mb-4">
           <i class="fas fa-lock"></i>
@@ -49,53 +50,84 @@
             <h1 class="text-2xl sm:text-3xl font-black text-white">Staff Management Portal</h1>
           </div>
 
-          <!-- Quick Plan Analytics Link -->
-          <a href="http://plan.aeonmc.com:8804" target="_blank" rel="noopener noreferrer" 
-             class="px-4 py-2.5 rounded-xl bg-indigo-600/80 hover:bg-indigo-600 text-white font-bold text-xs transition-all flex items-center gap-2 shadow-lg shadow-indigo-600/20 shrink-0">
-            <i class="fas fa-chart-line"></i>
-            <span>Plan Analytics (plan.aeonmc.com:8804)</span>
-            <i class="fas fa-external-link-alt text-[10px] opacity-70"></i>
-          </a>
+          <div class="flex items-center gap-3">
+            <a href="http://plan.aeonmc.com:8804" target="_blank" rel="noopener noreferrer" 
+               class="px-4 py-2.5 rounded-xl bg-indigo-600/80 hover:bg-indigo-600 text-white font-bold text-xs transition-all flex items-center gap-2 shadow-lg shadow-indigo-600/20 shrink-0">
+              <i class="fas fa-chart-line"></i>
+              <span>Plan Analytics</span>
+              <i class="fas fa-external-link-alt text-[10px] opacity-70"></i>
+            </a>
+          </div>
         </div>
 
         <!-- Dashboard Tabs Grid -->
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
           
-          <!-- Staff Navigation Sidebar -->
-          <div class="lg:col-span-1 space-y-2">
+          <!-- Reorganized Left-Hand Tools Sidebar -->
+          <div class="lg:col-span-1 space-y-4">
+            
+            <!-- Staff Navigation Tools -->
             <div class="p-3 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-1">
               <div class="text-[11px] font-bold uppercase tracking-wider text-slate-500 px-3 py-1">Staff Tools</div>
               
               <button onclick="StaffPage.switchTab('home', this)" class="staff-tab-btn w-full text-left px-3 py-2 rounded-xl text-xs font-semibold text-white bg-indigo-600/20 border border-indigo-500/30 flex items-center justify-between">
-                <span><i class="fas fa-home text-indigo-400 mr-2"></i> Staff Homepage</span>
+                <span><i class="fas fa-home text-indigo-400 mr-2"></i> Staff Dashboard</span>
               </button>
 
               <button onclick="StaffPage.switchTab('news', this)" class="staff-tab-btn w-full text-left px-3 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition-colors flex items-center justify-between">
-                <span><i class="fas fa-newspaper text-indigo-400 mr-2"></i> Internal Board & Memos</span>
+                <span><i class="fas fa-newspaper text-indigo-400 mr-2"></i> Internal Memos</span>
               </button>
 
               <button onclick="StaffPage.switchTab('apps', this)" class="staff-tab-btn w-full text-left px-3 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition-colors flex items-center justify-between">
                 <span><i class="fas fa-user-check text-indigo-400 mr-2"></i> Review Applications</span>
               </button>
 
+              <button onclick="StaffPage.switchTab('wiki', this)" class="staff-tab-btn w-full text-left px-3 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition-colors flex items-center justify-between">
+                <span><i class="fas fa-book text-indigo-400 mr-2"></i> Wiki Management</span>
+              </button>
+
               <div id="adminTabNav" class="hidden border-t border-slate-800/80 pt-2 mt-2">
                 <div class="text-[11px] font-bold uppercase tracking-wider text-rose-400 px-3 py-1">Admin Tools</div>
                 <button onclick="StaffPage.switchTab('users', this)" class="staff-tab-btn w-full text-left px-3 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition-colors flex items-center justify-between">
-                  <span><i class="fas fa-users-cog text-rose-400 mr-2"></i> User & Role Manager</span>
+                  <span><i class="fas fa-users-cog text-rose-400 mr-2"></i> User Directory & Roles</span>
                 </button>
               </div>
             </div>
+
+            <!-- External Staff Workspace Links (Plan, Confluence, Jira) -->
+            <div class="p-4 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-2">
+              <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2">Internal Workspaces</div>
+              
+              <a href="http://plan.aeonmc.com:8804" target="_blank" rel="noopener noreferrer" 
+                 class="block px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 hover:border-indigo-500/50 text-xs font-semibold text-slate-300 hover:text-white transition-colors flex items-center justify-between">
+                <span><i class="fas fa-chart-line text-emerald-400 mr-2"></i> Player Analytics</span>
+                <i class="fas fa-external-link-alt text-[10px] text-slate-500"></i>
+              </a>
+
+              <a href="https://aeonmc.atlassian.net/wiki" target="_blank" rel="noopener noreferrer" 
+                 class="block px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 hover:border-indigo-500/50 text-xs font-semibold text-slate-300 hover:text-white transition-colors flex items-center justify-between">
+                <span><i class="fab fa-confluence text-blue-400 mr-2"></i> Confluence Docs</span>
+                <i class="fas fa-external-link-alt text-[10px] text-slate-500"></i>
+              </a>
+
+              <a href="https://aeonmc.atlassian.net/jira" target="_blank" rel="noopener noreferrer" 
+                 class="block px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 hover:border-indigo-500/50 text-xs font-semibold text-slate-300 hover:text-white transition-colors flex items-center justify-between">
+                <span><i class="fab fa-jira text-indigo-400 mr-2"></i> Jira Task Tracker</span>
+                <i class="fas fa-external-link-alt text-[10px] text-slate-500"></i>
+              </a>
+            </div>
+
           </div>
 
-          <!-- Main Staff Tab Content Area -->
+          <!-- Main Staff Content Area -->
           <div class="lg:col-span-3">
             
-            <!-- Tab 1: Staff Homepage -->
+            <!-- Tab 1: Staff Dashboard -->
             <div id="staffTab-home" class="staff-tab-content space-y-6">
               <div class="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-4">
                 <h3 class="text-lg font-bold text-white"><i class="fas fa-clipboard-list text-amber-400 mr-2"></i> Active Shift Notes & Directives</h3>
                 <p class="text-xs text-slate-400 leading-relaxed">
-                  Welcome back to the staff portal! Please maintain active presence in game (<code class="text-indigo-300">play.aeonmc.com</code>) and inspect private support tickets on the forum board regularly.
+                  Welcome back to the staff portal! Please inspect private support tickets on the forum board regularly and check pending applications.
                 </p>
                 
                 <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-300 space-y-2">
@@ -107,59 +139,61 @@
                     All player bug reports and ban appeal tickets submitted under "Support & Ban Appeals" are private and visible only to staff. Aim for a response time of under 12 hours.
                   </p>
                 </div>
-
-                <!-- Embedded Plan Analytics Card Link -->
-                <div class="p-5 rounded-xl bg-gradient-to-r from-indigo-950/40 to-slate-900 border border-indigo-500/30 flex flex-col sm:flex-row items-center justify-between gap-4">
-                  <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center text-white text-lg">
-                      <i class="fas fa-chart-line"></i>
-                    </div>
-                    <div>
-                      <h4 class="text-sm font-bold text-white">Plan Telemetry Dashboard</h4>
-                      <p class="text-xs text-slate-400">Server health, memory allocation, and player retention statistics.</p>
-                    </div>
-                  </div>
-                  <a href="http://plan.aeonmc.com:8804" target="_blank" rel="noopener noreferrer" 
-                     class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs transition-colors shrink-0 flex items-center gap-2">
-                    <span>Open Plan Analytics</span>
-                    <i class="fas fa-external-link-alt text-[10px]"></i>
-                  </a>
-                </div>
               </div>
             </div>
 
-            <!-- Tab 2: Internal Board & Memos -->
+            <!-- Tab 2: Internal Memos & Admin Memo Publisher -->
             <div id="staffTab-news" class="staff-tab-content hidden space-y-6">
-              <div class="p-6 rounded-2xl bg-slate-900/60 border border-slate-800">
-                <h3 class="text-lg font-bold text-white mb-4"><i class="fas fa-bullhorn text-indigo-400 mr-2"></i> Internal Staff Memos</h3>
-                <div class="space-y-4">
-                  <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-1">
-                    <div class="flex items-center justify-between text-xs">
-                      <strong class="text-white">Admin Policy Directive #4</strong>
-                      <span class="text-slate-500">July 27, 2026</span>
-                    </div>
-                    <p class="text-xs text-slate-400 leading-relaxed">Updated ban appeal procedures: All appeals must be handled in private ticket threads visible only to the player and staff.</p>
+              <div class="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-4">
+                <div class="flex items-center justify-between">
+                  <h3 class="text-lg font-bold text-white"><i class="fas fa-bullhorn text-indigo-400 mr-2"></i> Internal Staff Memos</h3>
+                  
+                  <!-- Admin Only: Add Memo Button -->
+                  <div id="adminAddMemoBtn" class="hidden">
+                    <button onclick="StaffPage.openAddMemoModal()" class="px-3.5 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs">
+                      <i class="fas fa-plus mr-1"></i> Publish Internal Memo
+                    </button>
                   </div>
+                </div>
+
+                <div id="internalMemosList" class="space-y-3">
+                  <!-- Rendered dynamically -->
                 </div>
               </div>
             </div>
 
-            <!-- Tab 3: Review Applications -->
+            <!-- Tab 3: Clickable Applications Review Portal -->
             <div id="staffTab-apps" class="staff-tab-content hidden space-y-6">
               <div class="p-6 rounded-2xl bg-slate-900/60 border border-slate-800">
-                <h3 class="text-lg font-bold text-white mb-4"><i class="fas fa-user-check text-indigo-400 mr-2"></i> Review Network Applications</h3>
-                <p class="text-xs text-slate-400 mb-4">Review incoming staff and creator applications submitted via the Contact page.</p>
+                <h3 class="text-lg font-bold text-white mb-2"><i class="fas fa-user-check text-indigo-400 mr-2"></i> Clickable Application Review Portal</h3>
+                <p class="text-xs text-slate-400 mb-4">Click any application card to inspect full details, Discord handle, experience, and assign status.</p>
                 <div id="staffAppsList" class="space-y-3">
                   <!-- Dynamically rendered -->
                 </div>
               </div>
             </div>
 
-            <!-- Tab 4: User & Role Management (Admin Only) -->
+            <!-- Tab 4: Staff Wiki Management -->
+            <div id="staffTab-wiki" class="staff-tab-content hidden space-y-6">
+              <div class="p-6 rounded-2xl bg-slate-900/60 border border-slate-800">
+                <div class="flex items-center justify-between mb-4">
+                  <h3 class="text-lg font-bold text-white"><i class="fas fa-book text-indigo-400 mr-2"></i> Staff Wiki Page Manager</h3>
+                  <button onclick="StaffPage.openCreateWikiModal()" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-lg shadow-indigo-600/20">
+                    <i class="fas fa-plus mr-1"></i> Create Wiki Article
+                  </button>
+                </div>
+                <p class="text-xs text-slate-400 mb-4">Create and update official Wiki guides visible to players on wiki.html.</p>
+                <div id="staffWikiArticlesList" class="space-y-3">
+                  <!-- Rendered dynamically -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab 5: User & Role Management (Admin Only) -->
             <div id="staffTab-users" class="staff-tab-content hidden space-y-6">
               <div class="p-6 rounded-2xl bg-slate-900/60 border border-slate-800">
                 <div class="flex items-center justify-between mb-4">
-                  <h3 class="text-lg font-bold text-white"><i class="fas fa-users-cog text-rose-400 mr-2"></i> Administrative User Directory & Role Assignment</h3>
+                  <h3 class="text-lg font-bold text-white"><i class="fas fa-users-cog text-rose-400 mr-2"></i> User Directory & Role Assignment</h3>
                   <span class="text-[10px] uppercase font-bold px-2.5 py-0.5 rounded bg-rose-950 text-rose-400 border border-rose-500/30">Admin Exclusive</span>
                 </div>
                 <p class="text-xs text-slate-400 mb-4">Inspect registered network accounts and update user site roles (Player, Content Creator, Mod, Admin).</p>
@@ -191,6 +225,66 @@
     </div>
   </main>
 
+  <!-- Application Detail View Modal -->
+  <div id="appDetailModal" class="hidden fixed inset-0 z-50 items-center justify-center bg-slate-950/80 backdrop-blur-md p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl relative">
+      <button onclick="StaffPage.closeModal('appDetailModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i class="fas fa-times"></i></button>
+      <div id="appDetailModalBody"></div>
+    </div>
+  </div>
+
+  <!-- Create Wiki Article Modal -->
+  <div id="createWikiModal" class="hidden fixed inset-0 z-50 items-center justify-center bg-slate-950/80 backdrop-blur-md p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl relative">
+      <button onclick="StaffPage.closeModal('createWikiModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i class="fas fa-times"></i></button>
+      <h3 class="text-lg font-bold text-white mb-4"><i class="fas fa-book text-indigo-400 mr-2"></i> Create Wiki Page</h3>
+      
+      <form onsubmit="StaffPage.saveNewWikiArticle(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Category</label>
+          <input type="text" id="wikiCategoryInput" class="w-full px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs" placeholder="e.g. Custom Jobs, Dungeons, Economy" required>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Article Title</label>
+          <input type="text" id="wikiTitleInput" class="w-full px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs" placeholder="Title of the guide..." required>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Short Description</label>
+          <input type="text" id="wikiDescInput" class="w-full px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs" placeholder="Brief summary..." required>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Full Content (Markdown supported)</label>
+          <textarea id="wikiContentInput" rows="5" class="w-full px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs" placeholder="Detailed documentation..." required></textarea>
+        </div>
+
+        <button type="submit" class="w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs">Publish Wiki Article</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Admin Publish Memo Modal -->
+  <div id="addMemoModal" class="hidden fixed inset-0 z-50 items-center justify-center bg-slate-950/80 backdrop-blur-md p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
+      <button onclick="StaffPage.closeModal('addMemoModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i class="fas fa-times"></i></button>
+      <h3 class="text-lg font-bold text-white mb-4"><i class="fas fa-bullhorn text-indigo-400 mr-2"></i> Publish Staff Memo</h3>
+      
+      <form onsubmit="StaffPage.saveMemo(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Memo Subject</label>
+          <input type="text" id="memoTitleInput" class="w-full px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs" required>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Memo Content</label>
+          <textarea id="memoContentInput" rows="4" class="w-full px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs" required></textarea>
+        </div>
+        <button type="submit" class="w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs">Publish Memo</button>
+      </form>
+    </div>
+  </div>
+
   <footer id="mainFooter" class="border-t border-slate-800/80 py-8 relative z-10 bg-slate-950/60 backdrop-blur-sm"></footer>
 
   <script src="assets/js/storage.js"></script>
@@ -198,6 +292,10 @@
   <script src="assets/js/app.js"></script>
   <script>
     const StaffPage = {
+      memos: [
+        { id: "memo-1", title: "Admin Policy Directive #4", date: "July 27, 2026", content: "Updated ban appeal procedures: All appeals must be handled in private ticket threads visible only to the player and staff." }
+      ],
+
       init() {
         const isStaff = Auth.isStaff();
 
@@ -212,11 +310,15 @@
 
         if (Auth.isAdmin()) {
           document.getElementById('adminTabNav').classList.remove('hidden');
+          document.getElementById('adminAddMemoBtn').classList.remove('hidden');
         } else {
           document.getElementById('adminTabNav').classList.add('hidden');
+          document.getElementById('adminAddMemoBtn').classList.add('hidden');
         }
 
+        this.renderMemos();
         this.renderStaffApps();
+        this.renderWikiArticles();
         if (Auth.isAdmin()) {
           this.renderUserDirectory();
         }
@@ -231,6 +333,46 @@
         document.querySelectorAll('.staff-tab-content').forEach(c => c.classList.add('hidden'));
         const target = document.getElementById(`staffTab-${tabName}`);
         if (target) target.classList.remove('hidden');
+      },
+
+      renderMemos() {
+        const container = document.getElementById('internalMemosList');
+        if (!container) return;
+
+        container.innerHTML = this.memos.map(m => `
+          <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-1">
+            <div class="flex items-center justify-between text-xs">
+              <strong class="text-white">${m.title}</strong>
+              <span class="text-slate-500">${m.date}</span>
+            </div>
+            <p class="text-xs text-slate-400 leading-relaxed">${m.content}</p>
+          </div>
+        `).join('');
+      },
+
+      openAddMemoModal() {
+        if (!Auth.isAdmin()) return;
+        document.getElementById('addMemoModal').classList.remove('hidden');
+        document.getElementById('addMemoModal').classList.add('flex');
+      },
+
+      saveMemo(e) {
+        e.preventDefault();
+        if (!Auth.isAdmin()) return;
+
+        const title = document.getElementById('memoTitleInput').value.trim();
+        const content = document.getElementById('memoContentInput').value.trim();
+
+        this.memos.unshift({
+          id: "memo-" + Date.now(),
+          title: title,
+          date: new Date().toLocaleDateString(),
+          content: content
+        });
+
+        this.closeModal('addMemoModal');
+        this.renderMemos();
+        App.showToast('Internal Memo published!', 'success');
       },
 
       renderStaffApps() {
@@ -251,21 +393,50 @@
         }
 
         container.innerHTML = allApps.map(a => `
-          <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-between gap-4">
+          <div onclick="StaffPage.viewAppDetail('${a.id}', '${a.type}')" class="p-4 rounded-xl bg-slate-950 border border-slate-800 hover:border-indigo-500/50 cursor-pointer transition-all flex items-center justify-between gap-4 group">
             <div>
               <div class="flex items-center gap-2">
-                <strong class="text-white text-xs">${a.username}</strong>
+                <strong class="text-white text-xs group-hover:text-indigo-400 transition-colors">${a.username}</strong>
                 <span class="text-[10px] text-indigo-400 font-bold">(${a.type})</span>
                 <span class="px-2 py-0.2 rounded text-[10px] font-bold bg-amber-950 text-amber-400 border border-amber-500/30">${a.status}</span>
               </div>
               <p class="text-xs text-slate-400 mt-1">${a.position || a.channel} • ${a.experience || a.metrics}</p>
             </div>
-            <div class="flex gap-2">
-              <button onclick="StaffPage.updateAppStatus('${a.id}', 'Approved', '${a.type}')" class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs">Approve</button>
-              <button onclick="StaffPage.updateAppStatus('${a.id}', 'Rejected', '${a.type}')" class="px-3 py-1.5 rounded-lg bg-rose-600/30 hover:bg-rose-600 text-rose-300 hover:text-white font-bold text-xs">Reject</button>
-            </div>
+            <button onclick="event.stopPropagation(); StaffPage.viewAppDetail('${a.id}', '${a.type}')" class="px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shrink-0">View Detail</button>
           </div>
         `).join('');
+      },
+
+      viewAppDetail(appId, type) {
+        const key = type.includes('Staff') ? STORAGE_KEYS.STAFF_APPS : STORAGE_KEYS.CREATOR_APPS;
+        const apps = StorageDB.get(key) || [];
+        const app = apps.find(a => a.id === appId);
+        if (!app) return;
+
+        const modalBody = document.getElementById('appDetailModalBody');
+        modalBody.innerHTML = `
+          <div class="mb-4">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-400">${type}</span>
+            <h2 class="text-xl font-bold text-white mt-1">${app.username}</h2>
+            <span class="text-xs text-slate-400">Submitted: ${app.date} • Status: <strong class="text-amber-400">${app.status}</strong></span>
+          </div>
+
+          <div class="space-y-3 text-xs text-slate-300 bg-slate-950 p-4 rounded-xl border border-slate-800 mb-6">
+            ${app.discord ? `<div><strong class="text-slate-400 block">Discord Handle:</strong> ${app.discord}</div>` : ''}
+            ${app.position ? `<div><strong class="text-slate-400 block">Position Applied For:</strong> ${app.position}</div>` : ''}
+            ${app.experience ? `<div><strong class="text-slate-400 block">Past Experience:</strong> ${app.experience}</div>` : ''}
+            ${app.channel ? `<div><strong class="text-slate-400 block">Channel Link:</strong> <a href="${app.channel}" target="_blank" class="text-indigo-400 hover:underline">${app.channel}</a></div>` : ''}
+            ${app.metrics ? `<div><strong class="text-slate-400 block">Average Metrics:</strong> ${app.metrics}</div>` : ''}
+          </div>
+
+          <div class="flex gap-2">
+            <button onclick="StaffPage.updateAppStatus('${app.id}', 'Approved', '${type}')" class="flex-1 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs">Approve Application</button>
+            <button onclick="StaffPage.updateAppStatus('${app.id}', 'Rejected', '${type}')" class="flex-1 py-2.5 rounded-xl bg-rose-600/30 hover:bg-rose-600 text-rose-300 hover:text-white font-bold text-xs">Reject Application</button>
+          </div>
+        `;
+
+        document.getElementById('appDetailModal').classList.remove('hidden');
+        document.getElementById('appDetailModal').classList.add('flex');
       },
 
       updateAppStatus(appId, status, type) {
@@ -275,9 +446,64 @@
         if (app) {
           app.status = status;
           StorageDB.set(key, apps);
+          this.closeModal('appDetailModal');
           this.renderStaffApps();
           App.showToast(`Application marked as ${status}`, 'success');
         }
+      },
+
+      renderWikiArticles() {
+        const container = document.getElementById('staffWikiArticlesList');
+        if (!container) return;
+
+        const wikiList = StorageDB.get(STORAGE_KEYS.WIKI) || [];
+
+        container.innerHTML = wikiList.map(w => `
+          <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-between gap-4">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-indigo-950 text-indigo-400 border border-indigo-500/30">${w.category}</span>
+                <h4 class="text-xs font-bold text-white">${w.title}</h4>
+              </div>
+              <p class="text-xs text-slate-400 mt-1">${w.description}</p>
+            </div>
+            <span class="text-[10px] text-slate-500 shrink-0">By ${w.author}</span>
+          </div>
+        `).join('');
+      },
+
+      openCreateWikiModal() {
+        document.getElementById('createWikiModal').classList.remove('hidden');
+        document.getElementById('createWikiModal').classList.add('flex');
+      },
+
+      saveNewWikiArticle(e) {
+        e.preventDefault();
+        const user = Auth.getCurrentUser();
+        const category = document.getElementById('wikiCategoryInput').value.trim();
+        const title = document.getElementById('wikiTitleInput').value.trim();
+        const desc = document.getElementById('wikiDescInput').value.trim();
+        const content = document.getElementById('wikiContentInput').value.trim();
+
+        const wikiList = StorageDB.get(STORAGE_KEYS.WIKI) || [];
+        wikiList.unshift({
+          id: "wiki-" + Date.now(),
+          category: category,
+          title: title,
+          description: desc,
+          content: content,
+          author: user.username,
+          date: new Date().toLocaleDateString(),
+          ratings: [5],
+          comments: []
+        });
+
+        StorageDB.set(STORAGE_KEYS.WIKI, wikiList);
+        StorageDB.logAction(user.username, "Publish Wiki Article", `Created wiki page: ${title}`);
+
+        this.closeModal('createWikiModal');
+        this.renderWikiArticles();
+        App.showToast('Wiki article published successfully!', 'success');
       },
 
       renderUserDirectory() {
@@ -319,6 +545,14 @@
           App.renderHeader();
         } else {
           App.showToast(res.message, 'error');
+        }
+      },
+
+      closeModal(id) {
+        const modal = document.getElementById(id);
+        if (modal) {
+          modal.classList.add('hidden');
+          modal.classList.remove('flex');
         }
       }
     };

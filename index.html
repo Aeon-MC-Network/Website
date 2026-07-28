@@ -3,10 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AeonMC Network - Official Minecraft Server</title>
-  <meta name="description" content="Official website for AeonMC Season 1. Experience custom jobs, hand-crafted procedural dungeons, balanced economy, and cross-platform survival. Connect at play.aeonmc.com!">
-  <meta name="keywords" content="Minecraft, Minecraft Server, AeonMC, Survival, Custom Jobs, Dungeons, play.aeonmc.com">
+  <title>AeonMC Network - Community-Driven Development Server</title>
+  <meta name="description" content="AeonMC is a community-driven development server featuring custom jobs, procedural dungeons, balanced economy, and cross-platform survival. Connect at play.aeonmc.com!">
+  <meta name="keywords" content="Minecraft, Minecraft Server, AeonMC, Development Server, Custom Jobs, Dungeons, play.aeonmc.com">
   <meta name="theme-color" content="#020617">
+
+  <!-- Open Graph / Social SEO Meta Tags -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://aeonmc.com/">
+  <meta property="og:title" content="AeonMC Network - Community-Driven Development Server">
+  <meta property="og:description" content="Experience AeonMC — Featuring custom jobs matrices, hand-crafted procedural dungeons, Lootr instanced chests, and player economy.">
+  <meta property="og:image" content="https://aeonmc.com/assets/img/og-banner.jpg">
+  <meta property="twitter:card" content="summary_large_image">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,7 +26,7 @@
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen flex flex-col selection:bg-indigo-500 selection:text-white relative overflow-x-hidden">
 
-  <!-- Ambient Glow -->
+  <!-- Ambient Background Glow -->
   <div class="fixed inset-0 pointer-events-none z-0">
     <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-indigo-600/10 blur-[140px] rounded-full"></div>
   </div>
@@ -26,30 +34,49 @@
   <!-- Header Placeholder -->
   <header id="mainHeader" class="sticky top-0 z-50 backdrop-blur-md bg-slate-950/80 border-b border-slate-800/80 transition-all"></header>
 
-  <!-- Hero & Main -->
+  <!-- Hero & Main Content -->
   <main class="flex-grow relative z-10 py-12 sm:py-16 space-y-16">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
+    
+    <!-- Hero Intro Section -->
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
       
-      <!-- Season Badge -->
-      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-950/60 border border-indigo-500/30 text-indigo-300 text-xs sm:text-sm font-semibold tracking-wide uppercase shadow-inner mb-8">
-        <span class="w-2 h-2 rounded-full bg-indigo-400 animate-pulse"></span>
-        <span>Season 1 Live Now • Java & Bedrock Cross-Platform</span>
+      <!-- Brand Logo Badge -->
+      <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center text-white text-3xl shadow-xl shadow-indigo-500/20 mb-6 border border-indigo-400/30">
+        <i class="fas fa-cube"></i>
       </div>
 
-      <!-- Headline -->
+      <!-- Season Badge -->
+      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-950/60 border border-indigo-500/30 text-indigo-300 text-xs sm:text-sm font-semibold tracking-wide uppercase shadow-inner mb-6">
+        <span class="w-2 h-2 rounded-full bg-indigo-400 animate-pulse"></span>
+        <span>Community-Driven Development Server • Java & Bedrock</span>
+      </div>
+
+      <!-- Requirement 6: Updated Hero Copy -->
       <h1 class="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-white max-w-4xl leading-[1.1] mb-6">
-        Next-Generation <br class="hidden sm:inline" />
+        Welcome to the <br class="hidden sm:inline" />
         <span class="bg-gradient-to-r from-white via-slate-100 to-indigo-400 bg-clip-text text-transparent">
-          Minecraft Survival Network
+          AeonMC Development Server
         </span>
       </h1>
 
-      <p class="text-lg sm:text-xl text-slate-400 max-w-2xl font-normal leading-relaxed mb-10">
-        Experience AeonMC — Featuring custom jobs, hand-crafted procedural dungeons, balanced player economy, and active community features.
+      <p class="text-lg sm:text-xl text-slate-400 max-w-2xl font-normal leading-relaxed mb-8">
+        AeonMC is an open, community-driven development server. Join us as we build, test, and refine custom jobs matrices, hand-crafted dungeons, Lootr instanced chests, and player economy systems in real time!
       </p>
 
-      <!-- One-Click IP Copy Widget -->
-      <div class="w-full max-w-lg mb-8">
+      <!-- Prominent Hero Action Buttons (Vote & Store) -->
+      <div class="flex flex-wrap items-center justify-center gap-4 mb-10 w-full max-w-md">
+        <a href="vote.html" class="flex-1 min-w-[140px] px-6 py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm transition-all shadow-lg shadow-indigo-600/30 flex items-center justify-center gap-2">
+          <i class="fas fa-vote-yea"></i>
+          <span>Vote Now</span>
+        </a>
+        <a href="https://aeon-mc.tebex.store/" target="_blank" rel="noopener noreferrer" class="flex-1 min-w-[140px] px-6 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 text-white font-bold text-sm transition-all flex items-center justify-center gap-2">
+          <i class="fas fa-shopping-cart text-indigo-400"></i>
+          <span>Official Store</span>
+        </a>
+      </div>
+
+      <!-- One-Click Server IP Copy Widget -->
+      <div class="w-full max-w-lg mb-6">
         <div class="p-2.5 rounded-2xl bg-slate-900/80 backdrop-blur-md border border-slate-800 shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-3 hover:border-slate-700 transition-colors">
           <div class="flex items-center gap-3 px-3 py-1.5 justify-center sm:justify-start">
             <div class="w-9 h-9 rounded-xl bg-slate-800 flex items-center justify-center text-indigo-400 shrink-0">
@@ -64,7 +91,7 @@
         </div>
       </div>
 
-      <!-- Requirement 7: Accurate Live Server Status API -->
+      <!-- Accurate Live Server Telemetry Badge -->
       <div class="inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-slate-900/70 border border-slate-800/80 backdrop-blur-md shadow-lg text-sm text-slate-300">
         <span class="relative flex h-3 w-3">
           <span id="statusPingPulse" class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
@@ -78,47 +105,98 @@
 
     </div>
 
-    <!-- Requirement 8: Dynamic Home Page Content Feeds -->
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Requirement 6: Interactive Carousels for Core Content Feeds -->
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
       <div class="border-t border-slate-800/80 pt-12">
-        <h2 class="text-2xl font-black text-white mb-8 text-center">Network Activity & Feeds</h2>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="flex items-center justify-between mb-8">
+          <div>
+            <h2 class="text-2xl font-black text-white">Interactive Feed Carousels</h2>
+            <p class="text-xs text-slate-400">Explore recent activity across Forums, News, Media, and Wiki.</p>
+          </div>
           
-          <!-- Latest News Feed Card -->
-          <div id="homeFeedNews" class="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 flex flex-col justify-between hover:border-indigo-500/40 transition-all">
-            <!-- Rendered dynamically -->
+          <div class="flex gap-2">
+            <button onclick="IndexPage.prevSlide()" class="p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:bg-slate-800 transition-colors">
+              <i class="fas fa-chevron-left text-xs"></i>
+            </button>
+            <button onclick="IndexPage.nextSlide()" class="p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:bg-slate-800 transition-colors">
+              <i class="fas fa-chevron-right text-xs"></i>
+            </button>
           </div>
+        </div>
 
-          <!-- Latest Forum Thread Feed Card -->
-          <div id="homeFeedForum" class="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 flex flex-col justify-between hover:border-indigo-500/40 transition-all">
-            <!-- Rendered dynamically -->
-          </div>
-
-          <!-- Featured Media Feed Card -->
-          <div id="homeFeedMedia" class="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 flex flex-col justify-between hover:border-purple-500/40 transition-all">
-            <!-- Rendered dynamically -->
-          </div>
-
-          <!-- Featured Wiki Feed Card -->
-          <div id="homeFeedWiki" class="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 flex flex-col justify-between hover:border-indigo-500/40 transition-all">
-            <div class="space-y-3">
-              <div class="flex items-center justify-between">
-                <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-indigo-950 text-indigo-400 border border-indigo-500/30">Wiki Guide</span>
-                <i class="fas fa-book text-slate-500 text-xs"></i>
+        <!-- Carousel Track Container -->
+        <div class="overflow-hidden relative rounded-2xl">
+          <div id="carouselTrack" class="flex transition-transform duration-500 ease-in-out gap-6">
+            
+            <!-- Slide 1: Forums Feed -->
+            <div class="min-w-full md:min-w-[calc(50%-12px)] lg:min-w-[calc(25%-18px)] p-6 rounded-2xl bg-slate-900/60 border border-slate-800 flex flex-col justify-between hover:border-indigo-500/40 transition-all">
+              <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                  <span class="text-[10px] font-bold uppercase px-2.5 py-0.5 rounded bg-indigo-950 text-indigo-400 border border-indigo-500/30">Community Forums</span>
+                  <i class="far fa-comments text-slate-500 text-xs"></i>
+                </div>
+                <h3 id="cForumsTitle" class="text-sm font-bold text-white leading-snug">Loading forum threads...</h3>
+                <p id="cForumsMeta" class="text-xs text-slate-400">Loading recent discussions...</p>
               </div>
-              <h3 class="text-sm font-bold text-white leading-snug">Jobs Reborn System</h3>
-              <p class="text-xs text-slate-400 leading-relaxed">Master 8 calibrated job matrices to earn income while leveling skills.</p>
+              <a href="forums.html" class="mt-6 w-full py-2.5 rounded-xl bg-slate-800 hover:bg-indigo-600 text-white font-semibold text-xs transition-colors flex items-center justify-center gap-1.5">
+                <span>View Forums</span>
+                <i class="fas fa-arrow-right text-[10px]"></i>
+              </a>
             </div>
-            <a href="wiki.html" class="mt-4 w-full py-2 rounded-xl bg-slate-800 hover:bg-indigo-600 text-white font-semibold text-xs transition-colors flex items-center justify-center gap-1.5">
-              <span>Read Wiki</span>
-              <i class="fas fa-arrow-right text-[10px]"></i>
-            </a>
-          </div>
 
+            <!-- Slide 2: News Feed -->
+            <div class="min-w-full md:min-w-[calc(50%-12px)] lg:min-w-[calc(25%-18px)] p-6 rounded-2xl bg-slate-900/60 border border-slate-800 flex flex-col justify-between hover:border-indigo-500/40 transition-all">
+              <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                  <span class="text-[10px] font-bold uppercase px-2.5 py-0.5 rounded bg-indigo-950 text-indigo-400 border border-indigo-500/30">Patch Notes & News</span>
+                  <i class="fas fa-newspaper text-slate-500 text-xs"></i>
+                </div>
+                <h3 id="cNewsTitle" class="text-sm font-bold text-white leading-snug">Loading announcements...</h3>
+                <p id="cNewsExcerpt" class="text-xs text-slate-400 leading-relaxed line-clamp-3">Loading patch notes...</p>
+              </div>
+              <a href="news.html" class="mt-6 w-full py-2.5 rounded-xl bg-slate-800 hover:bg-indigo-600 text-white font-semibold text-xs transition-colors flex items-center justify-center gap-1.5">
+                <span>Read News</span>
+                <i class="fas fa-arrow-right text-[10px]"></i>
+              </a>
+            </div>
+
+            <!-- Slide 3: Media Showcase -->
+            <div class="min-w-full md:min-w-[calc(50%-12px)] lg:min-w-[calc(25%-18px)] p-6 rounded-2xl bg-slate-900/60 border border-slate-800 flex flex-col justify-between hover:border-purple-500/40 transition-all">
+              <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                  <span class="text-[10px] font-bold uppercase px-2.5 py-0.5 rounded bg-purple-950 text-purple-400 border border-purple-500/30">Media Showcase</span>
+                  <i class="fas fa-video text-slate-500 text-xs"></i>
+                </div>
+                <h3 id="cMediaTitle" class="text-sm font-bold text-white leading-snug">Loading media...</h3>
+                <p id="cMediaAuthor" class="text-xs text-purple-300 font-medium">Loading creator spotlight...</p>
+              </div>
+              <a href="media.html" class="mt-6 w-full py-2.5 rounded-xl bg-slate-800 hover:bg-purple-600 text-white font-semibold text-xs transition-colors flex items-center justify-center gap-1.5">
+                <span>Watch Media</span>
+                <i class="fas fa-arrow-right text-[10px]"></i>
+              </a>
+            </div>
+
+            <!-- Slide 4: Official Wiki -->
+            <div class="min-w-full md:min-w-[calc(50%-12px)] lg:min-w-[calc(25%-18px)] p-6 rounded-2xl bg-slate-900/60 border border-slate-800 flex flex-col justify-between hover:border-indigo-500/40 transition-all">
+              <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                  <span class="text-[10px] font-bold uppercase px-2.5 py-0.5 rounded bg-indigo-950 text-indigo-400 border border-indigo-500/30">Official Wiki</span>
+                  <i class="fas fa-book text-slate-500 text-xs"></i>
+                </div>
+                <h3 id="cWikiTitle" class="text-sm font-bold text-white leading-snug">Loading wiki guides...</h3>
+                <p id="cWikiDesc" class="text-xs text-slate-400 leading-relaxed line-clamp-3">Loading documentation...</p>
+              </div>
+              <a href="wiki.html" class="mt-6 w-full py-2.5 rounded-xl bg-slate-800 hover:bg-indigo-600 text-white font-semibold text-xs transition-colors flex items-center justify-center gap-1.5">
+                <span>Explore Wiki</span>
+                <i class="fas fa-arrow-right text-[10px]"></i>
+              </a>
+            </div>
+
+          </div>
         </div>
       </div>
     </div>
+
   </main>
 
   <footer id="mainFooter" class="border-t border-slate-800/80 py-8 relative z-10 bg-slate-950/60 backdrop-blur-sm"></footer>
@@ -127,72 +205,47 @@
   <script src="assets/js/auth.js"></script>
   <script src="assets/js/app.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      // Dynamic Home Feeds Loader
-      const news = StorageDB.get(STORAGE_KEYS.NEWS) || [];
-      const forums = StorageDB.get(STORAGE_KEYS.FORUMS) || [];
-      const media = StorageDB.get(STORAGE_KEYS.MEDIA) || [];
+    const IndexPage = {
+      currentIndex: 0,
 
-      // Render News Feed
-      const newsContainer = document.getElementById('homeFeedNews');
-      if (newsContainer && news.length > 0) {
-        const latest = news[0];
-        newsContainer.innerHTML = `
-          <div class="space-y-3">
-            <div class="flex items-center justify-between">
-              <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-indigo-950 text-indigo-400 border border-indigo-500/30">${latest.tag}</span>
-              <span class="text-[10px] text-slate-500">${latest.date}</span>
-            </div>
-            <h3 class="text-sm font-bold text-white leading-snug">${latest.title}</h3>
-            <p class="text-xs text-slate-400 leading-relaxed line-clamp-3">${latest.excerpt}</p>
-          </div>
-          <a href="news.html" class="mt-4 w-full py-2 rounded-xl bg-slate-800 hover:bg-indigo-600 text-white font-semibold text-xs transition-colors flex items-center justify-center gap-1.5">
-            <span>View News</span>
-            <i class="fas fa-arrow-right text-[10px]"></i>
-          </a>
-        `;
-      }
+      init() {
+        const forums = StorageDB.get(STORAGE_KEYS.FORUMS) || [];
+        const news = StorageDB.get(STORAGE_KEYS.NEWS) || [];
+        const media = StorageDB.get(STORAGE_KEYS.MEDIA) || [];
+        const wiki = StorageDB.get(STORAGE_KEYS.WIKI) || [];
 
-      // Render Forum Feed
-      const forumContainer = document.getElementById('homeFeedForum');
-      if (forumContainer && forums.length > 0) {
-        const latestF = forums[0];
-        forumContainer.innerHTML = `
-          <div class="space-y-3">
-            <div class="flex items-center justify-between">
-              <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-indigo-950 text-indigo-400 border border-indigo-500/30">Latest Forum Thread</span>
-              <i class="far fa-comments text-slate-500 text-xs"></i>
-            </div>
-            <h3 class="text-sm font-bold text-white leading-snug">${latestF.title}</h3>
-            <p class="text-xs text-slate-400">Started by <strong class="text-slate-300">${latestF.author}</strong> in ${latestF.category}</p>
-          </div>
-          <a href="forums.html" class="mt-4 w-full py-2 rounded-xl bg-slate-800 hover:bg-indigo-600 text-white font-semibold text-xs transition-colors flex items-center justify-center gap-1.5">
-            <span>Open Forums</span>
-            <i class="fas fa-arrow-right text-[10px]"></i>
-          </a>
-        `;
-      }
+        if (forums.length > 0) {
+          document.getElementById('cForumsTitle').textContent = forums[0].title;
+          document.getElementById('cForumsMeta').textContent = `By ${forums[0].author} in ${forums[0].category}`;
+        }
+        if (news.length > 0) {
+          document.getElementById('cNewsTitle').textContent = news[0].title;
+          document.getElementById('cNewsExcerpt').textContent = news[0].excerpt;
+        }
+        if (media.length > 0) {
+          document.getElementById('cMediaTitle').textContent = media[0].title;
+          document.getElementById('cMediaAuthor').textContent = `By ${media[0].author}`;
+        }
+        if (wiki.length > 0) {
+          document.getElementById('cWikiTitle').textContent = wiki[0].title;
+          document.getElementById('cWikiDesc').textContent = wiki[0].description;
+        }
+      },
 
-      // Render Media Feed
-      const mediaContainer = document.getElementById('homeFeedMedia');
-      if (mediaContainer && media.length > 0) {
-        const latestM = media[0];
-        mediaContainer.innerHTML = `
-          <div class="space-y-3">
-            <div class="flex items-center justify-between">
-              <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-purple-950 text-purple-400 border border-purple-500/30">Media Showcase</span>
-              <i class="fas fa-video text-slate-500 text-xs"></i>
-            </div>
-            <h3 class="text-sm font-bold text-white leading-snug">${latestM.title}</h3>
-            <p class="text-xs text-purple-300 font-medium">By ${latestM.author}</p>
-          </div>
-          <a href="media.html" class="mt-4 w-full py-2 rounded-xl bg-slate-800 hover:bg-purple-600 text-white font-semibold text-xs transition-colors flex items-center justify-center gap-1.5">
-            <span>Watch Media</span>
-            <i class="fas fa-arrow-right text-[10px]"></i>
-          </a>
-        `;
+      nextSlide() {
+        const track = document.getElementById('carouselTrack');
+        this.currentIndex = (this.currentIndex + 1) % 4;
+        track.style.transform = `translateX(-${this.currentIndex * 100}%)`;
+      },
+
+      prevSlide() {
+        const track = document.getElementById('carouselTrack');
+        this.currentIndex = (this.currentIndex - 1 + 4) % 4;
+        track.style.transform = `translateX(-${this.currentIndex * 100}%)`;
       }
-    });
+    };
+
+    document.addEventListener('DOMContentLoaded', () => IndexPage.init());
   </script>
 </body>
 </html>
