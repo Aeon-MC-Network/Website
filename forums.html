@@ -36,6 +36,8 @@
           <h1 class="text-3xl font-black text-white">AeonMC Forums & Support Desk</h1>
           <p class="text-slate-400 text-xs sm:text-sm mt-1">Engage with the community, view network updates, and lodge confidential support tickets.</p>
         </div>
+        
+        <!-- Requirement 2: Restrict New Thread button action to logged in users -->
         <button onclick="ForumsPage.openNewThreadModal()" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-lg shadow-indigo-600/20 transition-all flex items-center gap-2 self-start md:self-auto">
           <i class="fas fa-plus"></i> New Thread
         </button>
@@ -211,6 +213,7 @@
         }).join('');
       },
 
+      /* Requirement 2: Restrict Forum Posting to Logged-In Users */
       openNewThreadModal() {
         if (!Auth.isLoggedIn()) {
           App.showToast('Please log in to post a new thread.', 'error');
@@ -228,7 +231,11 @@
 
       saveNewThread(e) {
         e.preventDefault();
-        if (!Auth.isLoggedIn()) return;
+        if (!Auth.isLoggedIn()) {
+          App.showToast('Please log in to create a thread.', 'error');
+          App.openLoginModal();
+          return;
+        }
 
         const category = document.getElementById('threadCategorySelect').value;
         const title = document.getElementById('threadTitleInput').value.trim();
@@ -289,48 +296,76 @@
         StorageDB.set(STORAGE_KEYS.FORUMS, threads);
 
         const modalBody = document.getElementById('viewThreadModalBody');
+        const currentUser = Auth.getCurrentUser();
         const isStaff = Auth.isStaff();
+        const isAuthor = currentUser && currentUser.username.toLowerCase() === thread.author.toLowerCase();
 
-        const repliesHTML = thread.replies.map(r => `
-          <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
-            <div class="flex items-center justify-between text-xs">
-              <div class="flex items-center gap-2">
-                <strong class="text-white">${r.author}</strong>
-                <span class="text-[10px] font-bold px-1.5 py-0.2 rounded border bg-slate-800 text-indigo-400">${r.authorRole}</span>
+        const repliesHTML = thread.replies.map(r => {
+          const isReplyAuthor = currentUser && currentUser.username.toLowerCase() === r.author.toLowerCase();
+          const canDeleteReply = isStaff || isReplyAuthor;
+
+          return `
+            <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2 relative group">
+              <div class="flex items-center justify-between text-xs">
+                <div class="flex items-center gap-2">
+                  <strong class="text-white">${r.author}</strong>
+                  <span class="text-[10px] font-bold px-1.5 py-0.2 rounded border bg-slate-800 text-indigo-400">${r.authorRole}</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="text-slate-500">${r.date}</span>
+                  ${canDeleteReply ? `
+                    <button onclick="ForumsPage.deleteReply('${thread.id}', '${r.id}')" class="text-rose-400 hover:text-rose-300 text-[10px] font-bold px-1.5 py-0.5 rounded bg-rose-950/60 border border-rose-500/30">
+                      <i class="fas fa-trash-alt mr-1"></i> Delete
+                    </button>
+                  ` : ''}
+                </div>
               </div>
-              <span class="text-slate-500">${r.date}</span>
+              <p class="text-slate-300 text-xs leading-relaxed whitespace-pre-line">${r.content}</p>
             </div>
-            <p class="text-slate-300 text-xs leading-relaxed whitespace-pre-line">${r.content}</p>
-          </div>
-        `).join('');
+          `;
+        }).join('');
 
-        const staffControls = isStaff ? `
-          <div class="flex gap-2 mb-4 border-b border-slate-800 pb-3">
-            <button onclick="ForumsPage.toggleSticky('${thread.id}')" class="px-3 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold">
-              ${thread.isSticky ? 'Unsticky' : 'Sticky Thread'}
-            </button>
-            <button onclick="ForumsPage.toggleLock('${thread.id}')" class="px-3 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold">
-              ${thread.isLocked ? 'Unlock' : 'Lock Thread'}
-            </button>
-            <button onclick="ForumsPage.deleteThread('${thread.id}')" class="px-3 py-1 rounded bg-rose-600/30 hover:bg-rose-600 text-rose-300 hover:text-white text-xs font-semibold">
-              Delete Thread
-            </button>
-          </div>
-        ` : '';
+        // Requirement 3: Add Delete Control for Thread Author or Staff/Admin
+        const threadControls = `
+          <div class="flex items-center justify-between gap-2 mb-4 border-b border-slate-800 pb-3">
+            <div class="flex gap-2">
+              ${isStaff ? `
+                <button onclick="ForumsPage.toggleSticky('${thread.id}')" class="px-3 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold">
+                  ${thread.isSticky ? 'Unsticky' : 'Sticky Thread'}
+                </button>
+                <button onclick="ForumsPage.toggleLock('${thread.id}')" class="px-3 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold">
+                  ${thread.isLocked ? 'Unlock' : 'Lock Thread'}
+                </button>
+              ` : ''}
+            </div>
 
-        const replyForm = (!thread.isLocked && Auth.isLoggedIn()) ? `
+            ${(isStaff || isAuthor) ? `
+              <button onclick="ForumsPage.deleteThread('${thread.id}')" class="px-3.5 py-1.5 rounded-xl bg-rose-600/20 border border-rose-500/30 hover:bg-rose-600 text-rose-300 hover:text-white text-xs font-bold transition-all flex items-center gap-1.5">
+                <i class="fas fa-trash-alt"></i>
+                <span>Delete Thread</span>
+              </button>
+            ` : ''}
+          </div>
+        `;
+
+        // Requirement 2: Restrict replies to authenticated users
+        const replyForm = Auth.isLoggedIn() ? (!thread.isLocked ? `
           <form onsubmit="ForumsPage.saveReply(event, '${thread.id}')" class="mt-4 space-y-2">
             <textarea id="replyInput" rows="3" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs focus:border-indigo-500 focus:outline-none" placeholder="Write your reply..." required></textarea>
             <button type="submit" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs">Post Reply</button>
           </form>
-        ` : '';
+        ` : `<div class="mt-4 text-xs text-amber-400 font-semibold bg-amber-950/40 p-3 rounded-xl border border-amber-500/30"><i class="fas fa-lock mr-2"></i> This thread has been locked by staff.</div>`) : `
+          <div class="mt-4 p-4 rounded-xl bg-slate-950 border border-slate-800 text-center text-xs text-slate-400">
+            Please <button onclick="App.openLoginModal()" class="text-indigo-400 font-bold hover:underline">Log In</button> to post a reply to this thread.
+          </div>
+        `;
 
         modalBody.innerHTML = `
           <div class="mb-4">
             <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-400">${thread.category}</span>
             <h2 class="text-xl font-bold text-white mt-1">${thread.title}</h2>
           </div>
-          ${staffControls}
+          ${threadControls}
           <div class="space-y-3 mb-4 max-h-[50vh] overflow-y-auto">
             ${repliesHTML}
           </div>
@@ -343,7 +378,11 @@
 
       saveReply(e, threadId) {
         e.preventDefault();
-        if (!Auth.isLoggedIn()) return;
+        if (!Auth.isLoggedIn()) {
+          App.showToast('Please log in to post a reply.', 'error');
+          App.openLoginModal();
+          return;
+        }
 
         const content = document.getElementById('replyInput').value.trim();
         if (!content) return;
@@ -367,6 +406,32 @@
           this.renderThreads();
           App.showToast('Reply posted!', 'success');
         }
+      },
+
+      deleteReply(threadId, replyId) {
+        const currentUser = Auth.getCurrentUser();
+        const isStaff = Auth.isStaff();
+
+        const threads = StorageDB.get(STORAGE_KEYS.FORUMS) || [];
+        const thread = threads.find(t => t.id === threadId);
+        if (!thread) return;
+
+        const reply = thread.replies.find(r => r.id === replyId);
+        if (!reply) return;
+
+        const isAuthor = currentUser && currentUser.username.toLowerCase() === reply.author.toLowerCase();
+        if (!isStaff && !isAuthor) {
+          App.showToast('Unauthorized to delete this reply.', 'error');
+          return;
+        }
+
+        if (!confirm('Delete this reply?')) return;
+
+        thread.replies = thread.replies.filter(r => r.id !== replyId);
+        StorageDB.set(STORAGE_KEYS.FORUMS, threads);
+        this.viewThread(threadId);
+        this.renderThreads();
+        App.showToast('Reply deleted.', 'info');
       },
 
       toggleSticky(id) {
@@ -396,11 +461,21 @@
       },
 
       deleteThread(id) {
-        if (!Auth.isStaff()) return;
+        const currentUser = Auth.getCurrentUser();
+        const isStaff = Auth.isStaff();
+        const threads = StorageDB.get(STORAGE_KEYS.FORUMS) || [];
+        const thread = threads.find(t => t.id === id);
+        if (!thread) return;
+
+        const isAuthor = currentUser && currentUser.username.toLowerCase() === thread.author.toLowerCase();
+        if (!isStaff && !isAuthor) {
+          App.showToast('Unauthorized to delete this thread.', 'error');
+          return;
+        }
+
         if (!confirm('Delete thread permanently?')) return;
-        let threads = StorageDB.get(STORAGE_KEYS.FORUMS) || [];
-        threads = threads.filter(t => t.id !== id);
-        StorageDB.set(STORAGE_KEYS.FORUMS, threads);
+        const newThreads = threads.filter(t => t.id !== id);
+        StorageDB.set(STORAGE_KEYS.FORUMS, newThreads);
         this.closeModal('viewThreadModal');
         this.renderThreads();
         App.showToast('Thread deleted.', 'info');
