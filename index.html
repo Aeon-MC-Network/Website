@@ -51,7 +51,7 @@
         <span>Community-Driven Development Server • Java & Bedrock</span>
       </div>
 
-      <!-- Requirement 6: Updated Hero Copy -->
+      <!-- Updated Hero Copy -->
       <h1 class="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-white max-w-4xl leading-[1.1] mb-6">
         Welcome to the <br class="hidden sm:inline" />
         <span class="bg-gradient-to-r from-white via-slate-100 to-indigo-400 bg-clip-text text-transparent">
@@ -91,7 +91,7 @@
         </div>
       </div>
 
-      <!-- Accurate Live Server Telemetry Badge -->
+      <!-- Live Server Telemetry Badge -->
       <div class="inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-slate-900/70 border border-slate-800/80 backdrop-blur-md shadow-lg text-sm text-slate-300">
         <span class="relative flex h-3 w-3">
           <span id="statusPingPulse" class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
@@ -105,7 +105,7 @@
 
     </div>
 
-    <!-- Requirement 6: Interactive Carousels for Core Content Feeds -->
+    <!-- Interactive Carousels for Core Content Feeds -->
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
       <div class="border-t border-slate-800/80 pt-12">
         <div class="flex items-center justify-between mb-8">
@@ -115,10 +115,10 @@
           </div>
           
           <div class="flex gap-2">
-            <button onclick="IndexPage.prevSlide()" class="p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:bg-slate-800 transition-colors">
+            <button onclick="IndexPage.prevSlide()" aria-label="Previous Slide" class="p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:bg-slate-800 transition-colors">
               <i class="fas fa-chevron-left text-xs"></i>
             </button>
-            <button onclick="IndexPage.nextSlide()" class="p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:bg-slate-800 transition-colors">
+            <button onclick="IndexPage.nextSlide()" aria-label="Next Slide" class="p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:bg-slate-800 transition-colors">
               <i class="fas fa-chevron-right text-xs"></i>
             </button>
           </div>
@@ -202,6 +202,7 @@
   <footer id="mainFooter" class="border-t border-slate-800/80 py-8 relative z-10 bg-slate-950/60 backdrop-blur-sm"></footer>
 
   <script src="assets/js/storage.js"></script>
+  <script src="assets/js/store.js"></script>
   <script src="assets/js/auth.js"></script>
   <script src="assets/js/app.js"></script>
   <script>

@@ -11,6 +11,7 @@ const App = {
     this.renderHeader();
     this.renderFooter();
     this.bindGlobalEvents();
+    this.bindAccessibilityEvents();
     this.fetchLiveServerStatus();
     
     // Auto refresh status every 30 seconds
@@ -73,29 +74,29 @@ const App = {
 
     const authWidgetHTML = user ? `
       <div class="relative inline-block text-left">
-        <button id="userMenuBtn" class="flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-slate-900 border border-slate-800 hover:border-slate-700 transition-all">
+        <button id="userMenuBtn" aria-haspopup="true" aria-expanded="false" class="flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-slate-900 border border-slate-800 hover:border-slate-700 transition-all">
           <img src="${user.avatar}" alt="${user.username}" class="w-7 h-7 rounded-full bg-slate-800 border border-slate-700">
           <span class="text-xs sm:text-sm font-semibold text-white">${user.username}</span>
           <span class="text-[10px] uppercase font-bold px-2 py-0.5 rounded-full border ${userBadgeClass}">${role}</span>
           <i class="fas fa-chevron-down text-[10px] text-slate-400"></i>
         </button>
 
-        <div id="userMenuDropdown" class="hidden absolute right-0 mt-2 w-52 rounded-xl bg-slate-900 border border-slate-800 shadow-2xl p-1.5 z-50">
+        <div id="userMenuDropdown" role="menu" class="hidden absolute right-0 mt-2 w-52 rounded-xl bg-slate-900 border border-slate-800 shadow-2xl p-1.5 z-50">
           <div class="px-3 py-2 text-[11px] text-slate-400 border-b border-slate-800/80">
             Logged in as <strong class="text-white">${user.username}</strong>
           </div>
 
-          <button onclick="App.openProfileModal()" class="w-full text-left flex items-center gap-2 px-3 py-2 text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">
+          <button onclick="App.openProfileModal()" role="menuitem" class="w-full text-left flex items-center gap-2 px-3 py-2 text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">
             <i class="fas fa-user-cog text-indigo-400"></i> Profile & Settings
           </button>
 
           ${isStaff ? `
-            <a href="staff.html" class="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-amber-400 hover:bg-slate-800 rounded-lg transition-colors">
+            <a href="staff.html" role="menuitem" class="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-amber-400 hover:bg-slate-800 rounded-lg transition-colors">
               <i class="fas fa-shield-alt"></i> Staff Portal
             </a>
           ` : ''}
 
-          <button onclick="App.handleLogout()" class="w-full text-left flex items-center gap-2 px-3 py-2 text-xs font-semibold text-rose-400 hover:bg-slate-800 rounded-lg transition-colors border-t border-slate-800/80 mt-1 pt-2">
+          <button onclick="App.handleLogout()" role="menuitem" class="w-full text-left flex items-center gap-2 px-3 py-2 text-xs font-semibold text-rose-400 hover:bg-slate-800 rounded-lg transition-colors border-t border-slate-800/80 mt-1 pt-2">
             <i class="fas fa-sign-out-alt"></i> Logout
           </button>
         </div>
@@ -110,7 +111,7 @@ const App = {
     headerContainer.innerHTML = `
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
         <!-- Logo -->
-        <a href="index.html" class="flex items-center gap-2.5 shrink-0">
+        <a href="index.html" class="flex items-center gap-2.5 shrink-0" aria-label="AeonMC Homepage">
           <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center text-white shadow-lg shadow-indigo-500/20">
             <i class="fas fa-cube text-base"></i>
           </div>
@@ -121,19 +122,19 @@ const App = {
         </a>
 
         <!-- Desktop Links -->
-        <nav class="hidden lg:flex items-center gap-1">
+        <nav class="hidden lg:flex items-center gap-1" aria-label="Main Navigation">
           ${navItemsHTML}
         </nav>
 
         <!-- Header Right Actions -->
         <div class="flex items-center gap-3">
-          <a href="https://aeon-mc.tebex.store/" target="_blank" class="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-500 shadow-md shadow-indigo-600/30 transition-all">
+          <a href="https://aeon-mc.tebex.store/" target="_blank" rel="noopener noreferrer" class="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-500 shadow-md shadow-indigo-600/30 transition-all">
             <i class="fas fa-shopping-cart"></i> Store
           </a>
           ${authWidgetHTML}
 
           <!-- Mobile Hamburger Toggle -->
-          <button id="mobileMenuBtn" class="lg:hidden p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white">
+          <button id="mobileMenuBtn" aria-label="Toggle Navigation Menu" class="lg:hidden p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white">
             <i class="fas fa-bars text-base"></i>
           </button>
         </div>
@@ -142,7 +143,7 @@ const App = {
       <!-- Mobile Dropdown Navigation -->
       <div id="mobileNavContainer" class="hidden lg:hidden border-t border-slate-800/80 bg-slate-950/95 backdrop-blur-md px-4 py-4 space-y-2">
         ${mobileNavItemsHTML}
-        <a href="https://aeon-mc.tebex.store/" target="_blank" class="block w-full py-2.5 rounded-xl text-center font-bold text-xs text-white bg-indigo-600 hover:bg-indigo-500 shadow-md">
+        <a href="https://aeon-mc.tebex.store/" target="_blank" rel="noopener noreferrer" class="block w-full py-2.5 rounded-xl text-center font-bold text-xs text-white bg-indigo-600 hover:bg-indigo-500 shadow-md">
           <i class="fas fa-shopping-cart mr-2"></i> Visit Store
         </a>
       </div>
@@ -154,11 +155,14 @@ const App = {
     if (dropdownBtn && dropdownMenu) {
       dropdownBtn.addEventListener('click', (e) => {
         e.stopPropagation();
+        const expanded = dropdownBtn.getAttribute('aria-expanded') === 'true';
+        dropdownBtn.setAttribute('aria-expanded', !expanded);
         dropdownMenu.classList.toggle('hidden');
       });
 
       document.addEventListener('click', () => {
         dropdownMenu.classList.add('hidden');
+        dropdownBtn.setAttribute('aria-expanded', 'false');
       });
     }
 
@@ -193,6 +197,22 @@ const App = {
       btn.addEventListener('click', () => {
         this.copyServerIP();
       });
+    });
+  },
+
+  /* Requirement 3: Accessibility Escape Key Listener & Modal Focus Trapping */
+  bindAccessibilityEvents() {
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        this.closeAllModals();
+      }
+    });
+  },
+
+  closeAllModals() {
+    document.querySelectorAll('[id$="Modal"]').forEach(modal => {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
     });
   },
 
@@ -284,7 +304,6 @@ const App = {
     }
   },
 
-  /* Clean Modals: No Test Account Buttons */
   openLoginModal() {
     let modal = document.getElementById('authModal');
     if (!modal) {
@@ -321,13 +340,13 @@ const App = {
 
   createAuthModal() {
     const modalHTML = `
-      <div id="authModal" class="hidden fixed inset-0 z-50 items-center justify-center bg-slate-950/80 backdrop-blur-md p-4">
+      <div id="authModal" role="dialog" aria-modal="true" class="hidden fixed inset-0 z-50 items-center justify-center bg-slate-950/80 backdrop-blur-md p-4">
         <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
-          <button onclick="App.closeAuthModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i class="fas fa-times"></i></button>
+          <button onclick="App.closeAuthModal()" aria-label="Close Modal" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i class="fas fa-times"></i></button>
           
           <h2 id="modalTitle" class="text-xl font-bold text-white mb-6">Account Login</h2>
 
-          <!-- Clean Login Form (No test account buttons) -->
+          <!-- Clean Login Form -->
           <div id="loginFormContainer">
             <form onsubmit="App.handleLoginSubmit(event)" class="space-y-4">
               <div>
@@ -366,7 +385,6 @@ const App = {
     document.body.insertAdjacentHTML('beforeend', modalHTML);
   },
 
-  /* Profile & Settings Modal */
   openProfileModal() {
     const user = Auth.getCurrentUser();
     if (!user) return;
@@ -374,9 +392,9 @@ const App = {
     let modal = document.getElementById('profileModal');
     if (!modal) {
       const modalHTML = `
-        <div id="profileModal" class="hidden fixed inset-0 z-50 items-center justify-center bg-slate-950/80 backdrop-blur-md p-4">
+        <div id="profileModal" role="dialog" aria-modal="true" class="hidden fixed inset-0 z-50 items-center justify-center bg-slate-950/80 backdrop-blur-md p-4">
           <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
-            <button onclick="App.closeProfileModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i class="fas fa-times"></i></button>
+            <button onclick="App.closeProfileModal()" aria-label="Close Modal" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i class="fas fa-times"></i></button>
             <h3 class="text-lg font-bold text-white mb-4"><i class="fas fa-user-cog text-indigo-400 mr-2"></i> Profile & Account Settings</h3>
             
             <form onsubmit="App.handleProfileSubmit(event)" class="space-y-4">
