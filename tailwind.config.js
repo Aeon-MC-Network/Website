@@ -10,9 +10,21 @@ module.exports = {
         sans: ['Inter', 'system-ui', 'sans-serif'],
       },
       colors: {
-        slate: {
-          950: '#020617',
+        night: {
+          bg: '#0B0F19',
+          card: '#151C2C',
+        },
+        gold: {
+          primary: '#F59E0B',
+        },
+        sunset: {
+          orange: '#EA580C',
+          purple: '#7C3AED',
         }
+      },
+      backgroundImage: {
+        'gradient-sunset': 'linear-gradient(135deg, #F59E0B 0%, #EA580C 50%, #7C3AED 100%)',
+        'gradient-gold-sunset': 'linear-gradient(90deg, #F59E0B 0%, #EA580C 100%)',
       }
     },
   },

@@ -15,7 +15,7 @@
   <meta property="og:url" content="https://aeonmc.com/media.html">
   <meta property="og:title" content="Media & Content Creator Hub - AeonMC Network">
   <meta property="og:description" content="Community screenshots, creator videos, and gameplay showcases.">
-  <meta property="og:image" content="https://aeonmc.com/assets/img/og-banner.jpg">
+  <meta property="og:image" content="https://aeonmc.com/assets/img/logo.jpg">
   <meta property="twitter:card" content="summary_large_image">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,9 +26,9 @@
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col relative overflow-x-hidden">
+<body class="bg-[#0B0F19] text-slate-100 font-sans min-h-screen flex flex-col relative overflow-x-hidden starfield-bg">
 
-  <header id="mainHeader" class="sticky top-0 z-50 backdrop-blur-md bg-slate-950/80 border-b border-slate-800/80"></header>
+  <header id="mainHeader" class="sticky top-0 z-50 backdrop-blur-md bg-[#0B0F19]/80 border-b border-slate-800/80"></header>
 
   <main class="flex-grow relative z-10 py-10">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -40,7 +40,7 @@
         </div>
 
         <div class="flex items-center gap-3">
-          <button onclick="MediaPage.openAddMediaModal()" class="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-lg transition-all flex items-center gap-2">
+          <button onclick="MediaPage.openAddMediaModal()" class="px-4 py-2.5 rounded-xl btn-sunset text-white font-bold text-xs shadow-lg transition-all flex items-center gap-2">
             <i class="fas fa-plus"></i> Add Media Item
           </button>
           
@@ -58,15 +58,15 @@
     </div>
   </main>
 
-  <!-- Requirement 3: Add Media Modal (Link Embed & Static Upload Modes) -->
-  <div id="addMediaModal" role="dialog" aria-modal="true" class="hidden fixed inset-0 z-50 items-center justify-center bg-slate-950/80 backdrop-blur-md p-4">
-    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+  <!-- Add Media Modal (Link Embed & Static Upload Modes) -->
+  <div id="addMediaModal" role="dialog" aria-modal="true" class="hidden fixed inset-0 z-50 items-center justify-center bg-[#0B0F19]/80 backdrop-blur-md p-4">
+    <div class="bg-[#151C2C] border border-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
       <button onclick="MediaPage.closeModal('addMediaModal')" aria-label="Close Modal" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i class="fas fa-times"></i></button>
       <h3 class="text-lg font-bold text-white mb-4"><i class="fas fa-video text-purple-400 mr-2"></i> Submit Media Showcase</h3>
       
       <!-- Input Mode Switcher Tabs -->
-      <div class="flex rounded-xl bg-slate-950 p-1 mb-4 border border-slate-800">
-        <button type="button" onclick="MediaPage.setMode('embed')" id="modeEmbedBtn" class="flex-1 py-2 rounded-lg text-xs font-bold text-white bg-indigo-600 transition-colors flex items-center justify-center gap-1.5">
+      <div class="flex rounded-xl bg-[#0B0F19] p-1 mb-4 border border-slate-800">
+        <button type="button" onclick="MediaPage.setMode('embed')" id="modeEmbedBtn" class="flex-1 py-2 rounded-lg text-xs font-bold text-white bg-amber-600 transition-colors flex items-center justify-center gap-1.5">
           <i class="fab fa-youtube"></i> Link Embed (YouTube / TikTok)
         </button>
         <button type="button" onclick="MediaPage.setMode('upload')" id="modeUploadBtn" class="flex-1 py-2 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition-colors flex items-center justify-center gap-1.5">
@@ -77,33 +77,34 @@
       <form onsubmit="MediaPage.saveMedia(event)" class="space-y-4">
         <div>
           <label class="block text-xs font-semibold text-slate-300 mb-1">Title</label>
-          <input type="text" id="mediaTitleInput" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs focus:border-indigo-500 focus:outline-none" placeholder="e.g. AeonMC Dungeon Raid Speedrun" required>
+          <input type="text" id="mediaTitleInput" class="w-full px-3.5 py-2.5 rounded-xl bg-[#0B0F19] border border-slate-800 text-white text-xs focus:border-amber-500 focus:outline-none" placeholder="e.g. AeonMC Dungeon Raid Speedrun" required>
         </div>
 
         <!-- Mode 1: Link Embed -->
         <div id="embedModeContainer" class="space-y-2">
           <label class="block text-xs font-semibold text-slate-300">Video Embed URL (YouTube, TikTok, Twitch)</label>
-          <input type="url" id="mediaEmbedUrl" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs focus:border-indigo-500 focus:outline-none" placeholder="https://www.youtube.com/watch?v=... or https://youtu.be/...">
+          <input type="url" id="mediaEmbedUrl" class="w-full px-3.5 py-2.5 rounded-xl bg-[#0B0F19] border border-slate-800 text-white text-xs focus:border-amber-500 focus:outline-none" placeholder="https://www.youtube.com/watch?v=... or https://youtu.be/...">
           <p class="text-[11px] text-slate-500">Paste your video link. AeonMC automatically formats responsive video players.</p>
         </div>
 
         <!-- Mode 2: Static Upload -->
         <div id="uploadModeContainer" class="hidden space-y-3">
           <label class="block text-xs font-semibold text-slate-300">Upload Image / Video File or Image URL</label>
-          <input type="file" id="mediaFileInput" accept="image/*,video/*" onchange="MediaPage.handleFileSelect(event)" class="w-full text-xs text-slate-400 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-slate-800 file:text-indigo-400 hover:file:bg-slate-700">
+          <input type="file" id="mediaFileInput" accept="image/*,video/*" onchange="MediaPage.handleFileSelect(event)" class="w-full text-xs text-slate-400 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-slate-800 file:text-amber-400 hover:file:bg-slate-700">
           <div class="text-center text-[10px] text-slate-500 font-bold uppercase">— OR —</div>
-          <input type="url" id="mediaDirectUrl" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs focus:border-indigo-500 focus:outline-none" placeholder="Direct Image URL (https://...)">
+          <input type="url" id="mediaDirectUrl" class="w-full px-3.5 py-2.5 rounded-xl bg-[#0B0F19] border border-slate-800 text-white text-xs focus:border-amber-500 focus:outline-none" placeholder="Direct Image URL (https://...)">
         </div>
 
-        <button type="submit" class="w-full py-3 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs shadow-lg shadow-purple-600/20 transition-all">Publish Media Item</button>
+        <button type="submit" class="w-full py-3 rounded-xl btn-sunset text-white font-bold text-xs shadow-lg transition-all">Publish Media Item</button>
       </form>
     </div>
   </div>
 
-  <footer id="mainFooter" class="border-t border-slate-800/80 py-8 relative z-10 bg-slate-950/60 backdrop-blur-sm"></footer>
+  <footer id="mainFooter" class="border-t border-slate-800/80 py-8 relative z-10 bg-[#0B0F19]/60 backdrop-blur-sm"></footer>
 
   <script src="assets/js/storage.js"></script>
   <script src="assets/js/store.js"></script>
+  <script src="assets/js/webhooks.js"></script>
   <script src="assets/js/auth.js"></script>
   <script src="assets/js/app.js"></script>
   <script>
@@ -123,12 +124,12 @@
         const uploadContainer = document.getElementById('uploadModeContainer');
 
         if (mode === 'embed') {
-          embedBtn.className = "flex-1 py-2 rounded-lg text-xs font-bold text-white bg-indigo-600 transition-colors flex items-center justify-center gap-1.5";
+          embedBtn.className = "flex-1 py-2 rounded-lg text-xs font-bold text-white bg-amber-600 transition-colors flex items-center justify-center gap-1.5";
           uploadBtn.className = "flex-1 py-2 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition-colors flex items-center justify-center gap-1.5";
           embedContainer.classList.remove('hidden');
           uploadContainer.classList.add('hidden');
         } else {
-          uploadBtn.className = "flex-1 py-2 rounded-lg text-xs font-bold text-white bg-indigo-600 transition-colors flex items-center justify-center gap-1.5";
+          uploadBtn.className = "flex-1 py-2 rounded-lg text-xs font-bold text-white bg-amber-600 transition-colors flex items-center justify-center gap-1.5";
           embedBtn.className = "flex-1 py-2 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition-colors flex items-center justify-center gap-1.5";
           uploadContainer.classList.remove('hidden');
           embedContainer.classList.add('hidden');
@@ -189,7 +190,7 @@
               </div>
             `;
           } else {
-            const imgSrc = m.url || 'assets/img/og-banner.jpg';
+            const imgSrc = m.url || 'assets/img/logo.jpg';
             previewHTML = `
               <div class="relative aspect-video overflow-hidden">
                 <img src="${imgSrc}" alt="${m.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
@@ -198,16 +199,16 @@
           }
 
           return `
-            <div class="rounded-2xl bg-slate-900/60 border border-slate-800 overflow-hidden group hover:border-purple-500/40 transition-all flex flex-col justify-between">
+            <div class="rounded-2xl glass-card overflow-hidden group flex flex-col justify-between">
               ${previewHTML}
               
               <div class="p-4 space-y-1">
-                <h4 class="text-sm font-bold text-white group-hover:text-purple-400 transition-colors">${m.title}</h4>
+                <h4 class="text-sm font-bold text-white group-hover:text-amber-400 transition-colors">${m.title}</h4>
                 <p class="text-[11px] text-purple-300 font-semibold">By ${m.author}</p>
               </div>
 
               ${canDelete ? `
-                <div class="p-3 bg-slate-950/80 border-t border-slate-800/80 flex justify-end">
+                <div class="p-3 bg-[#0B0F19]/80 border-t border-slate-800/80 flex justify-end">
                   <button onclick="MediaPage.deleteMedia('${m.id}')" class="px-3 py-1 rounded-lg bg-rose-600/20 border border-rose-500/30 hover:bg-rose-600 text-rose-300 hover:text-white font-bold text-[11px] transition-all flex items-center gap-1">
                     <i class="fas fa-trash-alt"></i>
                     <span>Delete Item</span>
@@ -271,10 +272,20 @@
         StorageDB.set(STORAGE_KEYS.MEDIA, mediaItems);
         StorageDB.logAction(user.username, "Add Media", `Published media item: ${title}`);
 
+        Webhooks.send('media', {
+          title: `🎬 New Media Showcase: ${title}`,
+          description: `Published by **${user.username}**`,
+          fields: [
+            { name: "Link / Asset", value: embedData && embedData.embedUrl ? embedData.embedUrl : finalUrl, inline: false }
+          ],
+          color: 0x7C3AED,
+          author: "AeonMC Media Hub"
+        });
+
         this.uploadedFileBase64 = null;
         this.closeModal('addMediaModal');
         this.renderMedia();
-        App.showToast('Media item published successfully!', 'success');
+        App.showToast('Media item published & posted to Discord!', 'success');
       },
 
       deleteMedia(id) {

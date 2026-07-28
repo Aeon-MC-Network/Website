@@ -15,7 +15,7 @@
   <meta property="og:url" content="https://aeonmc.com/staff.html">
   <meta property="og:title" content="Staff Portal - AeonMC Network">
   <meta property="og:description" content="Internal dashboard for network moderators and administrators.">
-  <meta property="og:image" content="https://aeonmc.com/assets/img/og-banner.jpg">
+  <meta property="og:image" content="https://aeonmc.com/assets/img/logo.jpg">
   <meta property="twitter:card" content="summary_large_image">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,15 +26,15 @@
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col relative overflow-x-hidden">
+<body class="bg-[#0B0F19] text-slate-100 font-sans min-h-screen flex flex-col relative overflow-x-hidden starfield-bg">
 
-  <header id="mainHeader" class="sticky top-0 z-50 backdrop-blur-md bg-slate-950/80 border-b border-slate-800/80"></header>
+  <header id="mainHeader" class="sticky top-0 z-50 backdrop-blur-md bg-[#0B0F19]/80 border-b border-slate-800/80"></header>
 
   <main class="flex-grow relative z-10 py-10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
       <!-- Restricted Access Fallback Screen -->
-      <div id="restrictedAccessCard" class="hidden p-8 sm:p-12 rounded-3xl bg-slate-900/60 border border-slate-800 backdrop-blur-md text-center max-w-xl mx-auto my-12 space-y-6">
+      <div id="restrictedAccessCard" class="hidden p-8 sm:p-12 rounded-3xl glass-card text-center max-w-xl mx-auto my-12 space-y-6">
         <div class="w-16 h-16 rounded-2xl bg-rose-950/80 border border-rose-500/30 flex items-center justify-center text-rose-400 text-3xl mx-auto">
           <i class="fas fa-lock"></i>
         </div>
@@ -42,14 +42,14 @@
         <p class="text-xs sm:text-sm text-slate-400 leading-relaxed">
           Access to the localized Staff Portal requires an authenticated session with <strong>Mod</strong> or <strong>Admin</strong> privileges.
         </p>
-        <button onclick="App.openLoginModal()" class="px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-lg shadow-indigo-600/20">Log In with Staff Account</button>
+        <button onclick="App.openLoginModal()" class="px-6 py-3 rounded-xl btn-sunset text-white font-bold text-xs shadow-lg">Log In with Staff Account</button>
       </div>
 
       <!-- Main Dashboard Container -->
       <div id="staffDashboardContainer" class="hidden space-y-8">
         
         <!-- Welcome Banner -->
-        <div class="p-6 rounded-2xl bg-gradient-to-r from-slate-900 via-indigo-950/30 to-slate-900 border border-indigo-500/20 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xl">
+        <div class="p-6 rounded-2xl bg-gradient-to-r from-[#151C2C] via-amber-950/20 to-[#151C2C] border border-amber-500/20 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xl">
           <div class="flex items-center gap-4">
             <div class="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400 text-2xl shrink-0">
               <i class="fas fa-shield-alt"></i>
@@ -64,7 +64,7 @@
           </div>
           
           <div id="adminActionGroup" class="hidden flex gap-2">
-            <button onclick="StaffPage.openNewMemoModal()" class="px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs transition-colors flex items-center gap-2">
+            <button onclick="StaffPage.openNewMemoModal()" class="px-4 py-2 rounded-xl btn-sunset text-white font-bold text-xs transition-colors flex items-center gap-2">
               <i class="fas fa-bullhorn"></i> Post Internal Memo
             </button>
           </div>
@@ -75,12 +75,12 @@
           
           <!-- Reorganized Left-Hand Tools Sidebar -->
           <div class="lg:col-span-1 space-y-4">
-            <div class="p-4 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-3">
+            <div class="p-4 rounded-2xl glass-card space-y-3">
               <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider px-2">Navigation & Tools</h3>
               
               <div class="space-y-1">
-                <button onclick="StaffPage.switchTab('overview', this)" class="staff-nav-btn w-full text-left px-3 py-2.5 rounded-xl text-xs font-semibold text-white bg-indigo-600/20 border border-indigo-500/30 flex items-center gap-2.5">
-                  <i class="fas fa-chart-line text-indigo-400 w-4"></i> Dashboard Overview
+                <button onclick="StaffPage.switchTab('overview', this)" class="staff-nav-btn w-full text-left px-3 py-2.5 rounded-xl text-xs font-semibold text-white bg-amber-600/20 border border-amber-500/30 flex items-center gap-2.5">
+                  <i class="fas fa-chart-line text-amber-400 w-4"></i> Dashboard Overview
                 </button>
                 <button onclick="StaffPage.switchTab('apps', this)" class="staff-nav-btn w-full text-left px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition-colors flex items-center gap-2.5">
                   <i class="fas fa-file-alt text-amber-400 w-4"></i> Review Applications
@@ -97,32 +97,32 @@
             </div>
 
             <!-- Staff External Workspaces -->
-            <div class="p-4 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-3">
+            <div class="p-4 rounded-2xl glass-card space-y-3">
               <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider px-2">Internal Workspaces</h3>
               
               <div class="space-y-2">
                 <a href="http://plan.aeonmc.com:8804" target="_blank" rel="noopener noreferrer" 
-                   class="flex items-center justify-between p-3 rounded-xl bg-slate-950 border border-slate-800 hover:border-indigo-500/50 text-xs font-semibold text-white transition-all group">
+                   class="flex items-center justify-between p-3 rounded-xl bg-[#0B0F19] border border-slate-800 hover:border-amber-500/50 text-xs font-semibold text-white transition-all group">
                   <div class="flex items-center gap-2">
-                    <i class="fas fa-chart-bar text-indigo-400"></i>
+                    <i class="fas fa-chart-bar text-amber-400"></i>
                     <span>Plan Analytics</span>
                   </div>
                   <i class="fas fa-external-link-alt text-[10px] text-slate-500 group-hover:text-white"></i>
                 </a>
 
                 <a href="https://aeonmc.atlassian.net/wiki" target="_blank" rel="noopener noreferrer" 
-                   class="flex items-center justify-between p-3 rounded-xl bg-slate-950 border border-slate-800 hover:border-indigo-500/50 text-xs font-semibold text-white transition-all group">
+                   class="flex items-center justify-between p-3 rounded-xl bg-[#0B0F19] border border-slate-800 hover:border-amber-500/50 text-xs font-semibold text-white transition-all group">
                   <div class="flex items-center gap-2">
-                    <i class="fab fa-confluence text-indigo-400"></i>
+                    <i class="fab fa-confluence text-amber-400"></i>
                     <span>Confluence Docs</span>
                   </div>
                   <i class="fas fa-external-link-alt text-[10px] text-slate-500 group-hover:text-white"></i>
                 </a>
 
                 <a href="https://aeonmc.atlassian.net/jira" target="_blank" rel="noopener noreferrer" 
-                   class="flex items-center justify-between p-3 rounded-xl bg-slate-950 border border-slate-800 hover:border-indigo-500/50 text-xs font-semibold text-white transition-all group">
+                   class="flex items-center justify-between p-3 rounded-xl bg-[#0B0F19] border border-slate-800 hover:border-amber-500/50 text-xs font-semibold text-white transition-all group">
                   <div class="flex items-center gap-2">
-                    <i class="fab fa-jira text-indigo-400"></i>
+                    <i class="fab fa-jira text-amber-400"></i>
                     <span>Jira Task Tracker</span>
                   </div>
                   <i class="fas fa-external-link-alt text-[10px] text-slate-500 group-hover:text-white"></i>
@@ -138,19 +138,19 @@
             <div id="tabOverview" class="staff-tab-panel space-y-6">
               
               <!-- Quick Embed Card for Plan Analytics -->
-              <div class="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div class="p-6 rounded-2xl glass-card flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
-                  <h3 class="text-base font-bold text-white mb-1"><i class="fas fa-chart-area text-indigo-400 mr-2"></i> Plan Analytics Telemetry</h3>
+                  <h3 class="text-base font-bold text-white mb-1"><i class="fas fa-chart-area text-amber-400 mr-2"></i> Plan Analytics Telemetry</h3>
                   <p class="text-xs text-slate-400">Live player session stats, retention metrics, and TPS performance logs.</p>
                 </div>
-                <a href="http://plan.aeonmc.com:8804" target="_blank" rel="noopener noreferrer" class="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs transition-colors shrink-0 flex items-center justify-center gap-2">
+                <a href="http://plan.aeonmc.com:8804" target="_blank" rel="noopener noreferrer" class="px-4 py-2.5 rounded-xl btn-sunset text-white font-bold text-xs transition-colors shrink-0 flex items-center justify-center gap-2">
                   <span>Open Plan Dashboard</span>
                   <i class="fas fa-external-link-alt text-[10px]"></i>
                 </a>
               </div>
 
               <!-- Internal Memos Board -->
-              <div class="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-4">
+              <div class="p-6 rounded-2xl glass-card space-y-4">
                 <h3 class="text-base font-bold text-white"><i class="fas fa-bullhorn text-amber-400 mr-2"></i> Staff Internal Memos</h3>
                 <div id="internalMemosList" class="space-y-3">
                   <!-- Rendered dynamically -->
@@ -161,7 +161,7 @@
 
             <!-- Tab 2: Applications Review Panel -->
             <div id="tabApps" class="staff-tab-panel hidden space-y-6">
-              <div class="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-4">
+              <div class="p-6 rounded-2xl glass-card space-y-4">
                 <h3 class="text-base font-bold text-white"><i class="fas fa-inbox text-amber-400 mr-2"></i> Incoming Applications Review Portal</h3>
                 <div id="applicationsReviewList" class="space-y-3">
                   <!-- Rendered dynamically -->
@@ -171,10 +171,10 @@
 
             <!-- Tab 3: Wiki Manager Panel -->
             <div id="tabWiki" class="staff-tab-panel hidden space-y-6">
-              <div class="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-4">
+              <div class="p-6 rounded-2xl glass-card space-y-4">
                 <div class="flex items-center justify-between">
                   <h3 class="text-base font-bold text-white"><i class="fas fa-book text-emerald-400 mr-2"></i> Published Wiki Articles</h3>
-                  <button onclick="StaffPage.openNewWikiModal()" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs">Publish New Article</button>
+                  <button onclick="StaffPage.openNewWikiModal()" class="px-4 py-2 rounded-xl btn-sunset text-white font-bold text-xs">Publish New Article</button>
                 </div>
                 <div id="wikiManagerList" class="space-y-3">
                   <!-- Rendered dynamically -->
@@ -184,11 +184,11 @@
 
             <!-- Tab 4: Admin User Directory Panel -->
             <div id="tabUsers" class="staff-tab-panel hidden space-y-6">
-              <div class="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-4">
+              <div class="p-6 rounded-2xl glass-card space-y-4">
                 <h3 class="text-base font-bold text-white"><i class="fas fa-users-cog text-rose-400 mr-2"></i> User Directory & Role Assignment</h3>
                 <div class="overflow-x-auto">
                   <table class="w-full text-left text-xs text-slate-300">
-                    <thead class="bg-slate-950 text-slate-400 uppercase font-bold text-[10px]">
+                    <thead class="bg-[#0B0F19] text-slate-400 uppercase font-bold text-[10px]">
                       <tr>
                         <th class="p-3">User</th>
                         <th class="p-3">Role</th>
@@ -213,27 +213,27 @@
   </main>
 
   <!-- Application Detail Modal -->
-  <div id="appDetailModal" role="dialog" aria-modal="true" class="hidden fixed inset-0 z-50 items-center justify-center bg-slate-950/80 backdrop-blur-md p-4">
-    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl relative">
+  <div id="appDetailModal" role="dialog" aria-modal="true" class="hidden fixed inset-0 z-50 items-center justify-center bg-[#0B0F19]/80 backdrop-blur-md p-4">
+    <div class="bg-[#151C2C] border border-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl relative">
       <button onclick="StaffPage.closeModal('appDetailModal')" aria-label="Close Modal" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i class="fas fa-times"></i></button>
       <div id="appDetailModalBody"></div>
     </div>
   </div>
 
   <!-- Create Wiki Modal -->
-  <div id="createWikiModal" role="dialog" aria-modal="true" class="hidden fixed inset-0 z-50 items-center justify-center bg-slate-950/80 backdrop-blur-md p-4">
-    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl relative">
+  <div id="createWikiModal" role="dialog" aria-modal="true" class="hidden fixed inset-0 z-50 items-center justify-center bg-[#0B0F19]/80 backdrop-blur-md p-4">
+    <div class="bg-[#151C2C] border border-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl relative">
       <button onclick="StaffPage.closeModal('createWikiModal')" aria-label="Close Modal" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i class="fas fa-times"></i></button>
       <h3 class="text-lg font-bold text-white mb-4">Publish Wiki Guide</h3>
       
       <form onsubmit="StaffPage.saveNewWiki(event)" class="space-y-4">
         <div>
           <label class="block text-xs font-semibold text-slate-300 mb-1">Title</label>
-          <input type="text" id="wikiTitleInput" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs" required>
+          <input type="text" id="wikiTitleInput" class="w-full px-3.5 py-2.5 rounded-xl bg-[#0B0F19] border border-slate-800 text-white text-xs" required>
         </div>
         <div>
           <label class="block text-xs font-semibold text-slate-300 mb-1">Category</label>
-          <select id="wikiCategoryInput" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs" required>
+          <select id="wikiCategoryInput" class="w-full px-3.5 py-2.5 rounded-xl bg-[#0B0F19] border border-slate-800 text-white text-xs" required>
             <option value="Jobs & Economy">Jobs & Economy</option>
             <option value="Dungeons & Combat">Dungeons & Combat</option>
             <option value="Commands & Claims">Commands & Claims</option>
@@ -242,21 +242,22 @@
         </div>
         <div>
           <label class="block text-xs font-semibold text-slate-300 mb-1">Summary Description</label>
-          <input type="text" id="wikiDescInput" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs" required>
+          <input type="text" id="wikiDescInput" class="w-full px-3.5 py-2.5 rounded-xl bg-[#0B0F19] border border-slate-800 text-white text-xs" required>
         </div>
         <div>
           <label class="block text-xs font-semibold text-slate-300 mb-1">Full Content</label>
-          <textarea id="wikiContentInput" rows="5" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs" required></textarea>
+          <textarea id="wikiContentInput" rows="5" class="w-full px-3.5 py-2.5 rounded-xl bg-[#0B0F19] border border-slate-800 text-white text-xs" required></textarea>
         </div>
-        <button type="submit" class="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs">Publish Article</button>
+        <button type="submit" class="w-full py-3 rounded-xl btn-sunset text-white font-bold text-xs">Publish Article</button>
       </form>
     </div>
   </div>
 
-  <footer id="mainFooter" class="border-t border-slate-800/80 py-8 relative z-10 bg-slate-950/60 backdrop-blur-sm"></footer>
+  <footer id="mainFooter" class="border-t border-slate-800/80 py-8 relative z-10 bg-[#0B0F19]/60 backdrop-blur-sm"></footer>
 
   <script src="assets/js/storage.js"></script>
   <script src="assets/js/store.js"></script>
+  <script src="assets/js/webhooks.js"></script>
   <script src="assets/js/auth.js"></script>
   <script src="assets/js/app.js"></script>
   <script>
@@ -293,7 +294,7 @@
         });
 
         if (btnEl) {
-          btnEl.className = "staff-nav-btn w-full text-left px-3 py-2.5 rounded-xl text-xs font-semibold text-white bg-indigo-600/20 border border-indigo-500/30 flex items-center gap-2.5";
+          btnEl.className = "staff-nav-btn w-full text-left px-3 py-2.5 rounded-xl text-xs font-semibold text-white bg-amber-600/20 border border-amber-500/30 flex items-center gap-2.5";
         }
 
         if (tabKey === 'overview') document.getElementById('tabOverview').classList.remove('hidden');
@@ -310,7 +311,7 @@
         ];
 
         container.innerHTML = memos.map(m => `
-          <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-1">
+          <div class="p-4 rounded-xl bg-[#0B0F19] border border-slate-800 space-y-1">
             <div class="flex items-center justify-between text-xs">
               <strong class="text-white font-bold">${m.title}</strong>
               <span class="text-slate-500 text-[10px]">${m.date}</span>
@@ -336,7 +337,7 @@
         }
 
         container.innerHTML = allApps.map(a => `
-          <div onclick="StaffPage.viewAppDetail('${a.id}', '${a.type}')" class="p-4 rounded-xl bg-slate-950 border border-slate-800 hover:border-indigo-500/50 cursor-pointer transition-all flex items-center justify-between">
+          <div onclick="StaffPage.viewAppDetail('${a.id}', '${a.type}')" class="p-4 rounded-xl bg-[#0B0F19] border border-slate-800 hover:border-amber-500/50 cursor-pointer transition-all flex items-center justify-between">
             <div>
               <div class="flex items-center gap-2">
                 <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded ${a.type === 'Staff' ? 'bg-amber-950 text-amber-400 border border-amber-500/30' : 'bg-purple-950 text-purple-400 border border-purple-500/30'}">${a.type} App</span>
@@ -344,7 +345,7 @@
               </div>
               <p class="text-xs text-slate-400 mt-1">${a.type === 'Staff' ? a.position : a.channel}</p>
             </div>
-            <span class="text-xs text-indigo-400 font-bold">Review <i class="fas fa-chevron-right text-[10px]"></i></span>
+            <span class="text-xs text-amber-400 font-bold">Review <i class="fas fa-chevron-right text-[10px]"></i></span>
           </div>
         `).join('');
       },
@@ -358,7 +359,7 @@
         const modalBody = document.getElementById('appDetailModalBody');
         modalBody.innerHTML = `
           <h3 class="text-base font-bold text-white mb-3">${type} Application: ${app.username}</h3>
-          <div class="space-y-2 text-xs text-slate-300 bg-slate-950 p-4 rounded-xl border border-slate-800 mb-4">
+          <div class="space-y-2 text-xs text-slate-300 bg-[#0B0F19] p-4 rounded-xl border border-slate-800 mb-4">
             <p><strong>Submitted:</strong> ${app.date}</p>
             ${type === 'Staff' ? `<p><strong>Discord:</strong> ${app.discord}</p><p><strong>Position:</strong> ${app.position}</p><p><strong>Experience:</strong> ${app.experience}</p>` : `<p><strong>Channel:</strong> ${app.channel}</p><p><strong>Metrics:</strong> ${app.metrics}</p>`}
           </div>
@@ -388,7 +389,7 @@
         const wikiList = StorageDB.get(STORAGE_KEYS.WIKI) || [];
 
         container.innerHTML = wikiList.map(w => `
-          <div class="p-3.5 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-between text-xs">
+          <div class="p-3.5 rounded-xl bg-[#0B0F19] border border-slate-800 flex items-center justify-between text-xs">
             <div>
               <strong class="text-white">${w.title}</strong>
               <span class="text-slate-500 ml-2">(${w.category})</span>
@@ -440,9 +441,21 @@
         });
 
         StorageDB.set(STORAGE_KEYS.WIKI, wikiList);
+
+        Webhooks.send('wiki', {
+          title: `📖 New Wiki Article Published: ${title} [${cat}]`,
+          description: desc,
+          fields: [
+            { name: "Author", value: user.username, inline: true },
+            { name: "Category", value: cat, inline: true }
+          ],
+          color: 0xF59E0B,
+          author: "AeonMC Wiki Team"
+        });
+
         this.closeModal('createWikiModal');
         this.renderWikiManager();
-        App.showToast('Wiki article published!', 'success');
+        App.showToast('Wiki article published & posted to Discord!', 'success');
       },
 
       renderUserDirectory() {
@@ -454,9 +467,9 @@
         container.innerHTML = users.map(u => `
           <tr>
             <td class="p-3 font-semibold text-white">${u.username}</td>
-            <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-indigo-400">${u.role}</span></td>
+            <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-amber-400">${u.role}</span></td>
             <td class="p-3">
-              <select onchange="StaffPage.changeRole('${u.username}', this.value)" class="px-2 py-1 bg-slate-900 border border-slate-800 text-xs rounded text-white">
+              <select onchange="StaffPage.changeRole('${u.username}', this.value)" class="px-2 py-1 bg-[#0B0F19] border border-slate-800 text-xs rounded text-white">
                 <option value="Player" ${u.role === 'Player' ? 'selected' : ''}>Player</option>
                 <option value="Content Creator" ${u.role === 'Content Creator' ? 'selected' : ''}>Content Creator</option>
                 <option value="Mod" ${u.role === 'Mod' ? 'selected' : ''}>Mod</option>
