@@ -22,7 +22,7 @@
   <main class="flex-grow relative z-10 py-8">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
-      <!-- Access Control Shield Check -->
+      <!-- Access Control Shield Check (Clean: No Test Account Buttons) -->
       <div id="staffAccessDenied" class="hidden p-10 sm:p-14 rounded-3xl bg-slate-900/80 border border-rose-500/30 text-center max-w-lg mx-auto my-12 shadow-2xl">
         <div class="w-16 h-16 rounded-2xl bg-rose-950 border border-rose-500/40 flex items-center justify-center text-rose-400 text-3xl mx-auto mb-4">
           <i class="fas fa-lock"></i>
@@ -32,17 +32,8 @@
           The AeonMC Staff Portal is restricted to Moderator and Administrator accounts. Please log in with a staff account to proceed.
         </p>
         
-        <!-- Quick Demo Login Buttons inside Access Denied Box -->
-        <div class="bg-slate-950 border border-slate-800 rounded-xl p-3 mb-6">
-          <div class="text-[11px] font-bold uppercase tracking-wider text-indigo-400 mb-2">⚡ Test Staff Accounts</div>
-          <div class="flex justify-center gap-2">
-            <button onclick="App.quickLogin('Mod')" class="px-4 py-2 rounded-lg bg-amber-600/30 hover:bg-amber-600/50 text-amber-200 text-xs font-bold border border-amber-500/30 transition-colors">Login as Mod</button>
-            <button onclick="App.quickLogin('Admin')" class="px-4 py-2 rounded-lg bg-rose-600/30 hover:bg-rose-600/50 text-rose-200 text-xs font-bold border border-rose-500/30 transition-colors">Login as Admin</button>
-          </div>
-        </div>
-
         <button onclick="App.openLoginModal()" class="px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-lg shadow-indigo-600/20">
-          Login With Custom Account
+          Login With Staff Account
         </button>
       </div>
 
@@ -54,7 +45,6 @@
           <div>
             <div class="flex items-center gap-2 mb-1">
               <span class="px-2.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-amber-500/20 text-amber-400 border border-amber-500/30">Staff Dashboard</span>
-              <span class="text-xs text-slate-500">Node: <code class="text-indigo-400">dal-241001.bloom.host</code></span>
             </div>
             <h1 class="text-2xl sm:text-3xl font-black text-white">Staff Management Portal</h1>
           </div>
@@ -85,7 +75,7 @@
               </button>
 
               <button onclick="StaffPage.switchTab('apps', this)" class="staff-tab-btn w-full text-left px-3 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition-colors flex items-center justify-between">
-                <span><i class="fas fa-user-check text-indigo-400 mr-2"></i> Staff Applications</span>
+                <span><i class="fas fa-user-check text-indigo-400 mr-2"></i> Review Applications</span>
               </button>
 
               <div id="adminTabNav" class="hidden border-t border-slate-800/80 pt-2 mt-2">
@@ -154,10 +144,11 @@
               </div>
             </div>
 
-            <!-- Tab 3: Staff Applications -->
+            <!-- Tab 3: Review Applications -->
             <div id="staffTab-apps" class="staff-tab-content hidden space-y-6">
               <div class="p-6 rounded-2xl bg-slate-900/60 border border-slate-800">
-                <h3 class="text-lg font-bold text-white mb-4"><i class="fas fa-user-check text-indigo-400 mr-2"></i> Incoming Staff & Helper Applications</h3>
+                <h3 class="text-lg font-bold text-white mb-4"><i class="fas fa-user-check text-indigo-400 mr-2"></i> Review Network Applications</h3>
+                <p class="text-xs text-slate-400 mb-4">Review incoming staff and creator applications submitted via the Contact page.</p>
                 <div id="staffAppsList" class="space-y-3">
                   <!-- Dynamically rendered -->
                 </div>
@@ -246,36 +237,44 @@
         const container = document.getElementById('staffAppsList');
         if (!container) return;
 
-        const apps = StorageDB.get(STORAGE_KEYS.STAFF_APPS) || [];
-        if (apps.length === 0) {
-          container.innerHTML = `<div class="text-xs text-slate-400 text-center py-4">No staff applications pending review.</div>`;
+        const staffApps = StorageDB.get(STORAGE_KEYS.STAFF_APPS) || [];
+        const creatorApps = StorageDB.get(STORAGE_KEYS.CREATOR_APPS) || [];
+        
+        const allApps = [
+          ...staffApps.map(a => ({ ...a, type: 'Staff Application' })),
+          ...creatorApps.map(a => ({ ...a, type: 'Creator Application' }))
+        ];
+
+        if (allApps.length === 0) {
+          container.innerHTML = `<div class="text-xs text-slate-400 text-center py-4">No applications pending review.</div>`;
           return;
         }
 
-        container.innerHTML = apps.map(a => `
+        container.innerHTML = allApps.map(a => `
           <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-between gap-4">
             <div>
               <div class="flex items-center gap-2">
                 <strong class="text-white text-xs">${a.username}</strong>
-                <span class="text-[10px] text-slate-400">(${a.discord})</span>
+                <span class="text-[10px] text-indigo-400 font-bold">(${a.type})</span>
                 <span class="px-2 py-0.2 rounded text-[10px] font-bold bg-amber-950 text-amber-400 border border-amber-500/30">${a.status}</span>
               </div>
-              <p class="text-xs text-slate-400 mt-1">${a.position} • ${a.experience}</p>
+              <p class="text-xs text-slate-400 mt-1">${a.position || a.channel} • ${a.experience || a.metrics}</p>
             </div>
             <div class="flex gap-2">
-              <button onclick="StaffPage.updateAppStatus('${a.id}', 'Approved')" class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs">Approve</button>
-              <button onclick="StaffPage.updateAppStatus('${a.id}', 'Rejected')" class="px-3 py-1.5 rounded-lg bg-rose-600/30 hover:bg-rose-600 text-rose-300 hover:text-white font-bold text-xs">Reject</button>
+              <button onclick="StaffPage.updateAppStatus('${a.id}', 'Approved', '${a.type}')" class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs">Approve</button>
+              <button onclick="StaffPage.updateAppStatus('${a.id}', 'Rejected', '${a.type}')" class="px-3 py-1.5 rounded-lg bg-rose-600/30 hover:bg-rose-600 text-rose-300 hover:text-white font-bold text-xs">Reject</button>
             </div>
           </div>
         `).join('');
       },
 
-      updateAppStatus(appId, status) {
-        const apps = StorageDB.get(STORAGE_KEYS.STAFF_APPS) || [];
+      updateAppStatus(appId, status, type) {
+        const key = type.includes('Staff') ? STORAGE_KEYS.STAFF_APPS : STORAGE_KEYS.CREATOR_APPS;
+        const apps = StorageDB.get(key) || [];
         const app = apps.find(a => a.id === appId);
         if (app) {
           app.status = status;
-          StorageDB.set(STORAGE_KEYS.STAFF_APPS, apps);
+          StorageDB.set(key, apps);
           this.renderStaffApps();
           App.showToast(`Application marked as ${status}`, 'success');
         }

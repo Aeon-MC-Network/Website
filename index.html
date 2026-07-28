@@ -27,7 +27,7 @@
   <header id="mainHeader" class="sticky top-0 z-50 backdrop-blur-md bg-slate-950/80 border-b border-slate-800/80 transition-all"></header>
 
   <!-- Hero & Main -->
-  <main class="flex-grow relative z-10 py-12 sm:py-20">
+  <main class="flex-grow relative z-10 py-12 sm:py-16 space-y-16">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
       
       <!-- Season Badge -->
@@ -64,7 +64,7 @@
         </div>
       </div>
 
-      <!-- Live Server Telemetry Badge -->
+      <!-- Requirement 7: Accurate Live Server Status API -->
       <div class="inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-slate-900/70 border border-slate-800/80 backdrop-blur-md shadow-lg text-sm text-slate-300">
         <span class="relative flex h-3 w-3">
           <span id="statusPingPulse" class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
@@ -73,38 +73,51 @@
         <span class="font-medium text-slate-400">Server Status:</span>
         <span id="statusText" class="font-bold text-emerald-400">ONLINE</span>
         <span class="text-slate-700">•</span>
-        <span id="playerCountText" class="font-semibold text-slate-200">
-          <span class="inline-block animate-pulse">Checking live players...</span>
-        </span>
+        <span id="playerCountText" class="font-semibold text-slate-200">Checking live players...</span>
       </div>
 
-      <!-- Grid Highlights -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl mt-16 text-left">
-        <div class="p-6 rounded-2xl bg-slate-900/50 backdrop-blur-md border border-slate-800/80 hover:border-slate-700/80 transition-all group">
-          <div class="w-12 h-12 rounded-xl bg-indigo-950/80 border border-indigo-500/20 flex items-center justify-center text-indigo-400 text-xl mb-4 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
-            <i class="fas fa-briefcase"></i>
-          </div>
-          <h3 class="text-lg font-bold text-white mb-2">Custom Jobs System</h3>
-          <p class="text-sm text-slate-400 leading-relaxed">Earn balanced income through 8 calibrated job matrices designed for long-term economy stability.</p>
-        </div>
+    </div>
 
-        <div class="p-6 rounded-2xl bg-slate-900/50 backdrop-blur-md border border-slate-800/80 hover:border-slate-700/80 transition-all group">
-          <div class="w-12 h-12 rounded-xl bg-indigo-950/80 border border-indigo-500/20 flex items-center justify-center text-indigo-400 text-xl mb-4 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
-            <i class="fas fa-dungeon"></i>
-          </div>
-          <h3 class="text-lg font-bold text-white mb-2">Procedural Dungeons</h3>
-          <p class="text-sm text-slate-400 leading-relaxed">Explore hand-crafted boss chambers with Lootr instanced chests and mythic gear drops.</p>
-        </div>
+    <!-- Requirement 8: Dynamic Home Page Content Feeds -->
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="border-t border-slate-800/80 pt-12">
+        <h2 class="text-2xl font-black text-white mb-8 text-center">Network Activity & Feeds</h2>
 
-        <div class="p-6 rounded-2xl bg-slate-900/50 backdrop-blur-md border border-slate-800/80 hover:border-slate-700/80 transition-all group">
-          <div class="w-12 h-12 rounded-xl bg-indigo-950/80 border border-indigo-500/20 flex items-center justify-center text-indigo-400 text-xl mb-4 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
-            <i class="fas fa-coins"></i>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          
+          <!-- Latest News Feed Card -->
+          <div id="homeFeedNews" class="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 flex flex-col justify-between hover:border-indigo-500/40 transition-all">
+            <!-- Rendered dynamically -->
           </div>
-          <h3 class="text-lg font-bold text-white mb-2">Balanced Player Economy</h3>
-          <p class="text-sm text-slate-400 leading-relaxed">Trade with player warps, chest shops, and Auction House listings with zero pay-to-win mechanics.</p>
+
+          <!-- Latest Forum Thread Feed Card -->
+          <div id="homeFeedForum" class="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 flex flex-col justify-between hover:border-indigo-500/40 transition-all">
+            <!-- Rendered dynamically -->
+          </div>
+
+          <!-- Featured Media Feed Card -->
+          <div id="homeFeedMedia" class="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 flex flex-col justify-between hover:border-purple-500/40 transition-all">
+            <!-- Rendered dynamically -->
+          </div>
+
+          <!-- Featured Wiki Feed Card -->
+          <div id="homeFeedWiki" class="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 flex flex-col justify-between hover:border-indigo-500/40 transition-all">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-indigo-950 text-indigo-400 border border-indigo-500/30">Wiki Guide</span>
+                <i class="fas fa-book text-slate-500 text-xs"></i>
+              </div>
+              <h3 class="text-sm font-bold text-white leading-snug">Jobs Reborn System</h3>
+              <p class="text-xs text-slate-400 leading-relaxed">Master 8 calibrated job matrices to earn income while leveling skills.</p>
+            </div>
+            <a href="wiki.html" class="mt-4 w-full py-2 rounded-xl bg-slate-800 hover:bg-indigo-600 text-white font-semibold text-xs transition-colors flex items-center justify-center gap-1.5">
+              <span>Read Wiki</span>
+              <i class="fas fa-arrow-right text-[10px]"></i>
+            </a>
+          </div>
+
         </div>
       </div>
-
     </div>
   </main>
 
@@ -113,5 +126,73 @@
   <script src="assets/js/storage.js"></script>
   <script src="assets/js/auth.js"></script>
   <script src="assets/js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Dynamic Home Feeds Loader
+      const news = StorageDB.get(STORAGE_KEYS.NEWS) || [];
+      const forums = StorageDB.get(STORAGE_KEYS.FORUMS) || [];
+      const media = StorageDB.get(STORAGE_KEYS.MEDIA) || [];
+
+      // Render News Feed
+      const newsContainer = document.getElementById('homeFeedNews');
+      if (newsContainer && news.length > 0) {
+        const latest = news[0];
+        newsContainer.innerHTML = `
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-indigo-950 text-indigo-400 border border-indigo-500/30">${latest.tag}</span>
+              <span class="text-[10px] text-slate-500">${latest.date}</span>
+            </div>
+            <h3 class="text-sm font-bold text-white leading-snug">${latest.title}</h3>
+            <p class="text-xs text-slate-400 leading-relaxed line-clamp-3">${latest.excerpt}</p>
+          </div>
+          <a href="news.html" class="mt-4 w-full py-2 rounded-xl bg-slate-800 hover:bg-indigo-600 text-white font-semibold text-xs transition-colors flex items-center justify-center gap-1.5">
+            <span>View News</span>
+            <i class="fas fa-arrow-right text-[10px]"></i>
+          </a>
+        `;
+      }
+
+      // Render Forum Feed
+      const forumContainer = document.getElementById('homeFeedForum');
+      if (forumContainer && forums.length > 0) {
+        const latestF = forums[0];
+        forumContainer.innerHTML = `
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-indigo-950 text-indigo-400 border border-indigo-500/30">Latest Forum Thread</span>
+              <i class="far fa-comments text-slate-500 text-xs"></i>
+            </div>
+            <h3 class="text-sm font-bold text-white leading-snug">${latestF.title}</h3>
+            <p class="text-xs text-slate-400">Started by <strong class="text-slate-300">${latestF.author}</strong> in ${latestF.category}</p>
+          </div>
+          <a href="forums.html" class="mt-4 w-full py-2 rounded-xl bg-slate-800 hover:bg-indigo-600 text-white font-semibold text-xs transition-colors flex items-center justify-center gap-1.5">
+            <span>Open Forums</span>
+            <i class="fas fa-arrow-right text-[10px]"></i>
+          </a>
+        `;
+      }
+
+      // Render Media Feed
+      const mediaContainer = document.getElementById('homeFeedMedia');
+      if (mediaContainer && media.length > 0) {
+        const latestM = media[0];
+        mediaContainer.innerHTML = `
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-purple-950 text-purple-400 border border-purple-500/30">Media Showcase</span>
+              <i class="fas fa-video text-slate-500 text-xs"></i>
+            </div>
+            <h3 class="text-sm font-bold text-white leading-snug">${latestM.title}</h3>
+            <p class="text-xs text-purple-300 font-medium">By ${latestM.author}</p>
+          </div>
+          <a href="media.html" class="mt-4 w-full py-2 rounded-xl bg-slate-800 hover:bg-purple-600 text-white font-semibold text-xs transition-colors flex items-center justify-center gap-1.5">
+            <span>Watch Media</span>
+            <i class="fas fa-arrow-right text-[10px]"></i>
+          </a>
+        `;
+      }
+    });
+  </script>
 </body>
 </html>

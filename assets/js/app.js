@@ -48,7 +48,6 @@ const App = {
       { name: 'Contact', href: 'contact.html' }
     ];
 
-    // Conditionally add Staff Portal link if user is Mod or Admin
     if (isStaff) {
       navLinks.push({ name: 'Staff Portal', href: 'staff.html', isStaffOnly: true });
     }
@@ -85,12 +84,18 @@ const App = {
           <div class="px-3 py-2 text-[11px] text-slate-400 border-b border-slate-800/80">
             Logged in as <strong class="text-white">${user.username}</strong>
           </div>
+
+          <button onclick="App.openProfileModal()" class="w-full text-left flex items-center gap-2 px-3 py-2 text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">
+            <i class="fas fa-user-cog text-indigo-400"></i> Profile & Settings
+          </button>
+
           ${isStaff ? `
             <a href="staff.html" class="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-amber-400 hover:bg-slate-800 rounded-lg transition-colors">
               <i class="fas fa-shield-alt"></i> Staff Portal
             </a>
           ` : ''}
-          <button onclick="App.handleLogout()" class="w-full text-left flex items-center gap-2 px-3 py-2 text-xs font-semibold text-rose-400 hover:bg-slate-800 rounded-lg transition-colors">
+
+          <button onclick="App.handleLogout()" class="w-full text-left flex items-center gap-2 px-3 py-2 text-xs font-semibold text-rose-400 hover:bg-slate-800 rounded-lg transition-colors border-t border-slate-800/80 mt-1 pt-2">
             <i class="fas fa-sign-out-alt"></i> Logout
           </button>
         </div>
@@ -143,7 +148,7 @@ const App = {
       </div>
     `;
 
-    // User dropdown listener
+    // Dropdown toggle
     const dropdownBtn = document.getElementById('userMenuBtn');
     const dropdownMenu = document.getElementById('userMenuDropdown');
     if (dropdownBtn && dropdownMenu) {
@@ -174,7 +179,7 @@ const App = {
     footerContainer.innerHTML = `
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
         <div class="text-xs text-slate-500">
-          &copy; 2026 <span class="font-semibold text-slate-300">AeonMC Network</span>. All rights reserved. Node: <code class="text-indigo-400">dal-241001.bloom.host</code>
+          &copy; 2026 <span class="font-semibold text-slate-300">AeonMC Network</span>. All rights reserved.
         </div>
         <div class="text-[11px] text-slate-600 max-w-md">
           Not an official Minecraft product. Not approved by or associated with Mojang or Microsoft.
@@ -224,8 +229,6 @@ const App = {
 
     const statusText = document.getElementById('statusText');
     const playerCountText = document.getElementById('playerCountText');
-    const pingDot = document.getElementById('statusPingDot');
-    const pingPulse = document.getElementById('statusPingPulse');
 
     if (!statusText && !playerCountText) return;
 
@@ -281,7 +284,7 @@ const App = {
     }
   },
 
-  /* Modals & Quick Login Switcher */
+  /* Clean Modals: No Test Account Buttons */
   openLoginModal() {
     let modal = document.getElementById('authModal');
     if (!modal) {
@@ -322,20 +325,9 @@ const App = {
         <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
           <button onclick="App.closeAuthModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i class="fas fa-times"></i></button>
           
-          <h2 id="modalTitle" class="text-xl font-bold text-white mb-4">Account Login</h2>
+          <h2 id="modalTitle" class="text-xl font-bold text-white mb-6">Account Login</h2>
 
-          <!-- Quick One-Click Role Switcher Demo -->
-          <div class="bg-indigo-950/50 border border-indigo-500/30 rounded-xl p-3 mb-5">
-            <div class="text-[11px] font-bold uppercase tracking-wider text-indigo-400 mb-2">⚡ Quick Test Accounts</div>
-            <div class="grid grid-cols-2 gap-2">
-              <button onclick="App.quickLogin('Player')" class="px-2.5 py-1.5 rounded-lg bg-indigo-600/30 hover:bg-indigo-600/50 text-indigo-200 text-xs font-semibold border border-indigo-500/30 transition-colors">Player</button>
-              <button onclick="App.quickLogin('Content Creator')" class="px-2.5 py-1.5 rounded-lg bg-purple-600/30 hover:bg-purple-600/50 text-purple-200 text-xs font-semibold border border-purple-500/30 transition-colors">Creator</button>
-              <button onclick="App.quickLogin('Mod')" class="px-2.5 py-1.5 rounded-lg bg-amber-600/30 hover:bg-amber-600/50 text-amber-200 text-xs font-semibold border border-amber-500/30 transition-colors">Mod</button>
-              <button onclick="App.quickLogin('Admin')" class="px-2.5 py-1.5 rounded-lg bg-rose-600/30 hover:bg-rose-600/50 text-rose-200 text-xs font-semibold border border-rose-500/30 transition-colors">Admin</button>
-            </div>
-          </div>
-
-          <!-- Login Form -->
+          <!-- Clean Login Form (No test account buttons) -->
           <div id="loginFormContainer">
             <form onsubmit="App.handleLoginSubmit(event)" class="space-y-4">
               <div>
@@ -374,21 +366,63 @@ const App = {
     document.body.insertAdjacentHTML('beforeend', modalHTML);
   },
 
-  quickLogin(roleName) {
-    if (roleName === 'Admin') Auth.login('Admin', 'admin123');
-    else if (roleName === 'Mod') Auth.login('Moderator', 'mod123');
-    else if (roleName === 'Content Creator') Auth.login('SparkYT', 'creator123');
-    else Auth.login('StevePlayer', 'player123');
+  /* Profile & Settings Modal */
+  openProfileModal() {
+    const user = Auth.getCurrentUser();
+    if (!user) return;
 
-    this.closeAuthModal();
-    this.renderHeader();
-    this.showToast(`Logged in as Demo ${roleName}`, 'success');
+    let modal = document.getElementById('profileModal');
+    if (!modal) {
+      const modalHTML = `
+        <div id="profileModal" class="hidden fixed inset-0 z-50 items-center justify-center bg-slate-950/80 backdrop-blur-md p-4">
+          <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
+            <button onclick="App.closeProfileModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i class="fas fa-times"></i></button>
+            <h3 class="text-lg font-bold text-white mb-4"><i class="fas fa-user-cog text-indigo-400 mr-2"></i> Profile & Account Settings</h3>
+            
+            <form onsubmit="App.handleProfileSubmit(event)" class="space-y-4">
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-1">Avatar Image URL</label>
+                <input type="url" id="profileAvatar" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs focus:border-indigo-500 focus:outline-none" required>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-1">New Password (leave blank to keep current)</label>
+                <input type="password" id="profilePassword" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs focus:border-indigo-500 focus:outline-none">
+              </div>
+              <button type="submit" class="w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs">Save Changes</button>
+            </form>
+          </div>
+        </div>
+      `;
+      document.body.insertAdjacentHTML('beforeend', modalHTML);
+      modal = document.getElementById('profileModal');
+    }
 
-    // If currently on staff.html, trigger StaffPage re-check immediately
-    if (window.location.pathname.includes('staff.html') && typeof StaffPage !== 'undefined') {
-      StaffPage.init();
+    document.getElementById('profileAvatar').value = user.avatar;
+    document.getElementById('profilePassword').value = '';
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+  },
+
+  closeProfileModal() {
+    const modal = document.getElementById('profileModal');
+    if (modal) {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+  },
+
+  handleProfileSubmit(e) {
+    e.preventDefault();
+    const avatarVal = document.getElementById('profileAvatar').value.trim();
+    const passVal = document.getElementById('profilePassword').value.trim();
+
+    const res = Auth.updateProfile(avatarVal, passVal);
+    if (res.success) {
+      this.closeProfileModal();
+      this.renderHeader();
+      this.showToast('Profile settings saved!', 'success');
     } else {
-      window.location.reload();
+      this.showToast(res.message, 'error');
     }
   },
 
@@ -440,8 +474,8 @@ const App = {
     this.renderHeader();
     this.showToast('Logged out successfully.', 'info');
     
-    if (window.location.pathname.includes('staff.html') && typeof StaffPage !== 'undefined') {
-      StaffPage.init();
+    if (window.location.pathname.includes('staff.html')) {
+      window.location.href = 'index.html';
     } else {
       window.location.reload();
     }

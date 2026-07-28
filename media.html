@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Media & Content Creator Hub - AeonMC Network</title>
-  <meta name="description" content="Explore community media, YouTube videos, Twitch streams, and apply for the Content Creator partner rank on AeonMC.">
+  <meta name="description" content="Explore community media, YouTube videos, Twitch streams, and content showcases on AeonMC.">
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,11 +24,11 @@
       <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
         <div>
           <h1 class="text-3xl font-black text-white">Media & Creator Showcase</h1>
-          <p class="text-slate-400 text-xs sm:text-sm mt-1">Community screenshots, creator videos, and partner registration applications.</p>
+          <p class="text-slate-400 text-xs sm:text-sm mt-1">Community screenshots, creator videos, and gameplay showcases.</p>
         </div>
-        <button onclick="MediaPage.openAppModal()" class="px-4 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs shadow-lg shadow-purple-600/20 transition-all flex items-center gap-2">
-          <i class="fas fa-star"></i> Apply for Creator Rank
-        </button>
+        <a href="contact.html#applications" class="px-4 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs shadow-lg shadow-purple-600/20 transition-all flex items-center gap-2 self-start md:self-auto">
+          <i class="fas fa-star"></i> Apply for Creator Rank on Contact Page
+        </a>
       </div>
 
       <!-- Media Items Grid -->
@@ -38,33 +38,6 @@
 
     </div>
   </main>
-
-  <!-- Creator Registration Application Modal -->
-  <div id="creatorAppModal" class="hidden fixed inset-0 z-50 items-center justify-center bg-slate-950/80 backdrop-blur-md p-4">
-    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
-      <button onclick="MediaPage.closeModal('creatorAppModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i class="fas fa-times"></i></button>
-      <h3 class="text-lg font-bold text-white mb-4"><i class="fas fa-video text-purple-400 mr-2"></i> Content Creator Application</h3>
-      
-      <form onsubmit="MediaPage.submitApp(event)" class="space-y-4">
-        <div>
-          <label class="block text-xs font-semibold text-slate-300 mb-1">Minecraft Username</label>
-          <input type="text" id="creatorUsername" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs focus:border-indigo-500 focus:outline-none" required>
-        </div>
-
-        <div>
-          <label class="block text-xs font-semibold text-slate-300 mb-1">Channel URL (YouTube / Twitch / TikTok)</label>
-          <input type="url" id="creatorChannel" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs focus:border-indigo-500 focus:outline-none" placeholder="https://youtube.com/@c/..." required>
-        </div>
-
-        <div>
-          <label class="block text-xs font-semibold text-slate-300 mb-1">Average Views / Viewers</label>
-          <input type="text" id="creatorMetrics" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs focus:border-indigo-500 focus:outline-none" placeholder="e.g. 500+ avg views per video" required>
-        </div>
-
-        <button type="submit" class="w-full py-3 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs">Submit Application</button>
-      </form>
-    </div>
-  </div>
 
   <footer id="mainFooter" class="border-t border-slate-800/80 py-8 relative z-10 bg-slate-950/60 backdrop-blur-sm"></footer>
 
@@ -94,44 +67,6 @@
             </div>
           </div>
         `).join('');
-      },
-
-      openAppModal() {
-        if (!Auth.isLoggedIn()) {
-          App.showToast('Please log in to submit a Content Creator application.', 'error');
-          App.openLoginModal();
-          return;
-        }
-        document.getElementById('creatorAppModal').classList.remove('hidden');
-        document.getElementById('creatorAppModal').classList.add('flex');
-      },
-
-      closeModal(id) {
-        document.getElementById(id).classList.add('hidden');
-        document.getElementById(id).classList.remove('flex');
-      },
-
-      submitApp(e) {
-        e.preventDefault();
-        const username = document.getElementById('creatorUsername').value;
-        const channel = document.getElementById('creatorChannel').value;
-        const metrics = document.getElementById('creatorMetrics').value;
-
-        const apps = StorageDB.get(STORAGE_KEYS.CREATOR_APPS) || [];
-        apps.push({
-          id: "capp-" + Date.now(),
-          username: username,
-          channel: channel,
-          metrics: metrics,
-          date: new Date().toLocaleDateString(),
-          status: "Pending"
-        });
-
-        StorageDB.set(STORAGE_KEYS.CREATOR_APPS, apps);
-        StorageDB.logAction(username, "Submit Creator App", `Submitted application for ${channel}`);
-
-        this.closeModal('creatorAppModal');
-        App.showToast('Content Creator application submitted to staff!', 'success');
       }
     };
 

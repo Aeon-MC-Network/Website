@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contact Us & Support - AeonMC Network</title>
-  <meta name="description" content="Reach out to the AeonMC administration and support team or join our community Discord server.">
+  <title>Contact & Applications Desk - AeonMC Network</title>
+  <meta name="description" content="Reach out to AeonMC support or submit applications for Staff and Content Creator ranks.">
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,16 +19,18 @@
   <header id="mainHeader" class="sticky top-0 z-50 backdrop-blur-md bg-slate-950/80 border-b border-slate-800/80"></header>
 
   <main class="flex-grow relative z-10 py-12">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
       
-      <div class="text-center mb-10">
-        <h1 class="text-3xl sm:text-4xl font-black text-white mb-2">Contact Us & Support</h1>
-        <p class="text-slate-400 text-xs sm:text-sm max-w-lg mx-auto">Need assistance with your account, billing, or general queries? Reach out to our administration.</p>
+      <!-- Page Header -->
+      <div class="text-center">
+        <h1 class="text-3xl sm:text-4xl font-black text-white mb-2">Contact Us & Network Applications</h1>
+        <p class="text-slate-400 text-xs sm:text-sm max-w-xl mx-auto">Get support from our team, join the community Discord, or apply for Staff & Creator roles.</p>
       </div>
 
+      <!-- Discord & Direct Support Desk Grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         
-        <!-- Discord Banner Card -->
+        <!-- Discord Card -->
         <div class="p-6 rounded-2xl bg-indigo-950/40 border border-indigo-500/30 backdrop-blur-md flex flex-col justify-between">
           <div>
             <div class="w-12 h-12 rounded-xl bg-indigo-600 flex items-center justify-center text-white text-2xl mb-4 shadow-lg shadow-indigo-600/30">
@@ -36,21 +38,22 @@
             </div>
             <h3 class="text-lg font-bold text-white mb-2">Official Discord Community</h3>
             <p class="text-xs text-slate-300 leading-relaxed mb-6">
-              Join thousands of community members on Discord for live text/voice chat, automated support tickets, and instant network announcements.
+              Join thousands of community members on Discord for live text/voice chat, ticket support, and network announcements.
             </p>
           </div>
+          <!-- Requirement 6: Clean Discord Button Text -->
           <a href="https://discord.gg/VQgsh8kW2F" target="_blank" rel="noopener noreferrer" 
-             class="w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs transition-colors text-center flex items-center justify-center gap-2">
-            <i class="fab fa-discord"></i>
-            <span>Join Discord Server (discord.gg/VQgsh8kW2F)</span>
+             class="w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs transition-colors text-center flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/20">
+            <i class="fab fa-discord text-sm"></i>
+            <span>Join Discord</span>
           </a>
         </div>
 
-        <!-- Direct Contact Form -->
+        <!-- Support Inquiry Form -->
         <div class="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 backdrop-blur-md">
-          <h3 class="text-lg font-bold text-white mb-4"><i class="fas fa-paper-plane text-indigo-400 mr-2"></i> Submit Inquiry</h3>
+          <h3 class="text-lg font-bold text-white mb-4"><i class="fas fa-paper-plane text-indigo-400 mr-2"></i> Submit General Inquiry</h3>
           
-          <form onsubmit="ContactPage.handleSubmit(event)" class="space-y-4">
+          <form onsubmit="ContactPage.handleInquiry(event)" class="space-y-4">
             <div>
               <label class="block text-xs font-semibold text-slate-300 mb-1">Minecraft Username</label>
               <input type="text" id="contactUsername" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs focus:border-indigo-500 focus:outline-none" required>
@@ -61,20 +64,97 @@
               <select id="contactCategory" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs focus:border-indigo-500 focus:outline-none" required>
                 <option value="Billing">Billing & Tebex Purchases</option>
                 <option value="Bug Report">Bug / Exploit Report</option>
-                <option value="Partnership">Media & Partnership Inquiry</option>
                 <option value="General">General Inquiry</option>
               </select>
             </div>
 
             <div>
               <label class="block text-xs font-semibold text-slate-300 mb-1">Message</label>
-              <textarea id="contactMessage" rows="4" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs focus:border-indigo-500 focus:outline-none" placeholder="Provide full details..." required></textarea>
+              <textarea id="contactMessage" rows="3" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs focus:border-indigo-500 focus:outline-none" placeholder="Provide full details..." required></textarea>
             </div>
 
             <button type="submit" class="w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs transition-colors">Send Inquiry</button>
           </form>
         </div>
 
+      </div>
+
+      <!-- Requirement 5: Centralized Network Applications Section -->
+      <div id="applications" class="border-t border-slate-800/80 pt-10">
+        <div class="text-center mb-8">
+          <h2 class="text-2xl font-black text-white mb-2">Network Applications Portal</h2>
+          <p class="text-xs sm:text-sm text-slate-400">Apply to join the AeonMC Staff Team or become an official Content Creator Partner.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          
+          <!-- Staff Application Box -->
+          <div class="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-4">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-amber-950 border border-amber-500/30 flex items-center justify-center text-amber-400 text-lg font-bold">
+                <i class="fas fa-shield-alt"></i>
+              </div>
+              <div>
+                <h3 class="text-base font-bold text-white">Apply for Staff / Helper</h3>
+                <p class="text-xs text-slate-400">Join our moderation and support team.</p>
+              </div>
+            </div>
+
+            <form onsubmit="ContactPage.handleStaffApp(event)" class="space-y-3">
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-300 mb-1">Minecraft Username</label>
+                <input type="text" id="staffAppUser" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs focus:border-indigo-500" required>
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-300 mb-1">Discord Tag</label>
+                <input type="text" id="staffAppDiscord" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs focus:border-indigo-500" placeholder="username#0000" required>
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-300 mb-1">Position Applied For</label>
+                <select id="staffAppPos" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs focus:border-indigo-500">
+                  <option value="Helper">Helper / Trainee</option>
+                  <option value="Moderator">Moderator</option>
+                  <option value="Developer">Developer</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-300 mb-1">Relevant Experience</label>
+                <textarea id="staffAppExp" rows="3" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs focus:border-indigo-500" placeholder="Detail past moderation or server experience..." required></textarea>
+              </div>
+              <button type="submit" class="w-full py-2.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs transition-colors">Submit Staff Application</button>
+            </form>
+          </div>
+
+          <!-- Content Creator Application Box -->
+          <div class="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-4">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-purple-950 border border-purple-500/30 flex items-center justify-center text-purple-400 text-lg font-bold">
+                <i class="fas fa-video"></i>
+              </div>
+              <div>
+                <h3 class="text-base font-bold text-white">Apply for Creator Rank</h3>
+                <p class="text-xs text-slate-400">Partner with AeonMC for media perks.</p>
+              </div>
+            </div>
+
+            <form onsubmit="ContactPage.handleCreatorApp(event)" class="space-y-3">
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-300 mb-1">Minecraft Username</label>
+                <input type="text" id="creatorAppUser" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs focus:border-indigo-500" required>
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-300 mb-1">Channel URL (YouTube / Twitch / TikTok)</label>
+                <input type="url" id="creatorAppChannel" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs focus:border-indigo-500" placeholder="https://youtube.com/..." required>
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-300 mb-1">Average Metrics / Viewers</label>
+                <input type="text" id="creatorAppMetrics" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs focus:border-indigo-500" placeholder="e.g. 500+ average views" required>
+              </div>
+              <button type="submit" class="w-full py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs transition-colors">Submit Creator Application</button>
+            </form>
+          </div>
+
+        </div>
       </div>
 
     </div>
@@ -87,12 +167,59 @@
   <script src="assets/js/app.js"></script>
   <script>
     const ContactPage = {
-      handleSubmit(e) {
+      handleInquiry(e) {
         e.preventDefault();
         const username = document.getElementById('contactUsername').value;
         const ticketId = 'TICK-' + Math.floor(1000 + Math.random() * 9000);
-        
         App.showToast(`Inquiry ${ticketId} submitted! Our team will respond shortly.`, 'success');
+        e.target.reset();
+      },
+
+      handleStaffApp(e) {
+        e.preventDefault();
+        const username = document.getElementById('staffAppUser').value;
+        const discord = document.getElementById('staffAppDiscord').value;
+        const pos = document.getElementById('staffAppPos').value;
+        const exp = document.getElementById('staffAppExp').value;
+
+        const apps = StorageDB.get(STORAGE_KEYS.STAFF_APPS) || [];
+        apps.push({
+          id: "sapp-" + Date.now(),
+          username: username,
+          discord: discord,
+          position: pos,
+          experience: exp,
+          date: new Date().toLocaleDateString(),
+          status: "Pending"
+        });
+
+        StorageDB.set(STORAGE_KEYS.STAFF_APPS, apps);
+        StorageDB.logAction(username, "Submit Staff App", `Applied for ${pos}`);
+
+        App.showToast('Staff application submitted successfully!', 'success');
+        e.target.reset();
+      },
+
+      handleCreatorApp(e) {
+        e.preventDefault();
+        const username = document.getElementById('creatorAppUser').value;
+        const channel = document.getElementById('creatorAppChannel').value;
+        const metrics = document.getElementById('creatorAppMetrics').value;
+
+        const apps = StorageDB.get(STORAGE_KEYS.CREATOR_APPS) || [];
+        apps.push({
+          id: "capp-" + Date.now(),
+          username: username,
+          channel: channel,
+          metrics: metrics,
+          date: new Date().toLocaleDateString(),
+          status: "Pending"
+        });
+
+        StorageDB.set(STORAGE_KEYS.CREATOR_APPS, apps);
+        StorageDB.logAction(username, "Submit Creator App", `Submitted application for ${channel}`);
+
+        App.showToast('Content Creator application submitted!', 'success');
         e.target.reset();
       }
     };

@@ -14,17 +14,26 @@ const Auth = {
 
   getRole() {
     const user = this.getCurrentUser();
-    return user ? user.role : 'Guest';
+    if (!user) return 'Guest';
+    const r = (user.role || '').trim();
+    if (r.toLowerCase() === 'mod' || r.toLowerCase() === 'moderator') return 'Mod';
+    if (r.toLowerCase() === 'admin' || r.toLowerCase() === 'administrator') return 'Admin';
+    if (r.toLowerCase().includes('creator')) return 'Content Creator';
+    return 'Player';
   },
 
   isAdmin() {
     const user = this.getCurrentUser();
-    return user && user.role === 'Admin';
+    if (!user) return false;
+    const role = (user.role || '').toLowerCase();
+    return role === 'admin' || role === 'administrator';
   },
 
   isMod() {
     const user = this.getCurrentUser();
-    return user && (user.role === 'Mod' || user.role === 'Admin');
+    if (!user) return false;
+    const role = (user.role || '').toLowerCase();
+    return role === 'mod' || role === 'moderator' || role === 'admin' || role === 'administrator';
   },
 
   isStaff() {
@@ -33,7 +42,9 @@ const Auth = {
 
   isCreator() {
     const user = this.getCurrentUser();
-    return user && (user.role === 'Content Creator' || user.role === 'Mod' || user.role === 'Admin');
+    if (!user) return false;
+    const role = (user.role || '').toLowerCase();
+    return role.includes('creator') || role === 'mod' || role === 'moderator' || role === 'admin' || role === 'administrator';
   },
 
   login(username, password) {
@@ -46,6 +57,11 @@ const Auth = {
       if (user.isBanned) {
         return { success: false, message: "Account suspended by staff." };
       }
+      
+      // Standardize role string
+      if (user.role.toLowerCase() === 'moderator') user.role = 'Mod';
+      if (user.role.toLowerCase() === 'administrator') user.role = 'Admin';
+
       StorageDB.set(STORAGE_KEYS.CURRENT_USER, user);
       StorageDB.logAction(user.username, "User Login", `User ${user.username} logged in as ${user.role}.`);
       return { success: true, user: user };
@@ -70,7 +86,7 @@ const Auth = {
       username: username,
       email: email,
       passwordHash: password,
-      role: "Player", // Default role
+      role: "Player",
       avatar: `https://mc-heads.net/avatar/${username}/100`,
       createdAt: new Date().toISOString(),
       voteStreak: 0
@@ -79,7 +95,7 @@ const Auth = {
     users.push(newUser);
     StorageDB.set(STORAGE_KEYS.USERS, users);
     StorageDB.set(STORAGE_KEYS.CURRENT_USER, newUser);
-    StorageDB.logAction(username, "User Registered", `New account registered: ${username} (Role: Player)`);
+    StorageDB.logAction(username, "User Registered", `New account registered: ${username}`);
 
     return { success: true, user: newUser };
   },
@@ -90,6 +106,24 @@ const Auth = {
       StorageDB.logAction(user.username, "User Logout", `User ${user.username} logged out.`);
     }
     localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
+  },
+
+  updateProfile(newAvatar, newPassword) {
+    const currentUser = this.getCurrentUser();
+    if (!currentUser) return { success: false, message: "Not logged in." };
+
+    const users = StorageDB.get(STORAGE_KEYS.USERS) || [];
+    const user = users.find(u => u.id === currentUser.id);
+
+    if (user) {
+      if (newAvatar) user.avatar = newAvatar;
+      if (newPassword) user.passwordHash = newPassword;
+
+      StorageDB.set(STORAGE_KEYS.USERS, users);
+      StorageDB.set(STORAGE_KEYS.CURRENT_USER, user);
+      return { success: true };
+    }
+    return { success: false, message: "User not found." };
   },
 
   updateUserRole(userId, newRole) {
@@ -107,7 +141,6 @@ const Auth = {
     targetUser.role = newRole;
     StorageDB.set(STORAGE_KEYS.USERS, users);
 
-    // If active user updated their own role
     const currentUser = this.getCurrentUser();
     if (currentUser && currentUser.id === userId) {
       currentUser.role = newRole;

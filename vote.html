@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vote Portal & Rewards - AeonMC Network</title>
-  <meta name="description" content="Vote daily for AeonMC to earn in-game cash, claim blocks, vote crate keys, and chances at 30-day Silver & Tin ranks!">
+  <meta name="description" content="Vote daily for AeonMC on TopG, Minecraft Buzz, Minecraft Servers, Minecraft Server List, and MC Server Time to earn in-game cash and claim blocks!">
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,124 +23,88 @@
   <header id="mainHeader" class="sticky top-0 z-50 backdrop-blur-md bg-slate-950/80 border-b border-slate-800/80"></header>
 
   <main class="flex-grow relative z-10 py-12">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
       
       <!-- Page Header -->
-      <div class="text-center mb-12">
+      <div class="mb-10">
         <h1 class="text-3xl sm:text-5xl font-black text-white mb-4">Vote For AeonMC</h1>
         <p class="text-slate-400 max-w-xl mx-auto text-sm sm:text-base">
-          Support our network every 24 hours on our official listing partners to earn instant in-game cash, land claim blocks, and Votify crate keys!
+          Support our network daily on our official listing partners to earn instant in-game cash, land claim blocks, and Votify crate keys!
         </p>
       </div>
 
-      <!-- Vote Rewards Overview Banner -->
-      <div class="p-6 rounded-2xl bg-indigo-950/40 border border-indigo-500/30 backdrop-blur-md mb-10 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-xl">
-        <div class="flex items-center gap-4 text-center sm:text-left">
-          <div class="w-14 h-14 rounded-2xl bg-indigo-600 flex items-center justify-center text-white text-2xl shrink-0 shadow-lg shadow-indigo-600/30">
-            <i class="fas fa-gift"></i>
-          </div>
-          <div>
-            <h3 class="text-lg font-bold text-white mb-1">Per-Vote In-Game Rewards</h3>
-            <p class="text-xs sm:text-sm text-slate-300">$250 Eco Cash • 50 Land Claim Blocks • 2x Vote Gems • Chance at 30-Day Silver Rank</p>
-          </div>
-        </div>
-        <a href="https://aeon-mc.tebex.store/" target="_blank" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs uppercase tracking-wider transition-all shrink-0">
-          Visit Store
-        </a>
+      <!-- Master Vote All Button -->
+      <div class="mb-10 p-6 rounded-2xl bg-indigo-950/40 border border-indigo-500/30 backdrop-blur-md shadow-2xl space-y-3">
+        <h3 class="text-lg font-bold text-white"><i class="fas fa-bolt text-indigo-400 mr-2"></i> Instant Multi-Vote</h3>
+        <p class="text-xs text-slate-300 max-w-md mx-auto">Open all 5 voting partner sites in new browser tabs simultaneously with one click.</p>
+        <button onclick="VotePage.voteAll()" class="px-8 py-4 rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 text-white font-black text-sm uppercase tracking-wider transition-all shadow-xl shadow-indigo-600/30 flex items-center justify-center gap-3 mx-auto w-full sm:w-auto">
+          <i class="fas fa-external-link-square-alt text-base"></i>
+          <span>Vote All (Open All 5 Links)</span>
+        </button>
       </div>
 
-      <!-- Voting Sites Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-12">
+      <!-- Requirement 9: Centered Stacked Action Buttons with Explicit Site Names -->
+      <div class="space-y-4 max-w-xl mx-auto mb-12">
         
-        <!-- Site 1: Minecraft Buzz -->
-        <div class="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 hover:border-indigo-500/50 transition-all flex items-center justify-between gap-4 group">
-          <div class="flex items-center gap-4">
-            <div class="w-12 h-12 rounded-xl bg-slate-800 flex items-center justify-center text-indigo-400 text-xl font-bold group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+        <!-- Button 1: TopG -->
+        <a href="https://topg.org/minecraft-servers/server-684378" target="_blank" rel="noopener noreferrer" 
+           class="w-full py-4 px-6 rounded-2xl bg-slate-900/80 hover:bg-indigo-600/90 border border-slate-800 hover:border-indigo-500 text-white font-bold text-sm sm:text-base transition-all flex items-center justify-between shadow-lg group">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-slate-800 group-hover:bg-indigo-700 flex items-center justify-center text-indigo-400 group-hover:text-white transition-colors">
               <i class="fas fa-vote-yea"></i>
             </div>
-            <div>
-              <h4 class="text-base font-bold text-white">Minecraft Buzz</h4>
-              <p class="text-xs text-slate-400">Vote Link 1 • 24h Cooldown</p>
-            </div>
+            <span>Vote On TopG Now</span>
           </div>
-          <a href="https://minecraft.buzz/server/aeon-mc" target="_blank" rel="noopener noreferrer" 
-             class="px-4 py-2 rounded-xl bg-indigo-600/80 hover:bg-indigo-600 text-white font-semibold text-xs transition-all flex items-center gap-2">
-            <span>Vote Now</span>
-            <i class="fas fa-external-link-alt text-[10px]"></i>
-          </a>
-        </div>
+          <i class="fas fa-chevron-right text-xs text-slate-400 group-hover:text-white transition-colors"></i>
+        </a>
 
-        <!-- Site 2: Minecraft Servers -->
-        <div class="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 hover:border-indigo-500/50 transition-all flex items-center justify-between gap-4 group">
-          <div class="flex items-center gap-4">
-            <div class="w-12 h-12 rounded-xl bg-slate-800 flex items-center justify-center text-indigo-400 text-xl font-bold group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+        <!-- Button 2: Minecraft Buzz -->
+        <a href="https://minecraft.buzz/server/aeon-mc" target="_blank" rel="noopener noreferrer" 
+           class="w-full py-4 px-6 rounded-2xl bg-slate-900/80 hover:bg-indigo-600/90 border border-slate-800 hover:border-indigo-500 text-white font-bold text-sm sm:text-base transition-all flex items-center justify-between shadow-lg group">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-slate-800 group-hover:bg-indigo-700 flex items-center justify-center text-indigo-400 group-hover:text-white transition-colors">
               <i class="fas fa-vote-yea"></i>
             </div>
-            <div>
-              <h4 class="text-base font-bold text-white">Minecraft Servers</h4>
-              <p class="text-xs text-slate-400">Vote Link 2 • 24h Cooldown</p>
-            </div>
+            <span>Vote On Minecraft Buzz Now</span>
           </div>
-          <a href="https://minecraftservers.org/server/690456" target="_blank" rel="noopener noreferrer" 
-             class="px-4 py-2 rounded-xl bg-indigo-600/80 hover:bg-indigo-600 text-white font-semibold text-xs transition-all flex items-center gap-2">
-            <span>Vote Now</span>
-            <i class="fas fa-external-link-alt text-[10px]"></i>
-          </a>
-        </div>
+          <i class="fas fa-chevron-right text-xs text-slate-400 group-hover:text-white transition-colors"></i>
+        </a>
 
-        <!-- Site 3: Minecraft Server List -->
-        <div class="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 hover:border-indigo-500/50 transition-all flex items-center justify-between gap-4 group">
-          <div class="flex items-center gap-4">
-            <div class="w-12 h-12 rounded-xl bg-slate-800 flex items-center justify-center text-indigo-400 text-xl font-bold group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+        <!-- Button 3: Minecraft Servers -->
+        <a href="https://minecraftservers.org/server/690456" target="_blank" rel="noopener noreferrer" 
+           class="w-full py-4 px-6 rounded-2xl bg-slate-900/80 hover:bg-indigo-600/90 border border-slate-800 hover:border-indigo-500 text-white font-bold text-sm sm:text-base transition-all flex items-center justify-between shadow-lg group">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-slate-800 group-hover:bg-indigo-700 flex items-center justify-center text-indigo-400 group-hover:text-white transition-colors">
               <i class="fas fa-vote-yea"></i>
             </div>
-            <div>
-              <h4 class="text-base font-bold text-white">Minecraft Server List</h4>
-              <p class="text-xs text-slate-400">Vote Link 3 • 24h Cooldown</p>
-            </div>
+            <span>Vote On Minecraft Servers Now</span>
           </div>
-          <a href="https://minecraft-server-list.com/server/522015/" target="_blank" rel="noopener noreferrer" 
-             class="px-4 py-2 rounded-xl bg-indigo-600/80 hover:bg-indigo-600 text-white font-semibold text-xs transition-all flex items-center gap-2">
-            <span>Vote Now</span>
-            <i class="fas fa-external-link-alt text-[10px]"></i>
-          </a>
-        </div>
+          <i class="fas fa-chevron-right text-xs text-slate-400 group-hover:text-white transition-colors"></i>
+        </a>
 
-        <!-- Site 4: MC Server Time -->
-        <div class="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 hover:border-indigo-500/50 transition-all flex items-center justify-between gap-4 group">
-          <div class="flex items-center gap-4">
-            <div class="w-12 h-12 rounded-xl bg-slate-800 flex items-center justify-center text-indigo-400 text-xl font-bold group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+        <!-- Button 4: Minecraft Server List -->
+        <a href="https://minecraft-server-list.com/server/522015/" target="_blank" rel="noopener noreferrer" 
+           class="w-full py-4 px-6 rounded-2xl bg-slate-900/80 hover:bg-indigo-600/90 border border-slate-800 hover:border-indigo-500 text-white font-bold text-sm sm:text-base transition-all flex items-center justify-between shadow-lg group">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-slate-800 group-hover:bg-indigo-700 flex items-center justify-center text-indigo-400 group-hover:text-white transition-colors">
               <i class="fas fa-vote-yea"></i>
             </div>
-            <div>
-              <h4 class="text-base font-bold text-white">MC Server Time</h4>
-              <p class="text-xs text-slate-400">Vote Link 4 • 24h Cooldown</p>
-            </div>
+            <span>Vote On Minecraft Server List Now</span>
           </div>
-          <a href="https://mcservertime.com/server-aeon-mc.2859" target="_blank" rel="noopener noreferrer" 
-             class="px-4 py-2 rounded-xl bg-indigo-600/80 hover:bg-indigo-600 text-white font-semibold text-xs transition-all flex items-center gap-2">
-            <span>Vote Now</span>
-            <i class="fas fa-external-link-alt text-[10px]"></i>
-          </a>
-        </div>
+          <i class="fas fa-chevron-right text-xs text-slate-400 group-hover:text-white transition-colors"></i>
+        </a>
 
-        <!-- Site 5: TopG -->
-        <div class="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 hover:border-indigo-500/50 transition-all flex items-center justify-between gap-4 group md:col-span-2">
-          <div class="flex items-center gap-4">
-            <div class="w-12 h-12 rounded-xl bg-slate-800 flex items-center justify-center text-indigo-400 text-xl font-bold group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+        <!-- Button 5: MC Server Time -->
+        <a href="https://mcservertime.com/server-aeon-mc.2859" target="_blank" rel="noopener noreferrer" 
+           class="w-full py-4 px-6 rounded-2xl bg-slate-900/80 hover:bg-indigo-600/90 border border-slate-800 hover:border-indigo-500 text-white font-bold text-sm sm:text-base transition-all flex items-center justify-between shadow-lg group">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-slate-800 group-hover:bg-indigo-700 flex items-center justify-center text-indigo-400 group-hover:text-white transition-colors">
               <i class="fas fa-vote-yea"></i>
             </div>
-            <div>
-              <h4 class="text-base font-bold text-white">TopG Minecraft Servers</h4>
-              <p class="text-xs text-slate-400">Vote Link 5 • Top Voter Leaderboard Entry</p>
-            </div>
+            <span>Vote On MC Server Time Now</span>
           </div>
-          <a href="https://topg.org/minecraft-servers/server-684378" target="_blank" rel="noopener noreferrer" 
-             class="px-4 py-2 rounded-xl bg-indigo-600/80 hover:bg-indigo-600 text-white font-semibold text-xs transition-all flex items-center gap-2">
-            <span>Vote Now</span>
-            <i class="fas fa-external-link-alt text-[10px]"></i>
-          </a>
-        </div>
+          <i class="fas fa-chevron-right text-xs text-slate-400 group-hover:text-white transition-colors"></i>
+        </a>
 
       </div>
 
@@ -152,5 +116,24 @@
   <script src="assets/js/storage.js"></script>
   <script src="assets/js/auth.js"></script>
   <script src="assets/js/app.js"></script>
+  <script>
+    const VotePage = {
+      voteAll() {
+        const urls = [
+          'https://topg.org/minecraft-servers/server-684378',
+          'https://minecraft.buzz/server/aeon-mc',
+          'https://minecraftservers.org/server/690456',
+          'https://minecraft-server-list.com/server/522015/',
+          'https://mcservertime.com/server-aeon-mc.2859'
+        ];
+
+        urls.forEach(url => {
+          window.open(url, '_blank');
+        });
+
+        App.showToast('Opened all 5 voting partner links!', 'success');
+      }
+    };
+  </script>
 </body>
 </html>
