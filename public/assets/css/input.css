@@ -1,0 +1,80 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-night: #0B0F19;
+  --bg-card: #151C2C;
+  --bg-glass: rgba(21, 28, 44, 0.75);
+  --text-main: #F3F4F6;
+  --text-muted: #9CA3AF;
+  
+  /* Gold & Sunset Gradient Accents */
+  --gold-primary: #F59E0B;
+  --sunset-orange: #EA580C;
+  --sunset-purple: #7C3AED;
+  --gradient-sunset: linear-gradient(135deg, #F59E0B 0%, #EA580C 50%, #7C3AED 100%);
+}
+
+body {
+  background-color: var(--bg-night);
+  color: var(--text-main);
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* Glassmorphism Card Style with Sunset Border Highlight on Hover */
+.glass-card {
+  background: var(--bg-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card:hover {
+  border-color: rgba(245, 158, 11, 0.4);
+  box-shadow: 0 10px 30px -10px rgba(245, 158, 11, 0.15), 0 0 20px -5px rgba(234, 88, 12, 0.2);
+}
+
+/* Text Sunset Gradient Utility */
+.text-gradient-sunset {
+  background: var(--gradient-sunset);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Button Sunset Gradient Style */
+.btn-sunset {
+  background: var(--gradient-sunset);
+  color: #ffffff;
+  font-weight: 800;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(245, 158, 11, 0.25);
+}
+
+.btn-sunset:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 25px rgba(234, 88, 12, 0.4);
+}
+
+/* Starfield / Night Sky Particle Animation */
+.starfield-bg {
+  background-image: 
+    radial-gradient(1px 1px at 20px 30px, rgba(255, 255, 255, 0.8), rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 40px 70px, rgba(245, 158, 11, 0.7), rgba(0,0,0,0)),
+    radial-gradient(1.5px 1.5px at 90px 40px, rgba(255, 255, 255, 0.9), rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 160px 120px, rgba(234, 88, 12, 0.6), rgba(0,0,0,0)),
+    radial-gradient(1.5px 1.5px at 230px 190px, rgba(255, 255, 255, 0.75), rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 300px 60px, rgba(124, 58, 237, 0.7), rgba(0,0,0,0));
+  background-repeat: repeat;
+  background-size: 350px 350px;
+  opacity: 0.65;
+}
+
+/* Hero Horizon Twilight SVG Silhouette */
+.horizon-silhouette {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320' preserveAspectRatio='none'%3E%3Cpath fill='%230B0F19' fill-opacity='1' d='M0,224L48,208C96,192,192,160,288,165.3C384,171,480,213,576,218.7C672,224,768,192,864,181.3C960,171,1056,181,1152,197.3C1248,213,1344,235,1392,245.3L1440,256L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
+  background-size: cover;
+  background-position: center bottom;
+}
