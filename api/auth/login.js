@@ -1,14 +1,11 @@
 import { db } from '../../lib/db.js';
+import { applyCors, signToken } from '../../lib/auth.js';
 import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 
 export default async function handler(req, res) {
-  // Global CORS Headers
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  if (applyCors(req, res)) return;
 
-  if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   const { username, password } = req.body || {};
@@ -19,7 +16,8 @@ export default async function handler(req, res) {
 
   try {
     const [users] = await db.query(
-      `SELECT u.id, u.username, u.password_hash, r.role_name, r.can_access_staff_wiki, r.can_access_plan_analytics 
+      `SELECT u.id, u.username, u.email, u.password_hash, r.role_name,
+              r.can_access_staff_wiki, r.can_access_staff_forum, r.can_access_plan_analytics, r.can_access_jira
        FROM users u 
        JOIN web_roles r ON u.role_id = r.id 
        WHERE LOWER(u.username) = LOWER(?)`,
@@ -69,22 +67,30 @@ export default async function handler(req, res) {
     else if (roleDisplay === 'creator') roleDisplay = 'Content Creator';
     else roleDisplay = 'Player';
 
-    const avatarUrl = `https://mc-heads.net/avatar/${encodeURIComponent(user.username)}/100`;
+    const permissionsObj = {
+      staff_wiki: Boolean(user.can_access_staff_wiki),
+      staff_forum: Boolean(user.can_access_staff_forum),
+      plan_analytics: Boolean(user.can_access_plan_analytics),
+      jira: Boolean(user.can_access_jira)
+    };
+
+    const userObj = {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      role: roleDisplay,
+      role_name: user.role_name,
+      avatar: `https://mc-heads.net/avatar/${encodeURIComponent(user.username)}/100`,
+      permissions: permissionsObj
+    };
+
+    const jwtToken = signToken(userObj);
 
     return res.status(200).json({
       success: true,
       token,
-      user: {
-        id: user.id,
-        username: user.username,
-        role: roleDisplay,
-        role_name: user.role_name,
-        avatar: avatarUrl,
-        permissions: {
-          staff_wiki: !!user.can_access_staff_wiki,
-          plan_analytics: !!user.can_access_plan_analytics
-        }
-      }
+      jwtToken,
+      user: userObj
     });
   } catch (error) {
     console.error('Login error:', error);
