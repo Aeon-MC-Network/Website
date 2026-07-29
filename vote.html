@@ -264,7 +264,7 @@
       const grid = document.getElementById('voteLinksGrid');
       if (!grid) return;
 
-      const fetchFunc = window.safeApiFetch || safeApiFetch;
+      const fetchFunc = (typeof window !== 'undefined' && window.safeApiFetch) ? window.safeApiFetch : (typeof safeApiFetch !== 'undefined' ? safeApiFetch : null);
       let links = DEFAULT_VOTE_LINKS;
 
       if (typeof fetchFunc === 'function') {
@@ -345,21 +345,23 @@
       if (!confirm('Are you sure you want to remove this vote link?')) return;
 
       const token = getAuthToken();
-      const fetchFunc = window.safeApiFetch || safeApiFetch;
-      const res = await fetchFunc('/vote/links', {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ vote_id: voteId })
-      });
+      const fetchFunc = (typeof window !== 'undefined' && window.safeApiFetch) ? window.safeApiFetch : (typeof safeApiFetch !== 'undefined' ? safeApiFetch : null);
+      if (typeof fetchFunc === 'function') {
+        const res = await fetchFunc('/vote/links', {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ vote_id: voteId })
+        });
 
-      if (res && res.ok && res.data && res.data.success) {
-        showToast('Vote link removed! Synchronizing...', 'success', 1500);
-        setTimeout(() => window.location.reload(), 800);
-      } else {
-        showToast(res.data?.message || 'Delete failed', 'error');
+        if (res && res.ok && res.data && res.data.success) {
+          showToast('Vote link removed! Synchronizing...', 'success', 1500);
+          setTimeout(() => window.location.reload(), 800);
+        } else {
+          showToast(res.data?.message || 'Delete failed', 'error');
+        }
       }
     }
 
@@ -377,21 +379,23 @@
           const reward_description = document.getElementById('adminVoteReward').value.trim();
           const display_order = parseInt(document.getElementById('adminVoteOrder').value || 0);
 
-          const fetchFunc = window.safeApiFetch || safeApiFetch;
-          const res = await fetchFunc('/vote/links', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify({ vote_id: vote_id ? parseInt(vote_id) : null, title, url, reward_description, display_order })
-          });
+          const fetchFunc = (typeof window !== 'undefined' && window.safeApiFetch) ? window.safeApiFetch : (typeof safeApiFetch !== 'undefined' ? safeApiFetch : null);
+          if (typeof fetchFunc === 'function') {
+            const res = await fetchFunc('/vote/links', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+              },
+              body: JSON.stringify({ vote_id: vote_id ? parseInt(vote_id) : null, title, url, reward_description, display_order })
+            });
 
-          if (res && res.ok && res.data && res.data.success) {
-            showToast(res.data.message || 'Vote link saved! Reloading...', 'success', 1500);
-            setTimeout(() => window.location.reload(), 800);
-          } else {
-            showToast(res.data?.message || 'Save failed', 'error');
+            if (res && res.ok && res.data && res.data.success) {
+              showToast(res.data.message || 'Vote link saved! Reloading...', 'success', 1500);
+              setTimeout(() => window.location.reload(), 800);
+            } else {
+              showToast(res.data?.message || 'Save failed', 'error');
+            }
           }
         });
       }
