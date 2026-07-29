@@ -109,34 +109,62 @@ const Auth = {
     }
   },
 
-  register(username, email, password) {
-    const users = StorageDB.get(STORAGE_KEYS.USERS) || [];
-    
-    if (users.some(u => u.username.toLowerCase() === username.toLowerCase())) {
-      return { success: false, message: "Username is already taken." };
+  async register(username, email, password) {
+    const apiUrl = (window.API_BASE_URL || '') + '/api/auth/register';
+
+    try {
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, email, password })
+      });
+
+      const data = await response.json();
+
+      if (data.success && data.user) {
+        const newUser = data.user;
+        if (newUser.role && newUser.role.toLowerCase() === 'moderator') newUser.role = 'Mod';
+        if (newUser.role && newUser.role.toLowerCase() === 'administrator') newUser.role = 'Admin';
+        if (!newUser.avatar) newUser.avatar = `https://mc-heads.net/avatar/${encodeURIComponent(newUser.username)}/100`;
+
+        StorageDB.set(STORAGE_KEYS.CURRENT_USER, newUser);
+        StorageDB.logAction(newUser.username, "User Registered", `New account registered: ${newUser.username} via API`);
+        return { success: true, user: newUser };
+      } else {
+        return { success: false, message: data.message || "Registration failed." };
+      }
+    } catch (err) {
+      console.warn('API registration unreachable, attempting local fallback:', err);
+      const users = StorageDB.get(STORAGE_KEYS.USERS) || [];
+      
+      if (users.some(u => u.username.toLowerCase() === username.toLowerCase())) {
+        return { success: false, message: "Username is already taken." };
+      }
+
+      if (users.some(u => u.email.toLowerCase() === email.toLowerCase())) {
+        return { success: false, message: "Email is already registered." };
+      }
+
+      const role = (username.toLowerCase() === 'thedaedragamer' || username.toLowerCase() === 'admin') ? 'Admin' : 'Player';
+
+      const newUser = {
+        id: "u_" + Date.now(),
+        username: username,
+        email: email,
+        passwordHash: password,
+        role: role,
+        avatar: `https://mc-heads.net/avatar/${encodeURIComponent(username)}/100`,
+        createdAt: new Date().toISOString(),
+        voteStreak: 0
+      };
+
+      users.push(newUser);
+      StorageDB.set(STORAGE_KEYS.USERS, users);
+      StorageDB.set(STORAGE_KEYS.CURRENT_USER, newUser);
+      StorageDB.logAction(username, "User Registered", `New account registered locally: ${username}`);
+
+      return { success: true, user: newUser };
     }
-
-    if (users.some(u => u.email.toLowerCase() === email.toLowerCase())) {
-      return { success: false, message: "Email is already registered." };
-    }
-
-    const newUser = {
-      id: "u_" + Date.now(),
-      username: username,
-      email: email,
-      passwordHash: password,
-      role: "Player",
-      avatar: `https://mc-heads.net/avatar/${username}/100`,
-      createdAt: new Date().toISOString(),
-      voteStreak: 0
-    };
-
-    users.push(newUser);
-    StorageDB.set(STORAGE_KEYS.USERS, users);
-    StorageDB.set(STORAGE_KEYS.CURRENT_USER, newUser);
-    StorageDB.logAction(username, "User Registered", `New account registered: ${username}`);
-
-    return { success: true, user: newUser };
   },
 
   logout() {

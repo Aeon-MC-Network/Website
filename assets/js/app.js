@@ -463,13 +463,13 @@ const App = {
     }
   },
 
-  handleRegisterSubmit(e) {
+  async handleRegisterSubmit(e) {
     e.preventDefault();
     const userVal = document.getElementById('regUsername').value.trim();
     const emailVal = document.getElementById('regEmail').value.trim();
     const passVal = document.getElementById('regPassword').value.trim();
 
-    const res = Auth.register(userVal, emailVal, passVal);
+    const res = await Auth.register(userVal, emailVal, passVal);
     if (res.success) {
       this.closeAuthModal();
       this.renderHeader();
