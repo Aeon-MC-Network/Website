@@ -26,6 +26,8 @@ async function runMigrations() {
   await connection.query('SET FOREIGN_KEY_CHECKS = 0');
 
   // Drop old tables if column structures differ
+  await connection.query('DROP TABLE IF EXISTS wiki_articles');
+  await connection.query('DROP TABLE IF EXISTS support_tickets');
   await connection.query('DROP TABLE IF EXISTS audit_logs');
   await connection.query('DROP TABLE IF EXISTS sessions');
   await connection.query('DROP TABLE IF EXISTS posts');
@@ -231,10 +233,55 @@ async function runMigrations() {
   `);
   console.log('✓ [vote_links] table created & default voting links seeded.');
 
+  // 11. Support Center Tickets Table
+  console.log('Migrating [support_tickets] table...');
+  await connection.query(`
+    CREATE TABLE support_tickets (
+      ticket_id INT AUTO_INCREMENT PRIMARY KEY,
+      user_id INT DEFAULT NULL,
+      type ENUM('staff_app', 'creator_app', 'report_player', 'bug_report', 'help_ticket') NOT NULL,
+      subject VARCHAR(255) NOT NULL,
+      description LONGTEXT NOT NULL,
+      contact_discord VARCHAR(100) NULL,
+      status ENUM('open', 'in_review', 'resolved', 'closed') DEFAULT 'open',
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE SET NULL
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `);
+  console.log('✓ [support_tickets] table created.');
+
+  // 12. Wiki Documentation Articles Table
+  console.log('Migrating [wiki_articles] table...');
+  await connection.query(`
+    CREATE TABLE wiki_articles (
+      article_id INT AUTO_INCREMENT PRIMARY KEY,
+      category VARCHAR(100) NOT NULL DEFAULT 'General',
+      title VARCHAR(255) NOT NULL,
+      slug VARCHAR(255) NOT NULL UNIQUE,
+      content_html LONGTEXT NOT NULL,
+      author_id INT DEFAULT NULL,
+      is_staff_only TINYINT(1) DEFAULT 0,
+      is_published TINYINT(1) DEFAULT 1,
+      display_order INT DEFAULT 0,
+      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (author_id) REFERENCES users(user_id) ON DELETE SET NULL
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `);
+
+  await connection.query(`
+    INSERT INTO wiki_articles (article_id, category, title, slug, content_html, author_id, is_staff_only, display_order) VALUES
+    (1, 'Rules & Conduct', 'Server Rules & Conduct Guidelines', 'rules-conduct', '<h3>AeonMC Official Conduct Standards</h3><p>1. Respect all players and staff members.<br>2. No cheating, hacked clients, or exploit abuse.<br>3. Keep chat civil—no hate speech or harassment.</p>', 1, 0, 1),
+    (2, 'Gameplay', 'Custom Item Recipes & Enchantments', 'custom-recipes', '<h3>Custom Medieval Crafting</h3><p>Discover ancient forged armor, legend tier swords, and custom enchantments at the spawn blacksmith.</p>', 1, 0, 2),
+    (3, 'Kingdoms', 'Towny Kingdom Commands & Land Claiming', 'towny-guide', '<h3>Towny Basics</h3><p>Use <code>/t new &lt;name&gt;</code> to found your town, and <code>/t claim</code> to secure territory from raiding.</p>', 1, 0, 3),
+    (4, 'Staff SOP', 'Staff SOP & Moderation Standards', 'staff-sop', '<h3>Staff Operating Procedures</h3><p>Confidential documentation for Moderator+ regarding mute durations, ban escalations, and ticket responses.</p>', 1, 1, 4);
+  `);
+  console.log('✓ [wiki_articles] table created & default documentation seeded.');
+
   // Enable Foreign Key checks
   await connection.query('SET FOREIGN_KEY_CHECKS = 1');
 
-  // 11. Automated Daily 02:00 AM Forum Purging Scheduled Event
+  // 13. Automated Daily 02:00 AM Forum Purging Scheduled Event
   console.log('Configuring daily 02:00 AM forum purging scheduled event...');
   try {
     await connection.query('SET GLOBAL event_scheduler = ON;');

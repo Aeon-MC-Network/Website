@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AeonMC | Support & Application Center</title>
+  <meta name="description" content="Contact AeonMC support, submit staff applications, report cheaters or bugs, and apply for Creator Hub verification.">
+  
+  <!-- Google Fonts & Tailwind CSS -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            serif: ['Cinzel', 'serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #07090e;
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(245, 158, 11, 0.15), transparent 40%),
+        radial-gradient(circle at 100% 50%, rgba(147, 51, 234, 0.08), transparent 40%),
+        radial-gradient(circle at 0% 80%, rgba(59, 130, 246, 0.08), transparent 40%);
+      color: #f1f5f9;
+    }
+    .starfield {
+      background-image: radial-gradient(1px 1px at 20px 30px, #ffffff, rgba(0,0,0,0)),
+                        radial-gradient(1px 1px at 40px 70px, #f59e0b, rgba(0,0,0,0)),
+                        radial-gradient(1px 1px at 90px 40px, #ffffff, rgba(0,0,0,0)),
+                        radial-gradient(1.5px 1.5px at 160px 120px, #fbbf24, rgba(0,0,0,0));
+      background-repeat: repeat;
+      background-size: 200px 200px;
+    }
+    .glass-card {
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(245, 158, 11, 0.2);
+    }
+    .text-gold-gradient {
+      background: linear-gradient(135deg, #fffbeb 0%, #fbbf24 40%, #d97706 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-amber-500 selection:text-slate-950 starfield">
+
+  <!-- Header / Navigation Bar -->
+  <header class="sticky top-0 z-40 w-full border-b border-amber-500/20 glass-card">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="index.html" class="flex items-center gap-3 group">
+        <img src="assets/img/62b8530f-faae-4c33-899f-3efcdb3faa94.jpg" alt="AeonMC Logo" class="w-10 h-10 rounded-xl border border-amber-500/40 shadow-lg shadow-amber-500/20 object-cover group-hover:scale-105 transition-transform" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden')">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 hidden items-center justify-center font-serif font-black text-slate-950 text-xl shadow-lg shadow-amber-500/20 group-hover:scale-105 transition-transform">
+          A
+        </div>
+        <div class="flex flex-col">
+          <span class="font-serif font-extrabold text-xl text-amber-100 tracking-wider group-hover:text-amber-400 transition-colors">AEON<span class="text-amber-500">MC</span></span>
+        </div>
+      </a>
+
+      <!-- Primary Navigation Links -->
+      <nav class="hidden lg:flex items-center gap-6">
+        <a href="index.html" onclick="trackTelemetryClick('index.html', 'Home')" class="text-sm font-semibold text-slate-300 hover:text-amber-400 transition-colors">Home</a>
+        <a href="https://aeon-mc.tebex.store/" target="_blank" rel="noopener" onclick="trackTelemetryClick('https://aeon-mc.tebex.store/', 'Store Nav')" class="text-sm font-semibold text-slate-300 hover:text-amber-400 transition-colors">Store</a>
+        <a href="vote.html" onclick="trackTelemetryClick('vote.html', 'Vote Nav')" class="text-sm font-semibold text-slate-300 hover:text-amber-400 transition-colors">Vote</a>
+        <a href="support.html" onclick="trackTelemetryClick('support.html', 'Support Nav')" class="text-sm font-bold text-amber-400 hover:text-amber-300 transition-colors">Support & Apps</a>
+        <a href="wiki.html" onclick="trackTelemetryClick('wiki.html', 'Wiki')" class="text-sm font-semibold text-slate-300 hover:text-amber-400 transition-colors">Wiki</a>
+        <a href="forums.html" onclick="trackTelemetryClick('forums.html', 'Forums')" class="text-sm font-semibold text-slate-300 hover:text-amber-400 transition-colors">Forums</a>
+
+        <!-- Dynamic Staff Navigation Container -->
+        <div id="staffNavContainer"></div>
+      </nav>
+
+      <!-- User Auth Controls Container -->
+      <div id="userAuthContainer" class="flex items-center gap-3">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+    </div>
+  </header>
+
+  <!-- Support Hero Section -->
+  <section class="py-16 text-center px-4">
+    <div class="inline-flex items-center gap-2 px-4 py-1 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-300 text-xs font-bold uppercase tracking-widest mb-6">
+      🛡️ AeonMC Support & Application Desk
+    </div>
+
+    <h1 class="font-serif text-4xl sm:text-6xl font-black text-gold-gradient mb-4">HOW CAN WE ASSIST YOU?</h1>
+    <p class="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto mb-8 font-light leading-relaxed">
+      Select a category below to submit an official application, report a player or bug, or open a general help ticket with our staff team.
+    </p>
+
+    <div class="flex items-center justify-center gap-4">
+      <a href="https://discord.gg/VQgsh8kW2F" target="_blank" rel="noopener" onclick="trackTelemetryClick('https://discord.gg/VQgsh8kW2F', 'Discord Support CTA')" class="px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs uppercase tracking-wider shadow-lg flex items-center gap-2">
+        <span>💬</span> Join Discord Support
+      </a>
+    </div>
+  </section>
+
+  <!-- Support Ticket Form Selector Cards -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
+      
+      <!-- Staff App Card -->
+      <button onclick="selectTicketType('staff_app', 'Staff Application')" class="ticket-type-btn p-5 rounded-2xl glass-card text-center hover:border-amber-500 transition-all flex flex-col items-center gap-2 group">
+        <span class="text-3xl mb-1">📜</span>
+        <span class="font-serif font-bold text-sm text-amber-200 group-hover:text-amber-400">Staff Application</span>
+        <span class="text-[10px] text-slate-400">Apply for Helper / Mod</span>
+      </button>
+
+      <!-- Creator App Card -->
+      <button onclick="selectTicketType('creator_app', 'Creator Application')" class="ticket-type-btn p-5 rounded-2xl glass-card text-center hover:border-purple-500 transition-all flex flex-col items-center gap-2 group">
+        <span class="text-3xl mb-1">🎥</span>
+        <span class="font-serif font-bold text-sm text-purple-200 group-hover:text-purple-400">Creator Application</span>
+        <span class="text-[10px] text-slate-400">YouTube & TikTok rank</span>
+      </button>
+
+      <!-- Report Player Card -->
+      <button onclick="selectTicketType('report_player', 'Report a Cheater')" class="ticket-type-btn p-5 rounded-2xl glass-card text-center hover:border-rose-500 transition-all flex flex-col items-center gap-2 group">
+        <span class="text-3xl mb-1">🚨</span>
+        <span class="font-serif font-bold text-sm text-rose-200 group-hover:text-rose-400">Report a Cheater</span>
+        <span class="text-[10px] text-slate-400">Hacks or griefing</span>
+      </button>
+
+      <!-- Report Bug Card -->
+      <button onclick="selectTicketType('bug_report', 'Report a Bug')" class="ticket-type-btn p-5 rounded-2xl glass-card text-center hover:border-emerald-500 transition-all flex flex-col items-center gap-2 group">
+        <span class="text-3xl mb-1">🐛</span>
+        <span class="font-serif font-bold text-sm text-emerald-200 group-hover:text-emerald-400">Report a Bug</span>
+        <span class="text-[10px] text-slate-400">Exploits or glitches</span>
+      </button>
+
+      <!-- Submit Ticket Card -->
+      <button onclick="selectTicketType('help_ticket', 'Submit Help Ticket')" class="ticket-type-btn p-5 rounded-2xl glass-card text-center hover:border-blue-500 transition-all flex flex-col items-center gap-2 group">
+        <span class="text-3xl mb-1">💬</span>
+        <span class="font-serif font-bold text-sm text-blue-200 group-hover:text-blue-400">General Support</span>
+        <span class="text-[10px] text-slate-400">Billing or account help</span>
+      </button>
+
+    </div>
+  </section>
+
+  <!-- Interactive Submission Form Section -->
+  <section class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
+    <div class="glass-card p-8 rounded-2xl border-amber-500/40 shadow-2xl">
+      <div class="flex items-center justify-between mb-6 pb-4 border-b border-amber-500/20">
+        <div>
+          <h3 id="selectedFormTitle" class="font-serif text-2xl font-black text-gold-gradient">General Support Ticket</h3>
+          <p class="text-xs text-slate-400 mt-1">Submitted directly to Bloom MySQL and reviewed by staff</p>
+        </div>
+        <span id="selectedFormBadge" class="px-3 py-1 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 text-xs font-bold uppercase">Help Ticket</span>
+      </div>
+
+      <form id="supportTicketForm" class="space-y-5">
+        <input type="hidden" id="ticketType" value="help_ticket">
+
+        <div>
+          <label class="block text-xs font-bold text-slate-300 mb-1">Discord Tag or Contact Handle</label>
+          <input type="text" id="contactDiscord" required placeholder="e.g. Izengal#0001 or izengal" class="w-full px-4 py-3 rounded-xl bg-slate-950/90 border border-slate-800 text-amber-100 text-sm focus:border-amber-500 focus:outline-none">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-300 mb-1">Subject / Summary</label>
+          <input type="text" id="ticketSubject" required placeholder="Brief summary of your request or application" class="w-full px-4 py-3 rounded-xl bg-slate-950/90 border border-slate-800 text-amber-100 text-sm focus:border-amber-500 focus:outline-none">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-300 mb-1">Detailed Information & Links</label>
+          <textarea id="ticketDescription" required rows="6" placeholder="Provide full details, video proof links, or application answers..." class="w-full px-4 py-3 rounded-xl bg-slate-950/90 border border-slate-800 text-amber-100 text-sm focus:border-amber-500 focus:outline-none resize-none"></textarea>
+        </div>
+
+        <button type="submit" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-sm uppercase tracking-wider shadow-lg shadow-amber-500/20 transition-all">
+          Submit Request
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="mt-auto border-t border-amber-500/20 py-8 bg-slate-950/80">
+    <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-400">
+      <p class="mb-2">© 2026 AeonMC. All rights reserved. Not affiliated with Mojang Studios or Microsoft.</p>
+      <p class="text-amber-400/80 font-mono">Server IP: play.aeonmc.com</p>
+    </div>
+  </footer>
+
+  <!-- App Client Script -->
+  <script src="js/app.js"></script>
+  <script>
+    function selectTicketType(type, title) {
+      document.getElementById('ticketType').value = type;
+      document.getElementById('selectedFormTitle').innerText = title;
+      document.getElementById('selectedFormBadge').innerText = type.replace('_', ' ');
+
+      window.scrollTo({ top: document.getElementById('supportTicketForm').offsetTop - 120, behavior: 'smooth' });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('supportTicketForm');
+      if (form) {
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const type = document.getElementById('ticketType').value;
+          const contact_discord = document.getElementById('contactDiscord').value.trim();
+          const subject = document.getElementById('ticketSubject').value.trim();
+          const description = document.getElementById('ticketDescription').value.trim();
+
+          const token = getAuthToken();
+
+          try {
+            const res = await fetch('/api/support/tickets', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+              },
+              body: JSON.stringify({ type, contact_discord, subject, description })
+            });
+
+            const data = await res.json();
+            if (data.success) {
+              showToast(data.message || 'Ticket submitted successfully!', 'success', 2500);
+              form.reset();
+              setTimeout(() => window.location.reload(), 1200);
+            } else {
+              showToast(data.message || 'Submission failed.', 'error');
+            }
+          } catch (err) {
+            console.error('Submission error:', err);
+            showToast('Failed to connect to support server.', 'error');
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

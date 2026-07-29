@@ -13,6 +13,8 @@ import postsHandler from './api/forms/posts.js';
 import pinHandler from './api/forms/pin.js';
 import setRankHandler from './api/ranks/set-rank.js';
 import voteLinksHandler from './api/vote/links.js';
+import supportTicketsHandler from './api/support/tickets.js';
+import wikiArticlesHandler from './api/wiki/articles.js';
 
 dotenv.config();
 
@@ -52,6 +54,8 @@ app.all('/api/forms/pin', adapt(pinHandler));
 
 app.all('/api/ranks/set-rank', adapt(setRankHandler));
 app.all('/api/vote/links', adapt(voteLinksHandler));
+app.all('/api/support/tickets', adapt(supportTicketsHandler));
+app.all('/api/wiki/articles', adapt(wikiArticlesHandler));
 
 // Health Check Endpoint
 app.get('/api/health', (req, res) => {
