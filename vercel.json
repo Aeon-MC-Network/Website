@@ -1,12 +1,22 @@
 {
-  "version": 2,
-  "builds": [
-    { "src": "api/**/*.js", "use": "@vercel/node" },
-    { "src": "package.json", "use": "@vercel/static-build" }
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/vote", "destination": "/vote.html" },
+    { "source": "/wiki", "destination": "/wiki.html" },
+    { "source": "/forums", "destination": "/forums.html" },
+    { "source": "/contact", "destination": "/contact.html" },
+    { "source": "/support", "destination": "/support.html" },
+    { "source": "/creators", "destination": "/creators.html" },
+    { "source": "/media", "destination": "/media.html" }
   ],
-  "routes": [
-    { "src": "/api/(.*)", "dest": "/api/$1" },
-    { "handle": "filesystem" },
-    { "src": "/((?!.+\\.[\\w]+$).*)", "dest": "/index.html" }
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Access-Control-Allow-Methods", "value": "GET,POST,PUT,DELETE,OPTIONS" },
+        { "key": "Access-Control-Allow-Headers", "value": "Content-Type, Authorization" }
+      ]
+    }
   ]
 }
