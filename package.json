@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "AeonMC Official Network Website & Platform",
   "main": "index.html",
+  "type": "module",
   "scripts": {
     "build:css": "tailwindcss -i ./assets/css/input.css -o ./assets/css/style.css --minify",
     "watch:css": "tailwindcss -i ./assets/css/input.css -o ./assets/css/style.css --watch"
@@ -11,5 +12,8 @@
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.17"
+  },
+  "dependencies": {
+    "mysql2": "^3.23.2"
   }
 }

@@ -47,27 +47,66 @@ const Auth = {
     return role.includes('creator') || role === 'mod' || role === 'moderator' || role === 'admin' || role === 'administrator';
   },
 
-  login(username, password) {
-    const users = StorageDB.get(STORAGE_KEYS.USERS) || [];
-    const user = users.find(
-      u => u.username.toLowerCase() === username.toLowerCase() && u.passwordHash === password
-    );
+  async login(username, password) {
+    const apiUrl = (window.API_BASE_URL || '') + '/api/login';
 
-    if (user) {
-      if (user.isBanned) {
-        return { success: false, message: "Account suspended by staff." };
+    try {
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+
+      const data = await response.json();
+
+      if (data.success && data.user) {
+        const user = data.user;
+        if (user.role && user.role.toLowerCase() === 'moderator') user.role = 'Mod';
+        if (user.role && user.role.toLowerCase() === 'administrator') user.role = 'Admin';
+        if (!user.avatar) user.avatar = `https://mc-heads.net/avatar/${user.username}/100`;
+
+        StorageDB.set(STORAGE_KEYS.CURRENT_USER, user);
+        StorageDB.logAction(user.username, "User Login", `User ${user.username} logged in as ${user.role} via API.`);
+        return { success: true, user: user };
+      } else {
+        // Fallback check against local users
+        const users = StorageDB.get(STORAGE_KEYS.USERS) || [];
+        const localUser = users.find(
+          u => u.username.toLowerCase() === username.toLowerCase() && u.passwordHash === password
+        );
+
+        if (localUser) {
+          if (localUser.isBanned) return { success: false, message: "Account suspended by staff." };
+          if (localUser.role.toLowerCase() === 'moderator') localUser.role = 'Mod';
+          if (localUser.role.toLowerCase() === 'administrator') localUser.role = 'Admin';
+
+          StorageDB.set(STORAGE_KEYS.CURRENT_USER, localUser);
+          StorageDB.logAction(localUser.username, "User Login", `User ${localUser.username} logged in as ${localUser.role}.`);
+          return { success: true, user: localUser };
+        }
+        return { success: false, message: data.message || "Invalid username or password." };
       }
-      
-      // Standardize role string
-      if (user.role.toLowerCase() === 'moderator') user.role = 'Mod';
-      if (user.role.toLowerCase() === 'administrator') user.role = 'Admin';
+    } catch (err) {
+      console.warn('API connection failed, attempting local auth fallback:', err);
+      const users = StorageDB.get(STORAGE_KEYS.USERS) || [];
+      const user = users.find(
+        u => u.username.toLowerCase() === username.toLowerCase() && u.passwordHash === password
+      );
 
-      StorageDB.set(STORAGE_KEYS.CURRENT_USER, user);
-      StorageDB.logAction(user.username, "User Login", `User ${user.username} logged in as ${user.role}.`);
-      return { success: true, user: user };
+      if (user) {
+        if (user.isBanned) {
+          return { success: false, message: "Account suspended by staff." };
+        }
+        if (user.role.toLowerCase() === 'moderator') user.role = 'Mod';
+        if (user.role.toLowerCase() === 'administrator') user.role = 'Admin';
+
+        StorageDB.set(STORAGE_KEYS.CURRENT_USER, user);
+        StorageDB.logAction(user.username, "User Login", `User ${user.username} logged in as ${user.role}.`);
+        return { success: true, user: user };
+      }
+
+      return { success: false, message: "Invalid username or password." };
     }
-
-    return { success: false, message: "Invalid username or password." };
   },
 
   register(username, email, password) {

@@ -442,12 +442,12 @@ const App = {
     }
   },
 
-  handleLoginSubmit(e) {
+  async handleLoginSubmit(e) {
     e.preventDefault();
     const userVal = document.getElementById('loginUsername').value.trim();
     const passVal = document.getElementById('loginPassword').value.trim();
 
-    const res = Auth.login(userVal, passVal);
+    const res = await Auth.login(userVal, passVal);
     if (res.success) {
       this.closeAuthModal();
       this.renderHeader();
