@@ -1,6 +1,6 @@
 /**
- * AeonMC Network v2 - Enterprise JAMstack Client Engine
- * Implements Action-Triggered Auto-Sync Reload Pattern for Static GitHub Pages
+ * AeonMC - Client Engine
+ * Implements Live Server Status API Fetching and Action-Triggered Auto-Sync Reload Pattern
  */
 
 const API_BASE_URL = window.API_BASE_URL || '/api';
@@ -10,6 +10,60 @@ const AppState = {
   authToken: null,
   topLinks: []
 };
+
+// --- Live Minecraft Server Query API Status ---
+async function fetchMinecraftServerStatus() {
+  const badgeElement = document.getElementById('playerCountBadge');
+  const serverHost = 'play.aeonmc.com';
+
+  try {
+    const res = await fetch(`https://api.mcsrvstat.us/3/${serverHost}`);
+    const data = await res.json();
+
+    if (data && data.online) {
+      const online = data.players?.online || 0;
+      const max = data.players?.max || 500;
+      if (badgeElement) {
+        badgeElement.innerHTML = `
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          Online: ${online} / ${max} Players
+        `;
+      }
+      return;
+    }
+
+    // Secondary fallback API
+    const resFB = await fetch(`https://api.mcstatus.io/v2/status/java/${serverHost}`);
+    const dataFB = await resFB.json();
+
+    if (dataFB && dataFB.online) {
+      const online = dataFB.players?.online || 0;
+      const max = dataFB.players?.max || 500;
+      if (badgeElement) {
+        badgeElement.innerHTML = `
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          Online: ${online} / ${max} Players
+        `;
+      }
+      return;
+    }
+
+    if (badgeElement) {
+      badgeElement.innerHTML = `
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+        Server Online: play.aeonmc.com
+      `;
+    }
+  } catch (err) {
+    console.warn('Server status query:', err);
+    if (badgeElement) {
+      badgeElement.innerHTML = `
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+        Server Online: play.aeonmc.com
+      `;
+    }
+  }
+}
 
 // --- Auth Token Helpers ---
 function getAuthToken() {
@@ -63,7 +117,7 @@ function showToast(message, type = 'info', delayMs = 3500) {
   }, delayMs);
 }
 
-// --- Telemetry Click Logger & Auto-Sync ---
+// --- Telemetry Click Logger ---
 async function trackTelemetryClick(linkDestination, linkTitle) {
   const token = getAuthToken();
   if (token) {
@@ -77,7 +131,7 @@ async function trackTelemetryClick(linkDestination, linkTitle) {
         body: JSON.stringify({ link_destination: linkDestination, link_title: linkTitle })
       });
     } catch (err) {
-      console.warn('Telemetry ping error:', err);
+      console.warn('Telemetry ping:', err);
     }
   }
 }
@@ -139,7 +193,7 @@ async function fetchCurrentUser() {
       return null;
     }
   } catch (err) {
-    console.warn('/api/auth/me offline, local session state maintained:', err);
+    console.warn('/api/auth/me query:', err);
     return null;
   }
 }
@@ -164,7 +218,7 @@ async function fetchTopLinks() {
       renderTopLinksDashboard(data.top_links);
     }
   } catch (err) {
-    console.warn('Top links telemetry fetch error:', err);
+    console.warn('Top links telemetry fetch:', err);
   }
 }
 
@@ -187,7 +241,6 @@ async function performLogin(username, password) {
       closeModal('loginModal');
       showToast(`Welcome back, ${data.user.username}! Synchronizing page...`, 'success', 1500);
 
-      // ACTION AUTO-SYNC: Reload page after action to guarantee 100% DB state on static GitHub Pages
       setTimeout(() => {
         window.location.reload();
       }, 800);
@@ -225,8 +278,6 @@ async function performRegister(username, email, password, ign, tosAccepted, mark
     if (data.success) {
       closeModal('registerModal');
       showToast(`Account created for ${data.user.username}! Synchronizing session...`, 'success', 1500);
-
-      // Automatically login and trigger page reload sync
       return await performLogin(username, password);
     } else {
       showToast(data.message || 'Registration failed.', 'error');
@@ -239,7 +290,7 @@ async function performRegister(username, email, password, ign, tosAccepted, mark
   }
 }
 
-// --- Forum Thread Creation with Action Auto-Sync Reload ---
+// --- Forum Thread Creation ---
 async function createThread(categoryId, title, contentHtml) {
   const token = getAuthToken();
   if (!token) {
@@ -260,7 +311,7 @@ async function createThread(categoryId, title, contentHtml) {
 
     const data = await response.json();
     if (data.success) {
-      showToast('Thread created! Synchronizing database...', 'success', 1500);
+      showToast('Thread created! Synchronizing...', 'success', 1500);
       setTimeout(() => window.location.reload(), 800);
     } else {
       showToast(data.message || 'Thread creation failed.', 'error');
@@ -271,7 +322,7 @@ async function createThread(categoryId, title, contentHtml) {
   }
 }
 
-// --- Forum Thread Pinning with Action Auto-Sync Reload ---
+// --- Forum Thread Pinning ---
 async function pinThread(threadId, keepForever) {
   const token = getAuthToken();
   if (!token) return;
@@ -298,7 +349,7 @@ async function pinThread(threadId, keepForever) {
   }
 }
 
-// --- Rank Admin Promotion with Action Auto-Sync Reload ---
+// --- Rank Admin Promotion ---
 async function setRank(targetUsername, newRole) {
   const token = getAuthToken();
   if (!token) return;
@@ -325,7 +376,7 @@ async function setRank(targetUsername, newRole) {
   }
 }
 
-// --- Logout Handler with Action Auto-Sync Reload ---
+// --- Logout Handler ---
 function handleLogout() {
   removeAuthToken();
   showToast('Logged out. Reloading session...', 'info', 1000);
@@ -334,7 +385,7 @@ function handleLogout() {
   }, 600);
 }
 
-// --- Render Header User Profile Controls ---
+// --- Render Header User Controls ---
 function renderUserHeader(user) {
   const container = document.getElementById('userAuthContainer');
   if (!container) return;
@@ -376,7 +427,7 @@ function renderUserHeader(user) {
   }
 }
 
-// --- Render Staff Navigation (Based on web_roles capability matrix) ---
+// --- Render Staff Navigation ---
 function renderStaffNav(user) {
   const container = document.getElementById('staffNavContainer');
   if (!container) return;
@@ -468,10 +519,13 @@ window.trackTelemetryClick = trackTelemetryClick;
 window.createThread = createThread;
 window.pinThread = pinThread;
 window.setRank = setRank;
+window.fetchMinecraftServerStatus = fetchMinecraftServerStatus;
 
 // --- Initialize App ---
 document.addEventListener('DOMContentLoaded', () => {
   fetchCurrentUser();
+  fetchMinecraftServerStatus();
+  setInterval(fetchMinecraftServerStatus, 60000);
 
   // Attach login listener
   const loginForm = document.getElementById('loginForm');
