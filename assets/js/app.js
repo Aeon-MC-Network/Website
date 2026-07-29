@@ -1,6 +1,6 @@
 /**
  * AeonMC - Client Engine
- * Implements Live Server Status API Fetching, Safe API Client with HTML-Fallback Prevention, and Action Auto-Sync Reload
+ * Implements Unified Auth Modals, Safe API Client, and Action Auto-Sync Reload Pattern
  */
 
 function getApiBaseUrl() {
@@ -27,7 +27,6 @@ async function safeApiFetch(endpoint, options = {}) {
     const res = await fetch(fullUrl, options);
     const contentType = res.headers.get('content-type') || '';
 
-    // Check if GitHub Pages or static host returned an HTML fallback page (e.g. 404.html)
     if (!contentType.includes('application/json')) {
       console.warn(`[API] Endpoint '${endpoint}' returned non-JSON content-type '${contentType || 'HTML'}'. Using fallback client mode.`);
       return { ok: false, status: res.status, isHtmlFallback: true, data: null };
@@ -68,7 +67,6 @@ async function fetchMinecraftServerStatus() {
       }
     }
 
-    // Secondary fallback API
     const resFB = await fetch(`https://api.mcstatus.io/v2/status/java/${serverHost}`);
     if (resFB.ok) {
       const dataFB = await resFB.json().catch(() => null);
@@ -272,6 +270,7 @@ async function performLogin(username, password) {
     AppState.currentUser = res.data.user;
 
     closeModal('loginModal');
+    closeModal('registerModal');
     showToast(`Welcome back, ${res.data.user.username}! Synchronizing session...`, 'success', 1500);
 
     setTimeout(() => {
@@ -526,8 +525,28 @@ function renderTopLinksDashboard(topLinks) {
   `).join('');
 }
 
-// --- Modal Utilities ---
+// --- Robust Modal Utilities & Tab Switching ---
 function openModal(id) {
+  if (id === 'registerModal') {
+    const regModal = document.getElementById('registerModal');
+    if (regModal) {
+      closeModal('loginModal');
+      regModal.classList.remove('hidden');
+      regModal.classList.add('flex');
+      return;
+    }
+  }
+
+  if (id === 'loginModal') {
+    const loginModal = document.getElementById('loginModal');
+    if (loginModal) {
+      closeModal('registerModal');
+      loginModal.classList.remove('hidden');
+      loginModal.classList.add('flex');
+      return;
+    }
+  }
+
   const modal = document.getElementById(id);
   if (modal) {
     modal.classList.remove('hidden');

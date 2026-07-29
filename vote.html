@@ -86,8 +86,8 @@
         <a href="vote.html" onclick="trackTelemetryClick('vote.html', 'Vote Nav')" class="text-sm font-bold text-amber-400 hover:text-amber-300 transition-colors">Vote</a>
         <a href="wiki.html" onclick="trackTelemetryClick('wiki.html', 'Wiki')" class="text-sm font-semibold text-slate-300 hover:text-amber-400 transition-colors">Wiki</a>
         <a href="forums.html" onclick="trackTelemetryClick('forums.html', 'Forums')" class="text-sm font-semibold text-slate-300 hover:text-amber-400 transition-colors">Forums</a>
-        <a href="media.html" onclick="trackTelemetryClick('media.html', 'Creators Nav')" class="text-sm font-semibold text-slate-300 hover:text-amber-400 transition-colors">Creators</a>
-        <a href="support.html" onclick="trackTelemetryClick('support.html', 'Contact Nav')" class="text-sm font-semibold text-slate-300 hover:text-amber-400 transition-colors">Contact</a>
+        <a href="creators.html" onclick="trackTelemetryClick('creators.html', 'Creators Nav')" class="text-sm font-semibold text-slate-300 hover:text-amber-400 transition-colors">Creators</a>
+        <a href="contact.html" onclick="trackTelemetryClick('contact.html', 'Contact Nav')" class="text-sm font-semibold text-slate-300 hover:text-amber-400 transition-colors">Contact</a>
 
         <!-- Dynamic Staff Navigation Container -->
         <div id="staffNavContainer"></div>
@@ -186,6 +186,57 @@
         </div>
         <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-black text-sm uppercase tracking-wider">Login</button>
       </form>
+
+      <div class="mt-6 text-center text-xs text-slate-400">
+        Don't have an account? 
+        <button onclick="closeModal('loginModal'); openModal('registerModal');" class="text-amber-400 hover:underline font-bold">Register here</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Register Modal Dialog -->
+  <div id="registerModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
+    <div class="glass-card max-w-md w-full p-8 rounded-2xl border-amber-500/40 relative shadow-2xl max-h-[90vh] overflow-y-auto">
+      <button onclick="closeModal('registerModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg">✕</button>
+      <div class="text-center mb-6">
+        <h3 class="font-serif text-2xl font-black text-gold-gradient">Create Player Account</h3>
+        <p class="text-xs text-slate-400 mt-1">Register for persistent community features</p>
+      </div>
+      <form id="registerForm" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-300 mb-1">Username</label>
+          <input type="text" id="regUsername" required class="w-full px-4 py-2.5 rounded-xl bg-slate-950/90 border border-slate-800 text-amber-100 text-sm focus:border-amber-500 focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-300 mb-1">Email Address</label>
+          <input type="email" id="regEmail" required class="w-full px-4 py-2.5 rounded-xl bg-slate-950/90 border border-slate-800 text-amber-100 text-sm focus:border-amber-500 focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-300 mb-1">Minecraft IGN (In-Game Name)</label>
+          <input type="text" id="regIgn" required class="w-full px-4 py-2.5 rounded-xl bg-slate-950/90 border border-slate-800 text-amber-100 text-sm focus:border-amber-500 focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-300 mb-1">Password</label>
+          <input type="password" id="regPassword" required class="w-full px-4 py-2.5 rounded-xl bg-slate-950/90 border border-slate-800 text-amber-100 text-sm focus:border-amber-500 focus:outline-none">
+        </div>
+        <div class="space-y-2 pt-2">
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" id="regTos" required checked class="rounded border-slate-800 text-amber-500 focus:ring-amber-500">
+            <span class="text-xs text-slate-300">I accept the AeonMC Terms of Service & Rules</span>
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" id="regMkt" checked class="rounded border-slate-800 text-amber-500 focus:ring-amber-500">
+            <span class="text-xs text-slate-300">Opt-in to updates & reward announcements</span>
+          </label>
+        </div>
+        <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-sm uppercase tracking-wider shadow-lg shadow-amber-500/20 transition-all">
+          Register
+        </button>
+      </form>
+      <div class="mt-6 text-center text-xs text-slate-400">
+        Already registered? 
+        <button onclick="closeModal('registerModal'); openModal('loginModal');" class="text-amber-400 hover:underline font-bold">Login here</button>
+      </div>
     </div>
   </div>
 
