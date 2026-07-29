@@ -86,10 +86,7 @@
       
       <!-- Brand Logo -->
       <a href="index.html" class="flex items-center gap-3 group">
-        <img src="assets/img/62b8530f-faae-4c33-899f-3efcdb3faa94.jpg" alt="AeonMC Logo" class="w-10 h-10 rounded-xl border border-amber-500/40 shadow-lg shadow-amber-500/20 object-cover group-hover:scale-105 transition-transform" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden')">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 hidden items-center justify-center font-serif font-black text-slate-950 text-xl shadow-lg shadow-amber-500/20 group-hover:scale-105 transition-transform">
-          A
-        </div>
+        <img src="assets/img/62b8530f-faae-4c33-899f-3efcdb3faa94.jpg" alt="AeonMC Logo" class="w-10 h-10 rounded-xl border border-amber-500/40 shadow-lg shadow-amber-500/20 object-cover group-hover:scale-105 transition-transform" onerror="this.src='62b8530f-faae-4c33-899f-3efcdb3faa94.jpg'">
         <div class="flex flex-col">
           <span class="font-serif font-extrabold text-xl text-amber-100 tracking-wider group-hover:text-amber-400 transition-colors">AEON<span class="text-amber-500">MC</span></span>
         </div>
@@ -297,17 +294,20 @@
 
     async function loadWikiArticles() {
       const token = getAuthToken();
-      const res = await safeApiFetch('/wiki/articles', {
-        headers: token ? { 'Authorization': `Bearer ${token}` } : {}
-      });
-
+      const fetchFunc = window.safeApiFetch || safeApiFetch;
       let articles = DEFAULT_WIKI_ARTICLES;
 
-      if (res.ok && res.data && res.data.success && res.data.articles && res.data.articles.length > 0) {
-        articles = res.data.articles;
-        if (res.data.isStaff) {
-          const editorPanel = document.getElementById('staffWikiEditorPanel');
-          if (editorPanel) editorPanel.classList.remove('hidden');
+      if (typeof fetchFunc === 'function') {
+        const res = await fetchFunc('/wiki/articles', {
+          headers: token ? { 'Authorization': `Bearer ${token}` } : {}
+        });
+
+        if (res && res.ok && res.data && res.data.success && res.data.articles && res.data.articles.length > 0) {
+          articles = res.data.articles;
+          if (res.data.isStaff) {
+            const editorPanel = document.getElementById('staffWikiEditorPanel');
+            if (editorPanel) editorPanel.classList.remove('hidden');
+          }
         }
       }
 
@@ -408,7 +408,8 @@
           const content_html = document.getElementById('wikiContentHtml').value.trim();
           const is_staff_only = document.getElementById('wikiIsStaffOnly').checked ? 1 : 0;
 
-          const res = await safeApiFetch('/wiki/articles', {
+          const fetchFunc = window.safeApiFetch || safeApiFetch;
+          const res = await fetchFunc('/wiki/articles', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -417,7 +418,7 @@
             body: JSON.stringify({ article_id: article_id ? parseInt(article_id) : null, category, title, slug, content_html, is_staff_only })
           });
 
-          if (res.ok && res.data && res.data.success) {
+          if (res && res.ok && res.data && res.data.success) {
             showToast(res.data.message || 'Wiki article published! Reloading...', 'success', 1500);
             setTimeout(() => window.location.reload(), 800);
           } else {

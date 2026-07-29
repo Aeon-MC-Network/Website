@@ -70,10 +70,7 @@
       
       <!-- Brand Logo -->
       <a href="index.html" class="flex items-center gap-3 group">
-        <img src="assets/img/62b8530f-faae-4c33-899f-3efcdb3faa94.jpg" alt="AeonMC Logo" class="w-10 h-10 rounded-xl border border-amber-500/40 shadow-lg shadow-amber-500/20 object-cover group-hover:scale-105 transition-transform" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden')">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 hidden items-center justify-center font-serif font-black text-slate-950 text-xl shadow-lg shadow-amber-500/20 group-hover:scale-105 transition-transform">
-          A
-        </div>
+        <img src="assets/img/62b8530f-faae-4c33-899f-3efcdb3faa94.jpg" alt="AeonMC Logo" class="w-10 h-10 rounded-xl border border-amber-500/40 shadow-lg shadow-amber-500/20 object-cover group-hover:scale-105 transition-transform" onerror="this.src='62b8530f-faae-4c33-899f-3efcdb3faa94.jpg'">
         <div class="flex flex-col">
           <span class="font-serif font-extrabold text-xl text-amber-100 tracking-wider group-hover:text-amber-400 transition-colors">AEON<span class="text-amber-500">MC</span></span>
         </div>
@@ -295,13 +292,17 @@
 
     async function loadForumCategories() {
       const token = getAuthToken();
-      const res = await safeApiFetch('/forms/categories', {
-        headers: token ? { 'Authorization': `Bearer ${token}` } : {}
-      });
-
+      const fetchFunc = window.safeApiFetch || safeApiFetch;
       let categories = DEFAULT_CATEGORIES;
-      if (res.ok && res.data && res.data.success && res.data.categories && res.data.categories.length > 0) {
-        categories = res.data.categories;
+
+      if (typeof fetchFunc === 'function') {
+        const res = await fetchFunc('/forms/categories', {
+          headers: token ? { 'Authorization': `Bearer ${token}` } : {}
+        });
+
+        if (res && res.ok && res.data && res.data.success && res.data.categories && res.data.categories.length > 0) {
+          categories = res.data.categories;
+        }
       }
 
       forumCategoriesData = categories;
@@ -338,11 +339,14 @@
       if (!listContainer) return;
 
       const url = categoryId ? `/forms/threads?category_id=${categoryId}` : '/forms/threads';
-      const res = await safeApiFetch(url);
-
+      const fetchFunc = window.safeApiFetch || safeApiFetch;
       let threads = DEFAULT_THREADS;
-      if (res.ok && res.data && res.data.success && res.data.threads) {
-        threads = res.data.threads;
+
+      if (typeof fetchFunc === 'function') {
+        const res = await fetchFunc(url);
+        if (res && res.ok && res.data && res.data.success && res.data.threads) {
+          threads = res.data.threads;
+        }
       }
 
       renderThreads(threads);
@@ -422,9 +426,10 @@
       const headerContainer = document.getElementById('threadReaderHeader');
       postsContainer.innerHTML = `<div class="text-center py-8 text-xs text-slate-400">Loading replies...</div>`;
 
-      const res = await safeApiFetch(`/forms/posts?thread_id=${threadId}`);
+      const fetchFunc = window.safeApiFetch || safeApiFetch;
+      const res = await fetchFunc(`/forms/posts?thread_id=${threadId}`);
 
-      if (res.ok && res.data && res.data.success && res.data.posts && res.data.posts.length > 0) {
+      if (res && res.ok && res.data && res.data.success && res.data.posts && res.data.posts.length > 0) {
         const first = res.data.posts[0];
         headerContainer.innerHTML = `
           <div class="text-xs text-amber-400 font-mono font-bold uppercase mb-1">Thread #${threadId}</div>
@@ -479,7 +484,8 @@
             return;
           }
 
-          const res = await safeApiFetch('/forms/posts', {
+          const fetchFunc = window.safeApiFetch || safeApiFetch;
+          const res = await fetchFunc('/forms/posts', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -488,7 +494,7 @@
             body: JSON.stringify({ thread_id, content_html })
           });
 
-          if (res.ok && res.data && res.data.success) {
+          if (res && res.ok && res.data && res.data.success) {
             showToast('Reply posted! Synchronizing...', 'success', 1500);
             setTimeout(() => window.location.reload(), 800);
           } else {

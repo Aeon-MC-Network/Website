@@ -6,6 +6,10 @@
 function getApiBaseUrl() {
   if (window.API_BASE_URL) return window.API_BASE_URL;
   if (localStorage.getItem('aeon_api_url')) return localStorage.getItem('aeon_api_url');
+  // Auto-detect production API endpoint if running on static GitHub Pages
+  if (window.location.hostname.includes('github.io')) {
+    return 'https://aeon-mc.vercel.app/api';
+  }
   return '/api';
 }
 
@@ -44,6 +48,9 @@ async function safeApiFetch(endpoint, options = {}) {
     return { ok: false, status: 0, isNetworkError: true, data: null };
   }
 }
+
+// Immediately expose safeApiFetch globally
+window.safeApiFetch = safeApiFetch;
 
 // --- Live Minecraft Server Query API Status ---
 async function fetchMinecraftServerStatus() {
@@ -279,7 +286,7 @@ async function performLogin(username, password) {
 
     return { success: true, user: res.data.user };
   } else {
-    const errMsg = res.data?.message || 'Invalid username or password.';
+    const errMsg = res.data?.message || (res.isHtmlFallback ? 'Backend API unavailable on static GitHub Pages host. Set window.API_BASE_URL to live backend endpoint.' : 'Invalid username or password.');
     showToast(errMsg, 'error');
     return { success: false, message: errMsg };
   }
@@ -335,7 +342,7 @@ async function performRegister(username, email, password, ign, tosAccepted, mark
     showToast(`Account created for ${res.data.user.username}! Synchronizing session...`, 'success', 1500);
     return await performLogin(cleanUsername, cleanPassword);
   } else {
-    const errMsg = res.data?.message || 'Registration failed.';
+    const errMsg = res.data?.message || (res.isHtmlFallback ? 'Backend API unavailable on static GitHub Pages host.' : 'Registration failed.');
     showToast(errMsg, 'error');
     return { success: false, message: errMsg };
   }
@@ -525,7 +532,7 @@ function renderTopLinksDashboard(topLinks) {
   `).join('');
 }
 
-// --- Robust Modal Utilities & Tab Switching ---
+// --- Robust Modal Utilities ---
 function openModal(id) {
   if (id === 'registerModal') {
     const regModal = document.getElementById('registerModal');
