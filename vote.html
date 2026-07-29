@@ -206,46 +206,48 @@
   <!-- Client Script -->
   <script src="js/app.js"></script>
   <script>
+    const DEFAULT_VOTE_LINKS = [
+      { vote_id: 1, title: 'Planet Minecraft', url: 'https://planetminecraft.com', reward_description: '1x Vote Key + $500 In-Game Coins', display_order: 1 },
+      { vote_id: 2, title: 'Minecraft Server List', url: 'https://minecraft-server-list.com', reward_description: '1x Vote Key + 250 Claim Blocks', display_order: 2 },
+      { vote_id: 3, title: 'TopG Minecraft Servers', url: 'https://topg.org', reward_description: '1x Vote Key + 5x Rare Gems', display_order: 3 },
+      { vote_id: 4, title: 'Minecraft MP', url: 'https://minecraft-mp.com', reward_description: '1x Vote Key + 1h 2x XP Booster', display_order: 4 }
+    ];
+
     async function loadVoteHubLinks() {
       const grid = document.getElementById('voteLinksGrid');
       if (!grid) return;
 
-      try {
-        const res = await fetch('/api/vote/links');
-        const data = await res.json();
+      const res = await safeApiFetch('/vote/links');
+      let links = DEFAULT_VOTE_LINKS;
 
-        if (data.success && data.vote_links && data.vote_links.length > 0) {
-          grid.innerHTML = data.vote_links.map(link => `
-            <div class="glass-card p-6 rounded-2xl glass-card-hover flex flex-col justify-between border-amber-500/30">
-              <div>
-                <div class="flex items-center justify-between mb-3">
-                  <span class="text-xs font-mono font-bold text-amber-400 uppercase tracking-wider px-2.5 py-1 rounded bg-amber-500/10 border border-amber-500/20">Vote Site #${link.display_order || link.vote_id}</span>
-                  <span class="text-xs text-emerald-400 font-semibold flex items-center gap-1">✓ Active Reward</span>
-                </div>
-                <h3 class="font-serif text-xl font-bold text-amber-100 mb-2">${link.title}</h3>
-                <p class="text-xs text-slate-300 mb-4 bg-slate-950/60 p-3 rounded-xl border border-slate-800/80">
-                  <strong class="text-amber-400">In-Game Reward:</strong> ${link.reward_description || '1x Vote Key + $500 Coins'}
-                </p>
-              </div>
-              <div class="flex items-center gap-3">
-                <a href="${link.url}" target="_blank" rel="noopener"
-                   onclick="trackTelemetryClick('${link.url}', 'Vote: ${link.title}')"
-                   class="flex-1 py-3 px-4 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-slate-950 font-black text-xs uppercase tracking-wider text-center shadow-lg shadow-emerald-500/20 transition-all">
-                  Vote Now &rarr;
-                </a>
-                <span id="voteAdminBtns-${link.vote_id}"></span>
-              </div>
-            </div>
-          `).join('');
-
-          checkVoteAdminPermissions(data.vote_links);
-        } else {
-          grid.innerHTML = `<div class="col-span-full text-center py-12 text-slate-400 text-sm">No vote links configured yet.</div>`;
-        }
-      } catch (err) {
-        console.error('Error loading vote links:', err);
-        grid.innerHTML = `<div class="col-span-full text-center py-12 text-rose-400 text-sm">Failed to connect to voting server.</div>`;
+      if (res.ok && res.data && res.data.success && res.data.vote_links && res.data.vote_links.length > 0) {
+        links = res.data.vote_links;
       }
+
+      grid.innerHTML = links.map(link => `
+        <div class="glass-card p-6 rounded-2xl glass-card-hover flex flex-col justify-between border-amber-500/30">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs font-mono font-bold text-amber-400 uppercase tracking-wider px-2.5 py-1 rounded bg-amber-500/10 border border-amber-500/20">Vote Site #${link.display_order || link.vote_id}</span>
+              <span class="text-xs text-emerald-400 font-semibold flex items-center gap-1">✓ Active Reward</span>
+            </div>
+            <h3 class="font-serif text-xl font-bold text-amber-100 mb-2">${link.title}</h3>
+            <p class="text-xs text-slate-300 mb-4 bg-slate-950/60 p-3 rounded-xl border border-slate-800/80">
+              <strong class="text-amber-400">In-Game Reward:</strong> ${link.reward_description || '1x Vote Key + $500 Coins'}
+            </p>
+          </div>
+          <div class="flex items-center gap-3">
+            <a href="${link.url}" target="_blank" rel="noopener"
+               onclick="trackTelemetryClick('${link.url}', 'Vote: ${link.title}')"
+               class="flex-1 py-3 px-4 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-slate-950 font-black text-xs uppercase tracking-wider text-center shadow-lg shadow-emerald-500/20 transition-all">
+              Vote Now &rarr;
+            </a>
+            <span id="voteAdminBtns-${link.vote_id}"></span>
+          </div>
+        </div>
+      `).join('');
+
+      checkVoteAdminPermissions(links);
     }
 
     function checkVoteAdminPermissions(links) {
@@ -293,24 +295,20 @@
       if (!confirm('Are you sure you want to remove this vote link?')) return;
 
       const token = getAuthToken();
-      try {
-        const res = await fetch(`/api/vote/links`, {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          },
-          body: JSON.stringify({ vote_id: voteId })
-        });
-        const data = await res.json();
-        if (data.success) {
-          showToast('Vote link removed! Synchronizing...', 'success', 1500);
-          setTimeout(() => window.location.reload(), 800);
-        } else {
-          showToast(data.message || 'Delete failed', 'error');
-        }
-      } catch (err) {
-        showToast('Error deleting link', 'error');
+      const res = await safeApiFetch('/vote/links', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ vote_id: voteId })
+      });
+
+      if (res.ok && res.data && res.data.success) {
+        showToast('Vote link removed! Synchronizing...', 'success', 1500);
+        setTimeout(() => window.location.reload(), 800);
+      } else {
+        showToast(res.data?.message || 'Delete failed', 'error');
       }
     }
 
@@ -328,25 +326,20 @@
           const reward_description = document.getElementById('adminVoteReward').value.trim();
           const display_order = parseInt(document.getElementById('adminVoteOrder').value || 0);
 
-          try {
-            const res = await fetch('/api/vote/links', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-              },
-              body: JSON.stringify({ vote_id: vote_id ? parseInt(vote_id) : null, title, url, reward_description, display_order })
-            });
+          const res = await safeApiFetch('/vote/links', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ vote_id: vote_id ? parseInt(vote_id) : null, title, url, reward_description, display_order })
+          });
 
-            const data = await res.json();
-            if (data.success) {
-              showToast(data.message || 'Vote link saved! Reloading...', 'success', 1500);
-              setTimeout(() => window.location.reload(), 800);
-            } else {
-              showToast(data.message || 'Save failed', 'error');
-            }
-          } catch (err) {
-            showToast('Save failed due to network error.', 'error');
+          if (res.ok && res.data && res.data.success) {
+            showToast(res.data.message || 'Vote link saved! Reloading...', 'success', 1500);
+            setTimeout(() => window.location.reload(), 800);
+          } else {
+            showToast(res.data?.message || 'Save failed', 'error');
           }
         });
       }

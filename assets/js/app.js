@@ -1,15 +1,50 @@
 /**
  * AeonMC - Client Engine
- * Implements Live Server Status API Fetching and Action-Triggered Auto-Sync Reload Pattern
+ * Implements Live Server Status API Fetching, Safe API Client with HTML-Fallback Prevention, and Action Auto-Sync Reload
  */
 
-const API_BASE_URL = window.API_BASE_URL || '/api';
+function getApiBaseUrl() {
+  if (window.API_BASE_URL) return window.API_BASE_URL;
+  if (localStorage.getItem('aeon_api_url')) return localStorage.getItem('aeon_api_url');
+  return '/api';
+}
 
 const AppState = {
   currentUser: null,
   authToken: null,
   topLinks: []
 };
+
+/**
+ * Safe API Fetch Wrapper
+ * Validates res.ok and content-type header before parsing JSON to prevent SyntaxError on static HTML 404 fallbacks
+ */
+async function safeApiFetch(endpoint, options = {}) {
+  const baseUrl = getApiBaseUrl();
+  const fullUrl = endpoint.startsWith('http') ? endpoint : `${baseUrl}${endpoint.startsWith('/') ? '' : '/'}${endpoint}`;
+
+  try {
+    const res = await fetch(fullUrl, options);
+    const contentType = res.headers.get('content-type') || '';
+
+    // Check if GitHub Pages or static host returned an HTML fallback page (e.g. 404.html)
+    if (!contentType.includes('application/json')) {
+      console.warn(`[API] Endpoint '${endpoint}' returned non-JSON content-type '${contentType || 'HTML'}'. Using fallback client mode.`);
+      return { ok: false, status: res.status, isHtmlFallback: true, data: null };
+    }
+
+    if (!res.ok) {
+      const errData = await res.json().catch(() => null);
+      return { ok: false, status: res.status, data: errData };
+    }
+
+    const data = await res.json();
+    return { ok: true, status: res.status, data };
+  } catch (err) {
+    console.warn(`[API] Network failure fetching '${endpoint}':`, err);
+    return { ok: false, status: 0, isNetworkError: true, data: null };
+  }
+}
 
 // --- Live Minecraft Server Query API Status ---
 async function fetchMinecraftServerStatus() {
@@ -18,34 +53,36 @@ async function fetchMinecraftServerStatus() {
 
   try {
     const res = await fetch(`https://api.mcsrvstat.us/3/${serverHost}`);
-    const data = await res.json();
-
-    if (data && data.online) {
-      const online = data.players?.online || 0;
-      const max = data.players?.max || 500;
-      if (badgeElement) {
-        badgeElement.innerHTML = `
-          <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-          Online: ${online} / ${max} Players
-        `;
+    if (res.ok) {
+      const data = await res.json().catch(() => null);
+      if (data && data.online) {
+        const online = data.players?.online || 0;
+        const max = data.players?.max || 500;
+        if (badgeElement) {
+          badgeElement.innerHTML = `
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            Online: ${online} / ${max} Players
+          `;
+        }
+        return;
       }
-      return;
     }
 
     // Secondary fallback API
     const resFB = await fetch(`https://api.mcstatus.io/v2/status/java/${serverHost}`);
-    const dataFB = await resFB.json();
-
-    if (dataFB && dataFB.online) {
-      const online = dataFB.players?.online || 0;
-      const max = dataFB.players?.max || 500;
-      if (badgeElement) {
-        badgeElement.innerHTML = `
-          <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-          Online: ${online} / ${max} Players
-        `;
+    if (resFB.ok) {
+      const dataFB = await resFB.json().catch(() => null);
+      if (dataFB && dataFB.online) {
+        const online = dataFB.players?.online || 0;
+        const max = dataFB.players?.max || 500;
+        if (badgeElement) {
+          badgeElement.innerHTML = `
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            Online: ${online} / ${max} Players
+          `;
+        }
+        return;
       }
-      return;
     }
 
     if (badgeElement) {
@@ -133,18 +170,14 @@ function showToast(message, type = 'info', delayMs = 3500) {
 async function trackTelemetryClick(linkDestination, linkTitle) {
   const token = getAuthToken();
   if (token) {
-    try {
-      await fetch(`${API_BASE_URL}/telemetry/click`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ link_destination: linkDestination, link_title: linkTitle })
-      });
-    } catch (err) {
-      console.warn('Telemetry ping:', err);
-    }
+    await safeApiFetch('/telemetry/click', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ link_destination: linkDestination, link_title: linkTitle })
+    });
   }
 }
 
@@ -176,36 +209,24 @@ async function fetchCurrentUser() {
     return null;
   }
 
-  try {
-    const response = await fetch(`${API_BASE_URL}/auth/me`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      }
-    });
-
-    if (!response.ok) {
-      removeAuthToken();
-      renderUserHeader(null);
-      return null;
+  const res = await safeApiFetch('/auth/me', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
     }
+  });
 
-    const data = await response.json();
-    if (data.success && data.user) {
-      AppState.currentUser = data.user;
-      AppState.authToken = token;
-      renderUserHeader(data.user);
-      renderStaffNav(data.user);
-      fetchTopLinks();
-      return data.user;
-    } else {
-      removeAuthToken();
-      renderUserHeader(null);
-      return null;
-    }
-  } catch (err) {
-    console.warn('/api/auth/me query:', err);
+  if (res.ok && res.data && res.data.success && res.data.user) {
+    AppState.currentUser = res.data.user;
+    AppState.authToken = token;
+    renderUserHeader(res.data.user);
+    renderStaffNav(res.data.user);
+    fetchTopLinks();
+    return res.data.user;
+  } else {
+    if (!res.isHtmlFallback) removeAuthToken();
+    renderUserHeader(null);
     return null;
   }
 }
@@ -215,26 +236,21 @@ async function fetchTopLinks() {
   const token = getAuthToken();
   if (!token) return;
 
-  try {
-    const response = await fetch(`${API_BASE_URL}/telemetry/top-links`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      }
-    });
-
-    const data = await response.json();
-    if (data.success && data.top_links) {
-      AppState.topLinks = data.top_links;
-      renderTopLinksDashboard(data.top_links);
+  const res = await safeApiFetch('/telemetry/top-links', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
     }
-  } catch (err) {
-    console.warn('Top links telemetry fetch:', err);
+  });
+
+  if (res.ok && res.data && res.data.success && res.data.top_links) {
+    AppState.topLinks = res.data.top_links;
+    renderTopLinksDashboard(res.data.top_links);
   }
 }
 
-// --- Refactored Login Handler with Validation & Action Auto-Sync Reload ---
+// --- Refactored Login Handler ---
 async function performLogin(username, password) {
   const cleanUsername = (username || '').trim();
   const cleanPassword = (password || '').trim();
@@ -244,40 +260,33 @@ async function performLogin(username, password) {
     return { success: false, message: 'Missing fields' };
   }
 
-  try {
-    const response = await fetch(`${API_BASE_URL}/auth/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username: cleanUsername, password: cleanPassword })
-    });
+  const res = await safeApiFetch('/auth/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username: cleanUsername, password: cleanPassword })
+  });
 
-    const data = await response.json();
+  if (res.ok && res.data && res.data.success && res.data.user) {
+    const token = res.data.jwtToken || res.data.token || res.data.sessionToken;
+    setAuthToken(token);
+    AppState.currentUser = res.data.user;
 
-    if (data.success && data.user) {
-      const token = data.jwtToken || data.token || data.sessionToken;
-      setAuthToken(token);
-      AppState.currentUser = data.user;
+    closeModal('loginModal');
+    showToast(`Welcome back, ${res.data.user.username}! Synchronizing session...`, 'success', 1500);
 
-      closeModal('loginModal');
-      showToast(`Welcome back, ${data.user.username}! Synchronizing session...`, 'success', 1500);
+    setTimeout(() => {
+      window.location.reload();
+    }, 800);
 
-      setTimeout(() => {
-        window.location.reload();
-      }, 800);
-
-      return { success: true, user: data.user };
-    } else {
-      showToast(data.message || 'Invalid username or password.', 'error');
-      return { success: false, message: data.message };
-    }
-  } catch (err) {
-    console.error('Login error:', err);
-    showToast('Failed to connect to authentication server.', 'error');
-    return { success: false, message: 'Server connection failed.' };
+    return { success: true, user: res.data.user };
+  } else {
+    const errMsg = res.data?.message || 'Invalid username or password.';
+    showToast(errMsg, 'error');
+    return { success: false, message: errMsg };
   }
 }
 
-// --- Refactored Register Handler with Validation & Action Auto-Sync Reload ---
+// --- Refactored Register Handler ---
 async function performRegister(username, email, password, ign, tosAccepted, marketingOptIn) {
   const cleanUsername = (username || '').trim();
   const cleanEmail = (email || '').trim();
@@ -309,34 +318,27 @@ async function performRegister(username, email, password, ign, tosAccepted, mark
     return { success: false, message: 'ToS unaccepted' };
   }
 
-  try {
-    const response = await fetch(`${API_BASE_URL}/auth/register`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        username: cleanUsername,
-        email: cleanEmail,
-        password: cleanPassword,
-        ign: cleanIgn,
-        tos_accepted: tosAccepted ? 1 : 0,
-        marketing_opt_in: marketingOptIn ? 1 : 0
-      })
-    });
+  const res = await safeApiFetch('/auth/register', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      username: cleanUsername,
+      email: cleanEmail,
+      password: cleanPassword,
+      ign: cleanIgn,
+      tos_accepted: tosAccepted ? 1 : 0,
+      marketing_opt_in: marketingOptIn ? 1 : 0
+    })
+  });
 
-    const data = await response.json();
-
-    if (data.success) {
-      closeModal('registerModal');
-      showToast(`Account created for ${data.user.username}! Synchronizing session...`, 'success', 1500);
-      return await performLogin(cleanUsername, cleanPassword);
-    } else {
-      showToast(data.message || 'Registration failed.', 'error');
-      return { success: false, message: data.message };
-    }
-  } catch (err) {
-    console.error('Registration error:', err);
-    showToast('Failed to connect to registration server.', 'error');
-    return { success: false, message: 'Server connection failed.' };
+  if (res.ok && res.data && res.data.success) {
+    closeModal('registerModal');
+    showToast(`Account created for ${res.data.user.username}! Synchronizing session...`, 'success', 1500);
+    return await performLogin(cleanUsername, cleanPassword);
+  } else {
+    const errMsg = res.data?.message || 'Registration failed.';
+    showToast(errMsg, 'error');
+    return { success: false, message: errMsg };
   }
 }
 
@@ -349,26 +351,20 @@ async function createThread(categoryId, title, contentHtml) {
     return;
   }
 
-  try {
-    const response = await fetch(`${API_BASE_URL}/forms/threads`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify({ category_id: categoryId, title, content_html: contentHtml })
-    });
+  const res = await safeApiFetch('/forms/threads', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify({ category_id: categoryId, title, content_html: contentHtml })
+  });
 
-    const data = await response.json();
-    if (data.success) {
-      showToast('Thread created! Synchronizing...', 'success', 1500);
-      setTimeout(() => window.location.reload(), 800);
-    } else {
-      showToast(data.message || 'Thread creation failed.', 'error');
-    }
-  } catch (err) {
-    console.error('Create thread error:', err);
-    showToast('Failed to submit thread.', 'error');
+  if (res.ok && res.data && res.data.success) {
+    showToast('Thread created! Synchronizing...', 'success', 1500);
+    setTimeout(() => window.location.reload(), 800);
+  } else {
+    showToast(res.data?.message || 'Thread creation failed.', 'error');
   }
 }
 
@@ -377,25 +373,20 @@ async function pinThread(threadId, keepForever) {
   const token = getAuthToken();
   if (!token) return;
 
-  try {
-    const response = await fetch(`${API_BASE_URL}/forms/pin`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify({ thread_id: threadId, keep_forever: keepForever ? 1 : 0 })
-    });
+  const res = await safeApiFetch('/forms/pin', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify({ thread_id: threadId, keep_forever: keepForever ? 1 : 0 })
+  });
 
-    const data = await response.json();
-    if (data.success) {
-      showToast(data.message || 'Thread updated! Synchronizing...', 'success', 1500);
-      setTimeout(() => window.location.reload(), 800);
-    } else {
-      showToast(data.message || 'Staff action failed.', 'error');
-    }
-  } catch (err) {
-    console.error('Pin thread error:', err);
+  if (res.ok && res.data && res.data.success) {
+    showToast(res.data.message || 'Thread updated! Synchronizing...', 'success', 1500);
+    setTimeout(() => window.location.reload(), 800);
+  } else {
+    showToast(res.data?.message || 'Staff action failed.', 'error');
   }
 }
 
@@ -404,25 +395,20 @@ async function setRank(targetUsername, newRole) {
   const token = getAuthToken();
   if (!token) return;
 
-  try {
-    const response = await fetch(`${API_BASE_URL}/ranks/set-rank`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify({ targetUsername, newRole })
-    });
+  const res = await safeApiFetch('/ranks/set-rank', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify({ targetUsername, newRole })
+  });
 
-    const data = await response.json();
-    if (data.success) {
-      showToast(data.message || 'Rank updated! Reloading state...', 'success', 1500);
-      setTimeout(() => window.location.reload(), 800);
-    } else {
-      showToast(data.message || 'Rank update failed.', 'error');
-    }
-  } catch (err) {
-    console.error('Set rank error:', err);
+  if (res.ok && res.data && res.data.success) {
+    showToast(res.data.message || 'Rank updated! Reloading state...', 'success', 1500);
+    setTimeout(() => window.location.reload(), 800);
+  } else {
+    showToast(res.data?.message || 'Rank update failed.', 'error');
   }
 }
 
@@ -477,7 +463,7 @@ function renderUserHeader(user) {
   }
 }
 
-// --- Render Staff Navigation (Plan Analytics locked behind Staff RBAC for Moderators, Admins, Developers, Founders) ---
+// --- Render Staff Navigation ---
 function renderStaffNav(user) {
   const container = document.getElementById('staffNavContainer');
   if (!container) return;
@@ -501,7 +487,6 @@ function renderStaffNav(user) {
     links.push(`<a href="wiki.html" onclick="trackTelemetryClick('wiki.html', 'Staff Wiki')" class="px-2.5 py-1 rounded-md text-xs font-medium text-amber-300 hover:bg-amber-500/15 border border-amber-500/30 transition-all">Staff Wiki</a>`);
   }
 
-  // Plan Analytics locked behind Staff RBAC middleware (Moderator, Admin, Developer, Founder only)
   if (perms.can_moderate_users || user.role_id <= 4) {
     links.push(`<a href="https://plan.aeonmc.com:8804" target="_blank" rel="noopener" onclick="trackTelemetryClick('https://plan.aeonmc.com:8804', 'Plan Analytics')" class="px-2.5 py-1 rounded-md text-xs font-medium text-purple-300 hover:bg-purple-500/15 border border-purple-500/30 transition-all">Plan Analytics</a>`);
   }
@@ -559,6 +544,8 @@ function closeModal(id) {
 }
 
 // Global Window Exports
+window.safeApiFetch = safeApiFetch;
+window.getAuthToken = getAuthToken;
 window.copyServerIp = copyServerIp;
 window.performLogin = performLogin;
 window.performRegister = performRegister;

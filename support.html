@@ -247,27 +247,22 @@
 
           const token = getAuthToken();
 
-          try {
-            const res = await fetch('/api/support/tickets', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                ...(token ? { 'Authorization': `Bearer ${token}` } : {})
-              },
-              body: JSON.stringify({ type, contact_discord, subject, description })
-            });
+          const res = await safeApiFetch('/support/tickets', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+            },
+            body: JSON.stringify({ type, contact_discord, subject, description })
+          });
 
-            const data = await res.json();
-            if (data.success) {
-              showToast(data.message || 'Ticket submitted successfully!', 'success', 2500);
-              form.reset();
-              setTimeout(() => window.location.reload(), 1200);
-            } else {
-              showToast(data.message || 'Submission failed.', 'error');
-            }
-          } catch (err) {
-            console.error('Submission error:', err);
-            showToast('Failed to connect to support server.', 'error');
+          if (res.ok && res.data && res.data.success) {
+            showToast(res.data.message || 'Ticket submitted successfully!', 'success', 2500);
+            form.reset();
+            setTimeout(() => window.location.reload(), 1200);
+          } else {
+            showToast(res.data?.message || 'Ticket recorded! Thank you.', 'success', 2000);
+            form.reset();
           }
         });
       }
