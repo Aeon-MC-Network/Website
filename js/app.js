@@ -427,7 +427,7 @@ function renderUserHeader(user) {
   }
 }
 
-// --- Render Staff Navigation ---
+// --- Render Staff Navigation (Plan Analytics locked behind Staff RBAC for Moderators, Admins, Developers, Founders) ---
 function renderStaffNav(user) {
   const container = document.getElementById('staffNavContainer');
   if (!container) return;
@@ -451,8 +451,9 @@ function renderStaffNav(user) {
     links.push(`<a href="wiki.html" onclick="trackTelemetryClick('wiki.html', 'Staff Wiki')" class="px-2.5 py-1 rounded-md text-xs font-medium text-amber-300 hover:bg-amber-500/15 border border-amber-500/30 transition-all">Staff Wiki</a>`);
   }
 
-  if (perms.can_moderate_users || user.role_id <= 3) {
-    links.push(`<a href="https://plan.aeonmc.com" target="_blank" onclick="trackTelemetryClick('https://plan.aeonmc.com', 'Plan Analytics')" class="px-2.5 py-1 rounded-md text-xs font-medium text-purple-300 hover:bg-purple-500/15 border border-purple-500/30 transition-all">Plan Analytics</a>`);
+  // Plan Analytics locked behind Staff RBAC middleware (Moderator, Admin, Developer, Founder only)
+  if (perms.can_moderate_users || user.role_id <= 4) {
+    links.push(`<a href="https://plan.aeonmc.com:8804" target="_blank" rel="noopener" onclick="trackTelemetryClick('https://plan.aeonmc.com:8804', 'Plan Analytics')" class="px-2.5 py-1 rounded-md text-xs font-medium text-purple-300 hover:bg-purple-500/15 border border-purple-500/30 transition-all">Plan Analytics</a>`);
   }
 
   if (user.role_id <= 3) {

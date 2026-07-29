@@ -35,6 +35,7 @@ async function runMigrations() {
   await connection.query('DROP TABLE IF EXISTS creator_hubs');
   await connection.query('DROP TABLE IF EXISTS users');
   await connection.query('DROP TABLE IF EXISTS web_roles');
+  await connection.query('DROP TABLE IF EXISTS vote_links');
 
   // 1. Web Roles Table
   console.log('Migrating [web_roles] table...');
@@ -207,10 +208,33 @@ async function runMigrations() {
   `);
   console.log('✓ [audit_logs] table created.');
 
+  // 10. Admin-Editable Vote Links Table
+  console.log('Migrating [vote_links] table...');
+  await connection.query(`
+    CREATE TABLE vote_links (
+      vote_id INT AUTO_INCREMENT PRIMARY KEY,
+      title VARCHAR(100) NOT NULL,
+      url VARCHAR(255) NOT NULL,
+      reward_description VARCHAR(255) DEFAULT '1x Vote Key + $500 In-Game Coins',
+      is_active TINYINT(1) DEFAULT 1,
+      display_order INT DEFAULT 0,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `);
+
+  await connection.query(`
+    INSERT INTO vote_links (vote_id, title, url, reward_description, display_order) VALUES
+    (1, 'Minecraft Server List', 'https://minecraft-server-list.com/site/aeonmc', '1x Vote Key + $500 In-Game Coins', 1),
+    (2, 'Planet Minecraft', 'https://planetminecraft.com/server/aeonmc/vote', '1x Vote Key + 50 Claim Blocks', 2),
+    (3, 'TopG', 'https://topg.org/minecraft-servers/server-aeonmc', '1x Vote Key + 10 XP Levels', 3),
+    (4, 'Minecraft MP', 'https://minecraft-mp.com/server/aeonmc/vote', '1x Vote Key + $500 In-Game Coins', 4);
+  `);
+  console.log('✓ [vote_links] table created & default voting links seeded.');
+
   // Enable Foreign Key checks
   await connection.query('SET FOREIGN_KEY_CHECKS = 1');
 
-  // 10. Automated Daily 02:00 AM Forum Purging Scheduled Event
+  // 11. Automated Daily 02:00 AM Forum Purging Scheduled Event
   console.log('Configuring daily 02:00 AM forum purging scheduled event...');
   try {
     await connection.query('SET GLOBAL event_scheduler = ON;');
@@ -221,13 +245,11 @@ async function runMigrations() {
       STARTS CURRENT_DATE + INTERVAL 1 DAY + INTERVAL 2 HOUR
       DO
       BEGIN
-        -- Step 1: Move active threads inactive for >30 days to 'archived'
         UPDATE threads
         SET status = 'archived'
         WHERE status = 'active'
           AND last_activity_at < NOW() - INTERVAL 30 DAY;
 
-        -- Step 2: Hard delete archived threads older than 60 days in archive (unless keep_forever = 1)
         DELETE FROM threads
         WHERE status = 'archived'
           AND keep_forever = 0

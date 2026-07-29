@@ -12,6 +12,7 @@ import threadsHandler from './api/forms/threads.js';
 import postsHandler from './api/forms/posts.js';
 import pinHandler from './api/forms/pin.js';
 import setRankHandler from './api/ranks/set-rank.js';
+import voteLinksHandler from './api/vote/links.js';
 
 dotenv.config();
 
@@ -21,8 +22,8 @@ const PORT = process.env.PORT || 3000;
 app.use(cors({ origin: '*', credentials: true }));
 app.use(express.json());
 
-// Serve static frontend from /public
-app.use(express.static('public'));
+// Serve static frontend from root
+app.use(express.static('.'));
 
 // Serverless Function Adapters for Express
 const adapt = (handler) => async (req, res) => {
@@ -50,10 +51,11 @@ app.all('/api/forms/posts', adapt(postsHandler));
 app.all('/api/forms/pin', adapt(pinHandler));
 
 app.all('/api/ranks/set-rank', adapt(setRankHandler));
+app.all('/api/vote/links', adapt(voteLinksHandler));
 
 // Health Check Endpoint
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'online', service: 'AeonMC Network v2 API', timestamp: new Date().toISOString() });
+  res.json({ status: 'online', service: 'AeonMC API', timestamp: new Date().toISOString() });
 });
 
 app.listen(PORT, () => {
