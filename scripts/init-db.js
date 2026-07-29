@@ -1,4 +1,5 @@
 import mysql from 'mysql2/promise';
+import bcrypt from 'bcryptjs';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -12,79 +13,101 @@ async function initDatabase() {
     password: process.env.DB_PASS || 'ippEWHGzW5a5vNUKi4IN39h9'
   });
 
-  console.log('Database connected! Initializing tables...');
+  console.log('Database connected! Creating tables...');
 
-  // Create Roles Table
+  // Disable foreign key checks for clean migration
+  await connection.query('SET FOREIGN_KEY_CHECKS = 0');
+
+  // Drop old tables if structure differs
+  await connection.query('DROP TABLE IF EXISTS audit_logs');
+  await connection.query('DROP TABLE IF EXISTS sessions');
+  await connection.query('DROP TABLE IF EXISTS users');
+  await connection.query('DROP TABLE IF EXISTS web_roles');
+  await connection.query('DROP TABLE IF EXISTS roles');
+
+  await connection.query('SET FOREIGN_KEY_CHECKS = 1');
+
+  // 1. Create Roles Table
   await connection.query(`
-    CREATE TABLE IF NOT EXISTS roles (
+    CREATE TABLE IF NOT EXISTS web_roles (
       id INT AUTO_INCREMENT PRIMARY KEY,
-      name VARCHAR(50) NOT NULL UNIQUE,
-      description VARCHAR(255),
-      permissions JSON,
+      role_name VARCHAR(50) NOT NULL UNIQUE,
+      can_access_staff_wiki TINYINT(1) DEFAULT 0,
+      can_access_staff_forum TINYINT(1) DEFAULT 0,
+      can_access_plan_analytics TINYINT(1) DEFAULT 0,
+      can_access_jira TINYINT(1) DEFAULT 0,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    )
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
   `);
 
   await connection.query(`
-    INSERT IGNORE INTO roles (id, name, description, permissions) VALUES
-    (1, 'Player', 'Default player privileges', '["forum:read", "store:buy"]'),
-    (2, 'Content Creator', 'Creator status and streaming privileges', '["forum:read", "forum:create", "store:buy"]'),
-    (3, 'Mod', 'Moderation and report management privileges', '["forum:read", "forum:create", "forum:moderate", "user:warn", "user:kick"]'),
-    (4, 'Admin', 'Full platform administrator access', '["*"]')
+    INSERT IGNORE INTO web_roles (id, role_name, can_access_staff_wiki, can_access_staff_forum, can_access_plan_analytics, can_access_jira) VALUES
+    (1, 'founder', 1, 1, 1, 1),
+    (2, 'developer', 1, 1, 1, 1),
+    (3, 'admin', 1, 1, 1, 1),
+    (4, 'moderator', 1, 1, 1, 0),
+    (5, 'helper', 1, 1, 0, 0),
+    (6, 'creator', 0, 0, 0, 0),
+    (7, 'player', 0, 0, 0, 0);
   `);
-  console.log('✓ Roles table created and seeded.');
+  console.log('✓ web_roles table created and seeded with capability matrix.');
 
-  // Create Users Table
+  // 2. Create Users Table
   await connection.query(`
     CREATE TABLE IF NOT EXISTS users (
-      id VARCHAR(64) PRIMARY KEY,
-      username VARCHAR(50) NOT NULL UNIQUE,
-      email VARCHAR(100) NOT NULL UNIQUE,
-      password VARCHAR(255) NOT NULL,
-      role VARCHAR(50) NOT NULL DEFAULT 'Player',
-      avatar VARCHAR(255),
-      is_banned TINYINT(1) DEFAULT 0,
-      vote_streak INT DEFAULT 0,
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      username VARCHAR(64) NOT NULL UNIQUE,
+      email VARCHAR(255) NOT NULL UNIQUE,
+      password_hash VARCHAR(255) NOT NULL,
+      role_id INT DEFAULT 7,
+      minecraft_uuid VARCHAR(36) DEFAULT NULL,
+      discord_id VARCHAR(32) DEFAULT NULL,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-      INDEX idx_username (username),
-      INDEX idx_email (email)
-    )
+      FOREIGN KEY (role_id) REFERENCES web_roles(id) ON DELETE SET NULL
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
   `);
-  console.log('✓ Users table created.');
+  console.log('✓ users table created.');
 
-  // Create Sessions Table
+  // 3. Create Persistent Web Sessions Table
   await connection.query(`
     CREATE TABLE IF NOT EXISTS sessions (
-      token VARCHAR(128) PRIMARY KEY,
-      user_id VARCHAR(64) NOT NULL,
+      id VARCHAR(128) PRIMARY KEY,
+      user_id INT NOT NULL,
+      ip_address VARCHAR(45) NOT NULL,
+      user_agent TEXT DEFAULT NULL,
+      expires_at DATETIME NOT NULL,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      expires_at TIMESTAMP NOT NULL,
-      ip_address VARCHAR(45),
-      user_agent VARCHAR(255),
-      FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-      INDEX idx_user_id (user_id),
-      INDEX idx_expires (expires_at)
-    )
+      FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
   `);
-  console.log('✓ Sessions table created.');
+  console.log('✓ sessions table created.');
 
-  // Create Audit Logs Table
+  // 4. Create Audit Logs Table
   await connection.query(`
     CREATE TABLE IF NOT EXISTS audit_logs (
       id INT AUTO_INCREMENT PRIMARY KEY,
-      username VARCHAR(50) NOT NULL,
-      action VARCHAR(100) NOT NULL,
-      details TEXT,
+      user_id INT DEFAULT NULL,
+      action VARCHAR(255) NOT NULL,
+      details TEXT DEFAULT NULL,
+      ip_address VARCHAR(45) NOT NULL,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      INDEX idx_username (username),
-      INDEX idx_action (action)
-    )
+      FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
   `);
-  console.log('✓ Audit Logs table created.');
+  console.log('✓ audit_logs table created.');
+
+  // Seed Founder/Admin Account
+  const founderPassHash = await bcrypt.hash('SecurePassword123!', 10);
+  await connection.query(`
+    INSERT INTO users (username, email, password_hash, role_id)
+    VALUES (?, ?, ?, 1)
+    ON DUPLICATE KEY UPDATE password_hash = VALUES(password_hash), role_id = 1;
+  `, ['TheDaedraGamer', 'thedaedragamer@aeonmc.com', founderPassHash]);
+  console.log('✓ Founder account (TheDaedraGamer) seeded with role_id=1 (founder).');
 
   await connection.end();
-  console.log('🎉 Database initialization complete!');
+  console.log('🎉 Database initialization and seeding complete!');
 }
 
 initDatabase().catch((err) => {

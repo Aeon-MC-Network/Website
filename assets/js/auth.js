@@ -61,13 +61,16 @@ const Auth = {
 
       if (data.success && data.user) {
         const user = data.user;
+        if (data.token) {
+          localStorage.setItem('aeon_session_token', data.token);
+        }
         if (user.role && user.role.toLowerCase() === 'moderator') user.role = 'Mod';
         if (user.role && user.role.toLowerCase() === 'administrator') user.role = 'Admin';
         if (!user.avatar) user.avatar = `https://mc-heads.net/avatar/${user.username}/100`;
 
         StorageDB.set(STORAGE_KEYS.CURRENT_USER, user);
         StorageDB.logAction(user.username, "User Login", `User ${user.username} logged in as ${user.role} via API.`);
-        return { success: true, user: user };
+        return { success: true, user: user, token: data.token };
       } else {
         // Fallback check against local users
         const users = StorageDB.get(STORAGE_KEYS.USERS) || [];

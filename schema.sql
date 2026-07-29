@@ -1,57 +1,58 @@
--- AeonMC Platform - Bloom.host MySQL Database Schema
+-- AeonMC Platform - Bloom.host MySQL Database Schema (web_roles SOP matrix)
 
--- 1. Roles Table
-CREATE TABLE IF NOT EXISTS roles (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(50) NOT NULL UNIQUE,
-  description VARCHAR(255),
-  permissions JSON,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+-- 1. Create Roles Table (Matches AeonMC SOP Capability Matrix)
+CREATE TABLE IF NOT EXISTS `web_roles` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `role_name` VARCHAR(50) NOT NULL UNIQUE,
+  `can_access_staff_wiki` TINYINT(1) DEFAULT 0,
+  `can_access_staff_forum` TINYINT(1) DEFAULT 0,
+  `can_access_plan_analytics` TINYINT(1) DEFAULT 0,
+  `can_access_jira` TINYINT(1) DEFAULT 0,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Seed default roles
-INSERT IGNORE INTO roles (id, name, description, permissions) VALUES
-(1, 'Player', 'Default player privileges', '["forum:read", "store:buy"]'),
-(2, 'Content Creator', 'Creator status and streaming privileges', '["forum:read", "forum:create", "store:buy"]'),
-(3, 'Mod', 'Moderation and report management privileges', '["forum:read", "forum:create", "forum:moderate", "user:warn", "user:kick"]'),
-(4, 'Admin', 'Full platform administrator access', '["*"]');
+-- Populate default AeonMC roles
+INSERT IGNORE INTO `web_roles` (`id`, `role_name`, `can_access_staff_wiki`, `can_access_staff_forum`, `can_access_plan_analytics`, `can_access_jira`) VALUES
+(1, 'founder', 1, 1, 1, 1),
+(2, 'developer', 1, 1, 1, 1),
+(3, 'admin', 1, 1, 1, 1),
+(4, 'moderator', 1, 1, 1, 0),
+(5, 'helper', 1, 1, 0, 0),
+(6, 'creator', 0, 0, 0, 0),
+(7, 'player', 0, 0, 0, 0);
 
--- 2. Users Table
-CREATE TABLE IF NOT EXISTS users (
-  id VARCHAR(64) PRIMARY KEY,
-  username VARCHAR(50) NOT NULL UNIQUE,
-  email VARCHAR(100) NOT NULL UNIQUE,
-  password VARCHAR(255) NOT NULL,
-  role VARCHAR(50) NOT NULL DEFAULT 'Player',
-  avatar VARCHAR(255),
-  is_banned TINYINT(1) DEFAULT 0,
-  vote_streak INT DEFAULT 0,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  INDEX idx_username (username),
-  INDEX idx_email (email)
-);
+-- 2. Create Users Table
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `username` VARCHAR(64) NOT NULL UNIQUE,
+  `email` VARCHAR(255) NOT NULL UNIQUE,
+  `password_hash` VARCHAR(255) NOT NULL,
+  `role_id` INT DEFAULT 7, -- Defaults to 'player'
+  `minecraft_uuid` VARCHAR(36) DEFAULT NULL,
+  `discord_id` VARCHAR(32) DEFAULT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (`role_id`) REFERENCES `web_roles`(`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- 3. Sessions Table
-CREATE TABLE IF NOT EXISTS sessions (
-  token VARCHAR(128) PRIMARY KEY,
-  user_id VARCHAR(64) NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  expires_at TIMESTAMP NOT NULL,
-  ip_address VARCHAR(45),
-  user_agent VARCHAR(255),
-  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-  INDEX idx_user_id (user_id),
-  INDEX idx_expires (expires_at)
-);
+-- 3. Create Persistent Web Sessions Table
+CREATE TABLE IF NOT EXISTS `sessions` (
+  `id` VARCHAR(128) PRIMARY KEY,
+  `user_id` INT NOT NULL,
+  `ip_address` VARCHAR(45) NOT NULL,
+  `user_agent` TEXT DEFAULT NULL,
+  `expires_at` DATETIME NOT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- 4. Audit Logs Table
-CREATE TABLE IF NOT EXISTS audit_logs (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  username VARCHAR(50) NOT NULL,
-  action VARCHAR(100) NOT NULL,
-  details TEXT,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  INDEX idx_username (username),
-  INDEX idx_action (action)
-);
+-- 4. Create Audit Logs Table (Tracks administrative actions)
+CREATE TABLE IF NOT EXISTS `audit_logs` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `user_id` INT DEFAULT NULL,
+  `action` VARCHAR(255) NOT NULL,
+  `details` TEXT DEFAULT NULL,
+  `ip_address` VARCHAR(45) NOT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

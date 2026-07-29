@@ -1,64 +1,93 @@
-import { pool } from '../../lib/db.js';
+import { db } from '../../lib/db.js';
+import bcrypt from 'bcryptjs';
+import crypto from 'crypto';
 
 export default async function handler(req, res) {
+  // Global CORS Headers
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
-  }
-
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
+  if (req.method === 'OPTIONS') return res.status(200).end();
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   const { username, password } = req.body || {};
 
   if (!username || !password) {
-    return res.status(400).json({ success: false, message: 'Username and password are required' });
+    return res.status(400).json({ error: 'Missing username or password' });
   }
 
   try {
-    const [rows] = await pool.query(
-      'SELECT id, username, email, role, avatar, is_banned, vote_streak FROM users WHERE LOWER(username) = LOWER(?) AND password = ?',
-      [username, password]
+    const [users] = await db.query(
+      `SELECT u.id, u.username, u.password_hash, r.role_name, r.can_access_staff_wiki, r.can_access_plan_analytics 
+       FROM users u 
+       JOIN web_roles r ON u.role_id = r.id 
+       WHERE LOWER(u.username) = LOWER(?)`,
+      [username]
     );
 
-    if (rows.length === 0) {
-      return res.status(401).json({ success: false, message: 'Invalid username or password' });
+    if (users.length === 0) {
+      return res.status(401).json({ success: false, message: 'Invalid credentials' });
     }
 
-    const user = rows[0];
+    const user = users[0];
+    let passwordValid = false;
 
-    if (user.is_banned) {
-      return res.status(403).json({ success: false, message: 'Account suspended by staff.' });
+    if (user.password_hash.startsWith('$2a$') || user.password_hash.startsWith('$2b$')) {
+      passwordValid = await bcrypt.compare(password, user.password_hash);
+    } else {
+      passwordValid = (password === user.password_hash);
     }
 
-    // Standardize role string
-    if (user.role && user.role.toLowerCase() === 'moderator') user.role = 'Mod';
-    if (user.role && user.role.toLowerCase() === 'administrator') user.role = 'Admin';
-    if (!user.avatar) user.avatar = `https://mc-heads.net/avatar/${encodeURIComponent(user.username)}/100`;
+    if (!passwordValid) {
+      return res.status(401).json({ success: false, message: 'Invalid credentials' });
+    }
+
+    // Generate persistent session token
+    const token = crypto.randomBytes(32).toString('hex');
+    const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 Days
+    const rawIp = req.headers['x-forwarded-for'] || req.socket?.remoteAddress || '127.0.0.1';
+    const ipAddress = rawIp.toString().split(',')[0].trim();
+    const userAgent = req.headers['user-agent'] || 'Unknown';
+
+    await db.query(
+      `INSERT INTO sessions (id, user_id, ip_address, user_agent, expires_at) VALUES (?, ?, ?, ?, ?)`,
+      [token, user.id, ipAddress, userAgent, expiresAt]
+    );
 
     // Audit log
-    await pool.query(
-      'INSERT INTO audit_logs (username, action, details) VALUES (?, ?, ?)',
-      [user.username, 'User Login', `User logged in via API as ${user.role}`]
+    await db.query(
+      `INSERT INTO audit_logs (user_id, action, details, ip_address) VALUES (?, ?, ?, ?)`,
+      [user.id, 'User Login', `Logged in as ${user.role_name}`, ipAddress]
     );
+
+    let roleDisplay = user.role_name;
+    if (roleDisplay === 'founder' || roleDisplay === 'admin') roleDisplay = 'Admin';
+    else if (roleDisplay === 'moderator') roleDisplay = 'Mod';
+    else if (roleDisplay === 'developer') roleDisplay = 'Developer';
+    else if (roleDisplay === 'helper') roleDisplay = 'Helper';
+    else if (roleDisplay === 'creator') roleDisplay = 'Content Creator';
+    else roleDisplay = 'Player';
+
+    const avatarUrl = `https://mc-heads.net/avatar/${encodeURIComponent(user.username)}/100`;
 
     return res.status(200).json({
       success: true,
+      token,
       user: {
         id: user.id,
         username: user.username,
-        email: user.email,
-        role: user.role,
-        avatar: user.avatar,
-        voteStreak: user.vote_streak || 0
+        role: roleDisplay,
+        role_name: user.role_name,
+        avatar: avatarUrl,
+        permissions: {
+          staff_wiki: !!user.can_access_staff_wiki,
+          plan_analytics: !!user.can_access_plan_analytics
+        }
       }
     });
   } catch (error) {
-    console.error('Login query error:', error);
-    return res.status(500).json({ success: false, error: 'Database connection failed' });
+    console.error('Login error:', error);
+    return res.status(500).json({ error: 'Internal database error' });
   }
 }
