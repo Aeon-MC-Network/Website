@@ -1,16 +1,19 @@
 # AeonMC Network - Version Tracker
 
-- **Current Version**: 1.0.0
+- **Current Version**: 1.0.1
 - **Track Name**: Version Track 1.0
 - **Deployment Platform**: Vercel & GitHub Pages
 - **Database Backend**: Bloom MySQL (`s119339_Aeonweb`)
-- **Last Updated**: 2026-07-29T14:02:30-05:00
+- **Last Updated**: 2026-07-29T14:03:30-05:00
 
 ---
 
 ## Release & Version Change History
 
-### 🚀 Version Track 1.0 - Initial Production Release (2026-07-29)
+### 🚀 Version Track 1.0.1 - Vercel Output Directory Fix (2026-07-29)
+- **Vercel Output Directory**: Configured `"outputDirectory": "."` in `vercel.json` and removed dummy npm `build` script in `package.json` to prevent Vercel build failures searching for missing `dist/` directory.
+
+### 🚀 Version Track 1.0.0 - Initial Production Release (2026-07-29)
 - **Database Migration**: Verified and executed full MySQL schema on Bloom MySQL (`s119339_Aeonweb`).
 - **Auth Engine**: Refactored `api/auth/register.js` and `api/auth/login.js` with bcrypt hashing, 7-day persistent JWT cookies, and multi-device session sync.
 - **Standalone HTML Suite**: Created and integrated `index.html`, `404.html`, `vote.html`, `wiki.html`, `forums.html`, `contact.html`, `support.html`, `creators.html`, and `media.html`.
