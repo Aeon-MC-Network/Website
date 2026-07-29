@@ -239,6 +239,92 @@ async function performRegister(username, email, password, ign, tosAccepted, mark
   }
 }
 
+// --- Forum Thread Creation with Action Auto-Sync Reload ---
+async function createThread(categoryId, title, contentHtml) {
+  const token = getAuthToken();
+  if (!token) {
+    showToast('Please login to create a thread.', 'error');
+    openModal('loginModal');
+    return;
+  }
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/forms/threads`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ category_id: categoryId, title, content_html: contentHtml })
+    });
+
+    const data = await response.json();
+    if (data.success) {
+      showToast('Thread created! Synchronizing database...', 'success', 1500);
+      setTimeout(() => window.location.reload(), 800);
+    } else {
+      showToast(data.message || 'Thread creation failed.', 'error');
+    }
+  } catch (err) {
+    console.error('Create thread error:', err);
+    showToast('Failed to submit thread.', 'error');
+  }
+}
+
+// --- Forum Thread Pinning with Action Auto-Sync Reload ---
+async function pinThread(threadId, keepForever) {
+  const token = getAuthToken();
+  if (!token) return;
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/forms/pin`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ thread_id: threadId, keep_forever: keepForever ? 1 : 0 })
+    });
+
+    const data = await response.json();
+    if (data.success) {
+      showToast(data.message || 'Thread updated! Synchronizing...', 'success', 1500);
+      setTimeout(() => window.location.reload(), 800);
+    } else {
+      showToast(data.message || 'Staff action failed.', 'error');
+    }
+  } catch (err) {
+    console.error('Pin thread error:', err);
+  }
+}
+
+// --- Rank Admin Promotion with Action Auto-Sync Reload ---
+async function setRank(targetUsername, newRole) {
+  const token = getAuthToken();
+  if (!token) return;
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/ranks/set-rank`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ targetUsername, newRole })
+    });
+
+    const data = await response.json();
+    if (data.success) {
+      showToast(data.message || 'Rank updated! Reloading state...', 'success', 1500);
+      setTimeout(() => window.location.reload(), 800);
+    } else {
+      showToast(data.message || 'Rank update failed.', 'error');
+    }
+  } catch (err) {
+    console.error('Set rank error:', err);
+  }
+}
+
 // --- Logout Handler with Action Auto-Sync Reload ---
 function handleLogout() {
   removeAuthToken();
@@ -379,6 +465,9 @@ window.openModal = openModal;
 window.closeModal = closeModal;
 window.showToast = showToast;
 window.trackTelemetryClick = trackTelemetryClick;
+window.createThread = createThread;
+window.pinThread = pinThread;
+window.setRank = setRank;
 
 // --- Initialize App ---
 document.addEventListener('DOMContentLoaded', () => {
