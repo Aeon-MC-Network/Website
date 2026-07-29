@@ -65,21 +65,33 @@ async function fetchMinecraftServerStatus() {
   }
 }
 
-// --- Auth Token Helpers ---
+// --- Persistent Auth Token Helpers (localStorage + Cookie) ---
 function getAuthToken() {
-  return localStorage.getItem('aeon_auth_token') || localStorage.getItem('aeon_session_token');
+  const localToken = localStorage.getItem('aeon_auth_token') || localStorage.getItem('aeon_session_token');
+  if (localToken) return localToken;
+
+  const cookies = document.cookie.split(';');
+  for (let c of cookies) {
+    const [name, val] = c.trim().split('=');
+    if ((name === 'aeon_auth_token' || name === 'aeon_session_token') && val) {
+      return decodeURIComponent(val);
+    }
+  }
+  return null;
 }
 
 function setAuthToken(token) {
   if (token) {
     localStorage.setItem('aeon_auth_token', token);
     localStorage.setItem('aeon_session_token', token);
+    document.cookie = `aeon_auth_token=${encodeURIComponent(token)}; Path=/; Max-Age=604800; SameSite=Lax`;
   }
 }
 
 function removeAuthToken() {
   localStorage.removeItem('aeon_auth_token');
   localStorage.removeItem('aeon_session_token');
+  document.cookie = 'aeon_auth_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT';
   AppState.currentUser = null;
   AppState.authToken = null;
 }
@@ -222,24 +234,32 @@ async function fetchTopLinks() {
   }
 }
 
-// --- Login Handler with Action Auto-Sync Reload ---
+// --- Refactored Login Handler with Validation & Action Auto-Sync Reload ---
 async function performLogin(username, password) {
+  const cleanUsername = (username || '').trim();
+  const cleanPassword = (password || '').trim();
+
+  if (!cleanUsername || !cleanPassword) {
+    showToast('Please enter both your username and password.', 'error');
+    return { success: false, message: 'Missing fields' };
+  }
+
   try {
     const response = await fetch(`${API_BASE_URL}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password })
+      body: JSON.stringify({ username: cleanUsername, password: cleanPassword })
     });
 
     const data = await response.json();
 
     if (data.success && data.user) {
-      const token = data.jwtToken || data.token;
+      const token = data.jwtToken || data.token || data.sessionToken;
       setAuthToken(token);
       AppState.currentUser = data.user;
 
       closeModal('loginModal');
-      showToast(`Welcome back, ${data.user.username}! Synchronizing page...`, 'success', 1500);
+      showToast(`Welcome back, ${data.user.username}! Synchronizing session...`, 'success', 1500);
 
       setTimeout(() => {
         window.location.reload();
@@ -247,7 +267,7 @@ async function performLogin(username, password) {
 
       return { success: true, user: data.user };
     } else {
-      showToast(data.message || 'Invalid credentials.', 'error');
+      showToast(data.message || 'Invalid username or password.', 'error');
       return { success: false, message: data.message };
     }
   } catch (err) {
@@ -257,17 +277,47 @@ async function performLogin(username, password) {
   }
 }
 
-// --- Register Handler with Action Auto-Sync Reload ---
+// --- Refactored Register Handler with Validation & Action Auto-Sync Reload ---
 async function performRegister(username, email, password, ign, tosAccepted, marketingOptIn) {
+  const cleanUsername = (username || '').trim();
+  const cleanEmail = (email || '').trim();
+  const cleanPassword = (password || '').trim();
+  const cleanIgn = (ign || cleanUsername).trim();
+
+  if (!cleanUsername || !cleanEmail || !cleanPassword) {
+    showToast('Please fill out all required fields.', 'error');
+    return { success: false, message: 'Missing fields' };
+  }
+
+  if (cleanUsername.length < 3 || cleanUsername.length > 32) {
+    showToast('Username must be between 3 and 32 characters.', 'error');
+    return { success: false, message: 'Invalid username length' };
+  }
+
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanEmail)) {
+    showToast('Please enter a valid email address.', 'error');
+    return { success: false, message: 'Invalid email format' };
+  }
+
+  if (cleanPassword.length < 6) {
+    showToast('Password must be at least 6 characters long.', 'error');
+    return { success: false, message: 'Short password' };
+  }
+
+  if (!tosAccepted) {
+    showToast('You must accept the Terms of Service to register.', 'error');
+    return { success: false, message: 'ToS unaccepted' };
+  }
+
   try {
     const response = await fetch(`${API_BASE_URL}/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        username,
-        email,
-        password,
-        ign: ign || username,
+        username: cleanUsername,
+        email: cleanEmail,
+        password: cleanPassword,
+        ign: cleanIgn,
         tos_accepted: tosAccepted ? 1 : 0,
         marketing_opt_in: marketingOptIn ? 1 : 0
       })
@@ -278,7 +328,7 @@ async function performRegister(username, email, password, ign, tosAccepted, mark
     if (data.success) {
       closeModal('registerModal');
       showToast(`Account created for ${data.user.username}! Synchronizing session...`, 'success', 1500);
-      return await performLogin(username, password);
+      return await performLogin(cleanUsername, cleanPassword);
     } else {
       showToast(data.message || 'Registration failed.', 'error');
       return { success: false, message: data.message };

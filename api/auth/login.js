@@ -12,8 +12,11 @@ export default async function handler(req, res) {
 
   const { username, password } = req.body || {};
 
-  if (!username || !password) {
-    return res.status(400).json({ success: false, message: 'Missing username or password' });
+  const cleanUsername = (username || '').trim();
+  const cleanPassword = (password || '').trim();
+
+  if (!cleanUsername || !cleanPassword) {
+    return res.status(400).json({ success: false, message: 'Please enter both your username and password.' });
   }
 
   try {
@@ -22,29 +25,29 @@ export default async function handler(req, res) {
               r.can_edit_vote_links, r.can_manage_wikis, r.can_moderate_users, r.can_manage_roles
        FROM users u 
        JOIN web_roles r ON u.role_id = r.role_id 
-       WHERE LOWER(u.username) = LOWER(?)`,
-      [username]
+       WHERE LOWER(u.username) = LOWER(?) OR LOWER(u.email) = LOWER(?)`,
+      [cleanUsername, cleanUsername]
     );
 
     if (users.length === 0) {
-      return res.status(401).json({ success: false, message: 'Invalid credentials' });
+      return res.status(401).json({ success: false, message: 'Invalid username or password.' });
     }
 
     const user = users[0];
     let passwordValid = false;
 
     if (user.password_hash.startsWith('$2a$') || user.password_hash.startsWith('$2b$')) {
-      passwordValid = await bcrypt.compare(password, user.password_hash);
+      passwordValid = await bcrypt.compare(cleanPassword, user.password_hash);
     } else {
-      passwordValid = (password === user.password_hash);
+      passwordValid = (cleanPassword === user.password_hash);
     }
 
     if (!passwordValid) {
-      return res.status(401).json({ success: false, message: 'Invalid credentials' });
+      return res.status(401).json({ success: false, message: 'Invalid username or password.' });
     }
 
-    // Generate persistent 7-day session token
-    const token = crypto.randomBytes(32).toString('hex');
+    // Generate persistent 7-day session token for Bloom MySQL sessions table
+    const sessionToken = crypto.randomBytes(32).toString('hex');
     const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 Days
     const rawIp = req.headers['x-forwarded-for'] || req.socket?.remoteAddress || '127.0.0.1';
     const ipAddress = rawIp.toString().split(',')[0].trim();
@@ -52,7 +55,7 @@ export default async function handler(req, res) {
 
     await db.query(
       `INSERT INTO sessions (id, user_id, ip_address, user_agent, expires_at) VALUES (?, ?, ?, ?, ?)`,
-      [token, user.user_id, ipAddress, userAgent, expiresAt]
+      [sessionToken, user.user_id, ipAddress, userAgent, expiresAt]
     );
 
     // Record login in audit_logs
@@ -73,7 +76,7 @@ export default async function handler(req, res) {
       id: user.user_id,
       username: user.username,
       email: user.email,
-      ign: user.ign,
+      ign: user.ign || user.username,
       role_id: user.role_id,
       role: user.role_name,
       role_name: user.role_name,
@@ -84,14 +87,18 @@ export default async function handler(req, res) {
     // Generate signed JWT token
     const jwtToken = signToken(userObj);
 
+    // Set persistent auth cookie
+    res.setHeader('Set-Cookie', `aeon_auth_token=${jwtToken}; Path=/; Max-Age=604800; SameSite=Lax; HttpOnly`);
+
     return res.status(200).json({
       success: true,
-      token,
+      token: jwtToken,
+      sessionToken,
       jwtToken,
       user: userObj
     });
   } catch (error) {
-    console.error('Login error:', error);
-    return res.status(500).json({ success: false, error: 'Internal database error' });
+    console.error('Login database error:', error);
+    return res.status(500).json({ success: false, error: 'Database session registration failed' });
   }
 }
