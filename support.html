@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AeonMC | Support & Application Center</title>
+  <title>AeonMC | Support & Contact Center</title>
   <meta name="description" content="Contact AeonMC support, submit staff applications, report cheaters or bugs, and apply for Creator Hub verification.">
   
   <!-- Google Fonts & Tailwind CSS -->
@@ -72,14 +72,14 @@
         </div>
       </a>
 
-      <!-- Primary Navigation Links -->
+      <!-- Primary Navigation Links (Strictly: Home | Vote | Wiki | Forums | Creators | Contact) -->
       <nav class="hidden lg:flex items-center gap-6">
         <a href="index.html" onclick="trackTelemetryClick('index.html', 'Home')" class="text-sm font-semibold text-slate-300 hover:text-amber-400 transition-colors">Home</a>
-        <a href="https://aeon-mc.tebex.store/" target="_blank" rel="noopener" onclick="trackTelemetryClick('https://aeon-mc.tebex.store/', 'Store Nav')" class="text-sm font-semibold text-slate-300 hover:text-amber-400 transition-colors">Store</a>
         <a href="vote.html" onclick="trackTelemetryClick('vote.html', 'Vote Nav')" class="text-sm font-semibold text-slate-300 hover:text-amber-400 transition-colors">Vote</a>
-        <a href="support.html" onclick="trackTelemetryClick('support.html', 'Support Nav')" class="text-sm font-bold text-amber-400 hover:text-amber-300 transition-colors">Support & Apps</a>
         <a href="wiki.html" onclick="trackTelemetryClick('wiki.html', 'Wiki')" class="text-sm font-semibold text-slate-300 hover:text-amber-400 transition-colors">Wiki</a>
         <a href="forums.html" onclick="trackTelemetryClick('forums.html', 'Forums')" class="text-sm font-semibold text-slate-300 hover:text-amber-400 transition-colors">Forums</a>
+        <a href="media.html" onclick="trackTelemetryClick('media.html', 'Creators Nav')" class="text-sm font-semibold text-slate-300 hover:text-amber-400 transition-colors">Creators</a>
+        <a href="support.html" onclick="trackTelemetryClick('support.html', 'Contact Nav')" class="text-sm font-bold text-amber-400 hover:text-amber-300 transition-colors">Contact</a>
 
         <!-- Dynamic Staff Navigation Container -->
         <div id="staffNavContainer"></div>
@@ -188,11 +188,39 @@
     </div>
   </section>
 
+  <!-- Login Modal Dialog -->
+  <div id="loginModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
+    <div class="glass-card max-w-md w-full p-8 rounded-2xl border-amber-500/40 relative shadow-2xl">
+      <button onclick="closeModal('loginModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg">✕</button>
+      <div class="text-center mb-6">
+        <h3 class="font-serif text-2xl font-black text-gold-gradient">Player Login</h3>
+        <p class="text-xs text-slate-400 mt-1">Authenticate to access support features</p>
+      </div>
+      <form id="loginForm" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-300 mb-1">Username</label>
+          <input type="text" id="loginUsername" required class="w-full px-4 py-2.5 rounded-xl bg-slate-950/90 border border-slate-800 text-amber-100 text-sm focus:border-amber-500">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-300 mb-1">Password</label>
+          <input type="password" id="loginPassword" required class="w-full px-4 py-2.5 rounded-xl bg-slate-950/90 border border-slate-800 text-amber-100 text-sm focus:border-amber-500">
+        </div>
+        <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-black text-sm uppercase tracking-wider">Login</button>
+      </form>
+    </div>
+  </div>
+
   <!-- Footer -->
   <footer class="mt-auto border-t border-amber-500/20 py-8 bg-slate-950/80">
-    <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-400">
-      <p class="mb-2">© 2026 AeonMC. All rights reserved. Not affiliated with Mojang Studios or Microsoft.</p>
-      <p class="text-amber-400/80 font-mono">Server IP: play.aeonmc.com</p>
+    <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-400 space-y-3">
+      <p>© 2026 AeonMC. All rights reserved. Not affiliated with Mojang Studios or Microsoft.</p>
+      <div class="flex items-center justify-center gap-4">
+        <span class="text-amber-400/80 font-mono">Server IP: play.aeonmc.com</span>
+        <span class="text-slate-600">•</span>
+        <a href="https://discord.gg/VQgsh8kW2F" target="_blank" rel="noopener" onclick="trackTelemetryClick('https://discord.gg/VQgsh8kW2F', 'Footer Discord')" class="text-indigo-400 hover:text-indigo-300 font-bold transition-colors flex items-center gap-1">
+          <span>💬</span> Join Official Discord Community
+        </a>
+      </div>
     </div>
   </footer>
 

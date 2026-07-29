@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AeonMC | Content Creators & Media Hub</title>
+  <meta name="description" content="Discover featured AeonMC YouTube, Twitch, and TikTok creators, watch media embeds, and access creator referral codes.">
+  
+  <!-- Google Fonts & Tailwind CSS -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            serif: ['Cinzel', 'serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #07090e;
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(245, 158, 11, 0.15), transparent 40%),
+        radial-gradient(circle at 100% 50%, rgba(147, 51, 234, 0.08), transparent 40%),
+        radial-gradient(circle at 0% 80%, rgba(59, 130, 246, 0.08), transparent 40%);
+      color: #f1f5f9;
+    }
+    .starfield {
+      background-image: radial-gradient(1px 1px at 20px 30px, #ffffff, rgba(0,0,0,0)),
+                        radial-gradient(1px 1px at 40px 70px, #f59e0b, rgba(0,0,0,0)),
+                        radial-gradient(1px 1px at 90px 40px, #ffffff, rgba(0,0,0,0)),
+                        radial-gradient(1.5px 1.5px at 160px 120px, #fbbf24, rgba(0,0,0,0));
+      background-repeat: repeat;
+      background-size: 200px 200px;
+    }
+    .glass-card {
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(245, 158, 11, 0.2);
+    }
+    .glass-card-hover {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .glass-card-hover:hover {
+      transform: translateY(-4px);
+      border-color: rgba(245, 158, 11, 0.5);
+      box-shadow: 0 20px 40px -15px rgba(245, 158, 11, 0.2);
+    }
+    .text-gold-gradient {
+      background: linear-gradient(135deg, #fffbeb 0%, #fbbf24 40%, #d97706 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-amber-500 selection:text-slate-950 starfield">
+
+  <!-- Header / Navigation Bar -->
+  <header class="sticky top-0 z-40 w-full border-b border-amber-500/20 glass-card">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="index.html" class="flex items-center gap-3 group">
+        <img src="assets/img/62b8530f-faae-4c33-899f-3efcdb3faa94.jpg" alt="AeonMC Logo" class="w-10 h-10 rounded-xl border border-amber-500/40 shadow-lg shadow-amber-500/20 object-cover group-hover:scale-105 transition-transform" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden')">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 hidden items-center justify-center font-serif font-black text-slate-950 text-xl shadow-lg shadow-amber-500/20 group-hover:scale-105 transition-transform">
+          A
+        </div>
+        <div class="flex flex-col">
+          <span class="font-serif font-extrabold text-xl text-amber-100 tracking-wider group-hover:text-amber-400 transition-colors">AEON<span class="text-amber-500">MC</span></span>
+        </div>
+      </a>
+
+      <!-- Primary Navigation Links (Strictly: Home | Vote | Wiki | Forums | Creators | Contact) -->
+      <nav class="hidden lg:flex items-center gap-6">
+        <a href="index.html" onclick="trackTelemetryClick('index.html', 'Home')" class="text-sm font-semibold text-slate-300 hover:text-amber-400 transition-colors">Home</a>
+        <a href="vote.html" onclick="trackTelemetryClick('vote.html', 'Vote')" class="text-sm font-semibold text-slate-300 hover:text-amber-400 transition-colors">Vote</a>
+        <a href="wiki.html" onclick="trackTelemetryClick('wiki.html', 'Wiki')" class="text-sm font-semibold text-slate-300 hover:text-amber-400 transition-colors">Wiki</a>
+        <a href="forums.html" onclick="trackTelemetryClick('forums.html', 'Forums')" class="text-sm font-semibold text-slate-300 hover:text-amber-400 transition-colors">Forums</a>
+        <a href="media.html" onclick="trackTelemetryClick('media.html', 'Creators')" class="text-sm font-bold text-amber-400 hover:text-amber-300 transition-colors">Creators</a>
+        <a href="support.html" onclick="trackTelemetryClick('support.html', 'Contact')" class="text-sm font-semibold text-slate-300 hover:text-amber-400 transition-colors">Contact</a>
+
+        <!-- Dynamic Staff Navigation Container -->
+        <div id="staffNavContainer"></div>
+      </nav>
+
+      <!-- User Auth Controls Container -->
+      <div id="userAuthContainer" class="flex items-center gap-3">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+    </div>
+  </header>
+
+  <!-- Creator Hub Hero Section -->
+  <section class="py-16 text-center px-4">
+    <div class="inline-flex items-center gap-2 px-4 py-1 rounded-full border border-purple-500/30 bg-purple-500/10 text-purple-300 text-xs font-bold uppercase tracking-widest mb-6">
+      🎥 Creator Hub & Media Showcase
+    </div>
+
+    <h1 class="font-serif text-4xl sm:text-6xl font-black text-gold-gradient mb-4">FEATURED CREATORS & MEDIA</h1>
+    <p class="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto mb-8 font-light leading-relaxed">
+      Watch gameplay series, access creator referral codes, and explore content produced by our community partner creators.
+    </p>
+  </section>
+
+  <!-- Creator Hub Cards Section -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      
+      <!-- Creator 1 -->
+      <div class="glass-card p-6 rounded-2xl glass-card-hover flex flex-col justify-between border-purple-500/30">
+        <div>
+          <div class="flex items-center gap-3 mb-4">
+            <img src="https://mc-heads.net/avatar/Izengal/100" class="w-12 h-12 rounded-xl border border-amber-500/40 shadow">
+            <div>
+              <h3 class="font-serif text-lg font-bold text-amber-100">Izengal</h3>
+              <span class="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-500/40 font-bold">Verified Partner</span>
+            </div>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed mb-4">
+            Official AeonMC survival series & Towny Kingdom warfare tutorials.
+          </p>
+          <div class="bg-slate-950/80 p-3 rounded-xl border border-slate-800 text-xs mb-4">
+            <span class="text-slate-400">Referral Code:</span>
+            <strong class="text-amber-400 font-mono ml-2">IZENGAL2026</strong>
+          </div>
+        </div>
+        <a href="https://youtube.com" target="_blank" rel="noopener" class="w-full py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-black text-xs uppercase tracking-wider text-center shadow-lg transition-all">
+          Watch Channel &rarr;
+        </a>
+      </div>
+
+      <!-- Creator 2 -->
+      <div class="glass-card p-6 rounded-2xl glass-card-hover flex flex-col justify-between border-purple-500/30">
+        <div>
+          <div class="flex items-center gap-3 mb-4">
+            <img src="https://mc-heads.net/avatar/TheDaedraGamer/100" class="w-12 h-12 rounded-xl border border-amber-500/40 shadow">
+            <div>
+              <h3 class="font-serif text-lg font-bold text-amber-100">DaedraGamer</h3>
+              <span class="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-red-500/20 text-red-300 border border-red-500/40 font-bold">YouTube Content</span>
+            </div>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed mb-4">
+            Custom weapon forging, boss dungeon raids, and economy trading guides.
+          </p>
+          <div class="bg-slate-950/80 p-3 rounded-xl border border-slate-800 text-xs mb-4">
+            <span class="text-slate-400">Referral Code:</span>
+            <strong class="text-amber-400 font-mono ml-2">DAEDRA</strong>
+          </div>
+        </div>
+        <a href="https://youtube.com" target="_blank" rel="noopener" class="w-full py-2.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-black text-xs uppercase tracking-wider text-center shadow-lg transition-all">
+          Watch YouTube &rarr;
+        </a>
+      </div>
+
+      <!-- Apply for Creator Status -->
+      <div class="glass-card p-6 rounded-2xl glass-card-hover flex flex-col justify-between border-amber-500/40">
+        <div>
+          <div class="w-12 h-12 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-300 mb-4 font-serif text-2xl font-black">
+            ✨
+          </div>
+          <h3 class="font-serif text-lg font-bold text-amber-100 mb-2">Apply for Creator Rank</h3>
+          <p class="text-xs text-slate-300 leading-relaxed mb-4">
+            Are you a content creator on YouTube, Twitch, or TikTok? Apply for Creator verification, custom referral codes, and in-game Creator rank rewards.
+          </p>
+        </div>
+        <a href="support.html" onclick="selectTicketType('creator_app', 'Creator Application')" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-xs uppercase tracking-wider text-center shadow-lg transition-all">
+          Apply Now &rarr;
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Login Modal Dialog -->
+  <div id="loginModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
+    <div class="glass-card max-w-md w-full p-8 rounded-2xl border-amber-500/40 relative shadow-2xl">
+      <button onclick="closeModal('loginModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg">✕</button>
+      <div class="text-center mb-6">
+        <h3 class="font-serif text-2xl font-black text-gold-gradient">Player Login</h3>
+        <p class="text-xs text-slate-400 mt-1">Authenticate to access community features</p>
+      </div>
+      <form id="loginForm" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-300 mb-1">Username</label>
+          <input type="text" id="loginUsername" required class="w-full px-4 py-2.5 rounded-xl bg-slate-950/90 border border-slate-800 text-amber-100 text-sm focus:border-amber-500">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-300 mb-1">Password</label>
+          <input type="password" id="loginPassword" required class="w-full px-4 py-2.5 rounded-xl bg-slate-950/90 border border-slate-800 text-amber-100 text-sm focus:border-amber-500">
+        </div>
+        <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-black text-sm uppercase tracking-wider">Login</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer (Includes Discord Link Exclusively Here) -->
+  <footer class="mt-auto border-t border-amber-500/20 py-8 bg-slate-950/80">
+    <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-400 space-y-3">
+      <p>© 2026 AeonMC. All rights reserved. Not affiliated with Mojang Studios or Microsoft.</p>
+      <div class="flex items-center justify-center gap-4">
+        <span class="text-amber-400/80 font-mono">Server IP: play.aeonmc.com</span>
+        <span class="text-slate-600">•</span>
+        <a href="https://discord.gg/VQgsh8kW2F" target="_blank" rel="noopener" onclick="trackTelemetryClick('https://discord.gg/VQgsh8kW2F', 'Footer Discord')" class="text-indigo-400 hover:text-indigo-300 font-bold transition-colors flex items-center gap-1">
+          <span>💬</span> Join Official Discord Community
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Client Script -->
+  <script src="js/app.js"></script>
+</body>
+</html>
