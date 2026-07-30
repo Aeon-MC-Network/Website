@@ -7,7 +7,7 @@ import { signToken, authenticate } from '../lib/auth.js';
 
 const app = express();
 
-app.use(cors({ origin: ['https://www.aeonmc.com', 'https://aeonmc.com', 'https://aeonmc-website.vercel.app', 'http://localhost:3000', 'http://localhost:5173'], credentials: true }));
+app.use(cors({ origin: ['https://www.aeonmc.com', 'https://aeonmc.com', 'https://aeon-mc-network.vercel.app', 'http://localhost:3000', 'http://localhost:5173'], credentials: true }));
 app.use(express.json());
 
 const USERNAME_REGEX = /^[a-zA-Z0-9_]{3,32}$/;

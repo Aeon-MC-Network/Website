@@ -10,7 +10,7 @@ function getApiBaseUrl() {
 
     const host = window.location.hostname.toLowerCase();
     if (host.includes('github.io') || host.includes('aeonmc.com')) {
-      return 'https://aeonmc-website.vercel.app/api';
+      return 'https://aeon-mc-network.vercel.app/api';
     }
   }
   return '/api';
