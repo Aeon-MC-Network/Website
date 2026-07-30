@@ -12,6 +12,19 @@
   
   <link rel="stylesheet" href="assets/css/styles.css">
 
+  <!-- SEO Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "VideoGame",
+    "name": "AeonMC",
+    "playMode": "MultiPlayer",
+    "applicationCategory": "Game",
+    "operatingSystem": "Windows, macOS, Linux, iOS, Android, Xbox, PlayStation, Switch",
+    "description": "A medieval RPG Minecraft SMP featuring custom Towny kingdom wars, boss dungeons, dynamic player economy, and daily vote rewards. Java and Bedrock supported."
+  }
+  </script>
+
   <style>
     body {
       background-color: #07090e;
@@ -74,20 +87,29 @@
         <p class="text-slate-300 text-base sm:text-lg max-w-2xl mx-auto mb-10 font-light leading-relaxed">
           Experience custom Towny kingdom wars, boss dungeon raids, player-driven market economy, and celestial weapons. Join thousands of adventurers today.
         </p>
-        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <button id="copyIpBtn" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-sm uppercase tracking-wider shadow-lg shadow-amber-500/25 transition-all flex items-center justify-center gap-3">
-            <span>⚔️</span>
-            <span id="ipCopyBtnText">COPY SERVER IP: PLAY.AEONMC.COM</span>
+        
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
+          <button id="copyIpBtn" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-sm uppercase tracking-wider shadow-lg shadow-amber-500/25 transition-all flex items-center justify-center gap-3 relative overflow-hidden group">
+            <span class="relative z-10">⚔️</span>
+            <span id="ipCopyBtnText" class="relative z-10">COPY JAVA IP: PLAY.AEONMC.COM</span>
           </button>
+          
+          <button id="copyBedrockIpBtn" class="w-full sm:w-auto px-8 py-4 rounded-xl border border-blue-500/40 bg-blue-500/10 hover:bg-blue-500/20 text-blue-300 font-black text-sm uppercase tracking-wider shadow-lg shadow-blue-500/10 transition-all flex items-center justify-center gap-3">
+            <span>📱</span>
+            <span id="bedrockIpCopyBtnText">BEDROCK PORT: 19132</span>
+          </button>
+          
           <a href="https://aeon-mc.tebex.store/" target="_blank" rel="noopener" class="w-full sm:w-auto px-8 py-4 rounded-xl glass-card hover:bg-slate-900 border-amber-500/40 text-amber-300 font-bold text-sm uppercase tracking-wider transition-all flex items-center justify-center gap-2">
             <span>🛒</span> Store
           </a>
         </div>
+        
+        <p class="text-xs text-slate-400 uppercase tracking-widest font-semibold"><span class="text-amber-500">Java & Bedrock Cross-Play Supported</span></p>
       </div>
     </section>
 
     <!-- Features -->
-    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-20">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div class="glass-card p-6 rounded-2xl border-amber-500/30 text-center hover:border-amber-500/60 transition-all">
           <div class="text-4xl mb-4">🏰</div>
@@ -106,21 +128,51 @@
         </div>
       </div>
     </section>
+
+    <!-- Store Preview Section -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-20">
+      <div class="text-center mb-10">
+        <h2 class="font-serif text-3xl font-black text-amber-400 mb-2">Support the Kingdom</h2>
+        <p class="text-slate-400">Unlock premium ranks, crate keys, and exclusive cosmetics.</p>
+      </div>
+      <div id="tebex-packages" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Injected via app.js -->
+        <div class="col-span-full text-center text-slate-500 py-10 animate-pulse">Loading Webstore Packages...</div>
+      </div>
+      <div class="text-center mt-8">
+        <a href="https://aeon-mc.tebex.store/" target="_blank" rel="noopener" class="inline-block px-6 py-3 rounded-lg border border-amber-500/40 text-amber-400 hover:bg-amber-500/10 font-semibold text-sm transition-colors">View All Packages &rarr;</a>
+      </div>
+    </section>
+
   </main>
 
   <!-- Footer -->
-  <footer class="mt-auto border-t border-amber-500/20 py-8 bg-slate-950/80">
-    <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-400 space-y-3">
-      <p>© 2026 AeonMC. All rights reserved. Not affiliated with Mojang Studios or Microsoft.</p>
-      <div class="flex items-center justify-center gap-4">
-        <span class="text-amber-400/80 font-mono">Server IP: play.aeonmc.com</span>
-        <span class="text-slate-600">•</span>
-        <a href="https://discord.gg/VQgsh8kW2F" target="_blank" rel="noopener" class="text-indigo-400 hover:text-indigo-300 font-bold transition-colors flex items-center gap-1">
-          <span>💬</span> Join Official Discord Community
+  <footer class="mt-auto border-t border-amber-500/20 bg-slate-950/80">
+    <div class="max-w-7xl mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+      <div class="text-center md:text-left">
+        <a href="index.html" class="inline-flex items-center gap-3 group mb-4">
+          <img src="assets/img/62b8530f-faae-4c33-899f-3efcdb3faa94.jpg" alt="AeonMC Logo" class="w-8 h-8 rounded-lg border border-amber-500/40 object-cover">
+          <span class="font-serif font-extrabold text-lg text-amber-100 tracking-wider">AEON<span class="text-amber-500">MC</span></span>
         </a>
+        <p class="text-xs text-slate-400">© 2026 AeonMC Network.<br>Not affiliated with Mojang Studios or Microsoft.</p>
+      </div>
+      
+      <div class="text-center">
+        <h4 class="font-bold text-slate-200 mb-3 text-sm uppercase tracking-wider">Connect</h4>
+        <div class="flex flex-col gap-2">
+          <span class="text-amber-400/80 font-mono text-sm">Java IP: play.aeonmc.com</span>
+          <span class="text-blue-400/80 font-mono text-sm">Bedrock: play.aeonmc.com : 19132</span>
+        </div>
+      </div>
+      
+      <div class="flex justify-center md:justify-end">
+        <iframe src="https://discord.com/widget?id=1528463107792572657&theme=dark" width="280" height="150" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts" class="rounded-xl border border-[#5865F2]/30 shadow-lg"></iframe>
       </div>
     </div>
   </footer>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
   <script src="js/app.js"></script>
 </body>
