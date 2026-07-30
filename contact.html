@@ -14,7 +14,7 @@
 
   <style>
     body {
-      background-color: #0f172a; /* Deep charcoal / slate-900 */
+      background-color: #0f172a; 
       background-image: 
         radial-gradient(circle at 50% 0%, rgba(217, 119, 6, 0.12), transparent 50%),
         radial-gradient(circle at 100% 50%, rgba(15, 23, 42, 0.9), transparent 50%),
@@ -40,6 +40,21 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
+    .constrained-logo {
+      width: 48px !important;
+      height: 48px !important;
+      max-width: 48px !important;
+      max-height: 48px !important;
+      object-fit: cover;
+    }
+    @media (max-width: 768px) {
+      .constrained-logo {
+        width: 36px !important;
+        height: 36px !important;
+        max-width: 36px !important;
+        max-height: 36px !important;
+      }
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col antialiased selection:bg-amber-500 selection:text-slate-950 starfield">
@@ -48,7 +63,7 @@
   <header class="sticky top-0 z-50 w-full border-b border-amber-500/20 bg-slate-900/90 backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
       <a href="index.html" class="flex items-center gap-3 group">
-        <img src="assets/img/62b8530f-faae-4c33-899f-3efcdb3faa94.jpg" alt="AeonMC Logo" class="w-10 h-10 rounded-lg border border-amber-500/40 shadow-[0_0_15px_rgba(245,158,11,0.3)] object-cover group-hover:scale-105 transition-transform duration-300">
+        <img src="assets/img/62b8530f-faae-4c33-899f-3efcdb3faa94.jpg" alt="AeonMC Logo" class="constrained-logo rounded-lg border border-amber-500/40 shadow-[0_0_15px_rgba(245,158,11,0.3)] group-hover:scale-105 transition-transform duration-300">
         <span class="font-serif font-extrabold text-2xl text-amber-50 tracking-widest group-hover:text-amber-400 transition-colors duration-300">AEON<span class="text-amber-500">MC</span></span>
       </a>
       
@@ -81,25 +96,27 @@
     </div>
   </header>
 
-  <main class="flex-1 py-16 px-4 md:px-6 flex items-center justify-center">
-    <div class="max-w-5xl w-full grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20 items-center">
+  <main class="flex-1 py-12 md:py-16 px-4 md:px-6 flex items-center justify-center">
+    <div class="max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16 items-center">
       
       <!-- Text Content -->
       <div class="text-center md:text-left order-2 md:order-1">
-        <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl font-black text-gold-gradient mb-6 drop-shadow-xl">Community & Support</h1>
-        <p class="text-slate-300 text-lg md:text-xl mb-10 leading-relaxed font-light">
-          For all support tickets, bug reports, creator partnerships, and staff applications, please join our official Discord community. Our staff team is active 24/7 to assist you.
+        <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl font-black text-gold-gradient mb-6 drop-shadow-xl">Community Hub</h1>
+        <p class="text-slate-300 text-base md:text-lg mb-8 leading-relaxed font-light">
+          We process <strong class="text-amber-400 font-bold">100%</strong> of player support tickets, bug reports, cheater reports, staff applications, and content creator inquiries directly through our official Discord community. 
+        </p>
+        <p class="text-slate-400 text-sm md:text-base mb-10 leading-relaxed font-light italic">
+          There are zero embedded forms on this website. Please join the Discord using the button below to open a secure ticket with our 24/7 staff team.
         </p>
         
         <a href="https://discord.gg/VQgsh8kW2F" target="_blank" rel="noopener" class="inline-flex items-center gap-4 px-10 py-5 rounded-xl bg-[#5865F2] hover:bg-[#4752C4] text-white font-black text-sm md:text-base uppercase tracking-widest shadow-[0_0_30px_rgba(88,101,242,0.4)] hover:shadow-[0_0_40px_rgba(88,101,242,0.6)] transition-all duration-300 group">
-          <span class="text-2xl group-hover:-rotate-12 transition-transform duration-300">💬</span> Join the Discord
+          <span class="text-2xl group-hover:-rotate-12 transition-transform duration-300">💬</span> Join Discord
         </a>
       </div>
       
       <!-- Widget Content -->
-      <div class="flex justify-center md:justify-end order-1 md:order-2">
-        <div class="relative w-full max-w-sm">
-          <!-- Decorative glow behind widget -->
+      <div class="flex justify-center md:justify-end order-1 md:order-2 w-full">
+        <div class="relative w-full max-w-sm mx-auto md:mx-0">
           <div class="absolute -inset-1 bg-gradient-to-r from-[#5865F2] to-amber-500 rounded-2xl blur opacity-20"></div>
           <iframe src="https://discord.com/widget?id=1528463107792572657&theme=dark" width="100%" height="450" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts" class="relative z-10 rounded-2xl shadow-2xl border border-[#5865F2]/40 bg-[#111827]"></iframe>
         </div>
@@ -110,27 +127,26 @@
 
   <!-- Footer -->
   <footer class="mt-auto border-t border-slate-800 bg-[#0b1120]">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 grid grid-cols-1 md:grid-cols-3 gap-12 items-center">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grid grid-cols-1 md:grid-cols-3 gap-10 items-center">
       <div class="text-center md:text-left flex flex-col items-center md:items-start">
         <a href="index.html" class="inline-flex items-center gap-3 group mb-4">
-          <img src="assets/img/62b8530f-faae-4c33-899f-3efcdb3faa94.jpg" alt="AeonMC Logo" class="w-10 h-10 rounded-lg border border-amber-500/30 object-cover shadow-[0_0_10px_rgba(245,158,11,0.2)]">
-          <span class="font-serif font-black text-xl text-amber-100 tracking-widest">AEON<span class="text-amber-500">MC</span></span>
+          <img src="assets/img/62b8530f-faae-4c33-899f-3efcdb3faa94.jpg" alt="AeonMC Logo" class="w-8 h-8 rounded-lg border border-amber-500/30 object-cover shadow-[0_0_10px_rgba(245,158,11,0.2)]">
+          <span class="font-serif font-black text-lg text-amber-100 tracking-widest">AEON<span class="text-amber-500">MC</span></span>
         </a>
         <p class="text-xs text-slate-500 leading-relaxed max-w-xs text-center md:text-left">
-          © 2026 AeonMC Network.<br>Not affiliated with Mojang Studios or Microsoft.
+          © 2026 AeonMC. All rights reserved.<br>Not affiliated with Mojang Studios or Microsoft.
         </p>
       </div>
       
       <div class="text-center flex flex-col items-center">
-        <h4 class="font-serif font-black text-slate-300 mb-4 text-sm uppercase tracking-widest border-b border-slate-700 pb-2 inline-block">Connection Info</h4>
-        <div class="flex flex-col gap-3">
-          <span class="text-amber-400 font-mono text-sm bg-slate-900/80 px-4 py-2 rounded border border-amber-500/20 shadow-inner">Java: play.aeonmc.com</span>
-          <span class="text-blue-400 font-mono text-sm bg-slate-900/80 px-4 py-2 rounded border border-blue-500/20 shadow-inner">Bedrock: play.aeonmc.com:19132</span>
+        <h4 class="font-serif font-black text-slate-300 mb-3 text-xs uppercase tracking-widest border-b border-slate-700 pb-2 inline-block">Connection Info</h4>
+        <div class="flex flex-col gap-2">
+          <span class="text-amber-400 font-mono text-xs bg-slate-900/80 px-3 py-1.5 rounded border border-amber-500/20 shadow-inner">Java: play.aeonmc.com</span>
+          <span class="text-blue-400 font-mono text-xs bg-slate-900/80 px-3 py-1.5 rounded border border-blue-500/20 shadow-inner">Bedrock: play.aeonmc.com:19132</span>
         </div>
       </div>
       
       <div class="flex justify-center md:justify-end">
-        <!-- Reusing discord widget here might be redundant but keeping layout same as index -->
         <iframe src="https://discord.com/widget?id=1528463107792572657&theme=dark" width="280" height="150" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts" class="rounded-xl border border-[#5865F2]/20 shadow-2xl bg-[#111827]"></iframe>
       </div>
     </div>
