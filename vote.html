@@ -14,107 +14,146 @@
 
   <style>
     body {
-      background-color: #07090e;
-      color: #f1f5f9;
+      background-color: #0f172a; /* Deep charcoal / slate-900 */
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(217, 119, 6, 0.12), transparent 50%),
+        radial-gradient(circle at 100% 50%, rgba(15, 23, 42, 0.9), transparent 50%),
+        radial-gradient(circle at 0% 80%, rgba(217, 119, 6, 0.05), transparent 50%);
+      color: #f8fafc;
     }
-    .glass-card {
-      background: rgba(15, 23, 42, 0.75);
-      backdrop-filter: blur(16px);
-      border: 1px solid rgba(245, 158, 11, 0.2);
+    .starfield {
+      background-image: radial-gradient(1.5px 1.5px at 20px 30px, #ffffff, rgba(0,0,0,0)),
+                        radial-gradient(2px 2px at 40px 70px, #fbbf24, rgba(0,0,0,0)),
+                        radial-gradient(1px 1px at 90px 40px, #ffffff, rgba(0,0,0,0)),
+                        radial-gradient(1.5px 1.5px at 160px 120px, #f59e0b, rgba(0,0,0,0));
+      background-repeat: repeat;
+      background-size: 250px 250px;
     }
-    .reward-icon {
-      filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.5));
+    .stone-card {
+      background: linear-gradient(145deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(245, 158, 11, 0.15);
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+    .text-gold-gradient {
+      background: linear-gradient(135deg, #fef3c7 0%, #fbbf24 40%, #d97706 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
   </style>
 </head>
-<body class="min-h-screen flex flex-col antialiased selection:bg-amber-500 selection:text-slate-950">
+<body class="min-h-screen flex flex-col antialiased selection:bg-amber-500 selection:text-slate-950 starfield">
 
   <!-- Header -->
-  <header class="sticky top-0 z-40 w-full border-b border-amber-500/20 glass-card">
+  <header class="sticky top-0 z-50 w-full border-b border-amber-500/20 bg-slate-900/90 backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
       <a href="index.html" class="flex items-center gap-3 group">
-        <img src="assets/img/62b8530f-faae-4c33-899f-3efcdb3faa94.jpg" alt="AeonMC Logo" class="w-10 h-10 rounded-xl border border-amber-500/40 shadow-lg shadow-amber-500/20 object-cover group-hover:scale-105 transition-transform">
-        <span class="font-serif font-extrabold text-xl text-amber-100 tracking-wider group-hover:text-amber-400 transition-colors">AEON<span class="text-amber-500">MC</span></span>
+        <img src="assets/img/62b8530f-faae-4c33-899f-3efcdb3faa94.jpg" alt="AeonMC Logo" class="w-12 h-12 rounded-lg border border-amber-500/40 shadow-[0_0_15px_rgba(245,158,11,0.3)] object-cover group-hover:scale-105 transition-transform duration-300">
+        <span class="font-serif font-extrabold text-2xl text-amber-50 tracking-widest group-hover:text-amber-400 transition-colors duration-300">AEON<span class="text-amber-500">MC</span></span>
       </a>
-      <nav class="hidden lg:flex items-center gap-6">
-        <a href="index.html" class="text-sm font-semibold text-slate-300 hover:text-amber-400 transition-colors">Home</a>
-        <a href="vote.html" class="text-sm font-bold text-amber-400 hover:text-amber-300 transition-colors">Vote</a>
-        <a href="contact.html" class="text-sm font-semibold text-slate-300 hover:text-amber-400 transition-colors">Contact</a>
+      
+      <!-- Desktop Nav -->
+      <nav class="hidden md:flex items-center gap-8">
+        <a href="index.html" class="text-sm font-semibold text-slate-300 hover:text-amber-400 transition-colors tracking-wider uppercase">Home</a>
+        <a href="vote.html" class="text-sm font-bold text-amber-400 hover:text-amber-300 transition-colors tracking-wider uppercase">Vote</a>
+        <a href="contact.html" class="text-sm font-semibold text-slate-300 hover:text-amber-400 transition-colors tracking-wider uppercase">Contact</a>
+        <a href="https://aeon-mc.tebex.store/" target="_blank" rel="noopener" class="text-sm font-semibold text-slate-300 hover:text-amber-400 transition-colors tracking-wider flex items-center gap-2 uppercase">
+          🛒 Store
+        </a>
+      </nav>
+
+      <!-- Mobile Hamburger -->
+      <button id="mobileMenuBtn" class="md:hidden p-3 text-amber-500 hover:text-amber-400 transition-colors focus:outline-none" aria-label="Toggle Menu">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path id="menuIcon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Mobile Nav Drawer -->
+    <div id="mobileMenuDrawer" class="hidden md:hidden bg-slate-900 border-b border-amber-500/20 shadow-xl overflow-hidden">
+      <nav class="flex flex-col px-6 py-6 space-y-4">
+        <a href="index.html" class="text-lg font-semibold text-slate-300 block px-4 py-3 rounded-lg hover:bg-slate-800 uppercase tracking-widest text-center transition-colors">Home</a>
+        <a href="vote.html" class="text-lg font-bold text-amber-400 block px-4 py-3 rounded-lg bg-amber-500/10 uppercase tracking-widest text-center">Vote</a>
+        <a href="contact.html" class="text-lg font-semibold text-slate-300 block px-4 py-3 rounded-lg hover:bg-slate-800 uppercase tracking-widest text-center transition-colors">Contact</a>
+        <a href="https://aeon-mc.tebex.store/" target="_blank" rel="noopener" class="text-lg font-semibold text-slate-300 block px-4 py-3 rounded-lg hover:bg-slate-800 uppercase tracking-widest text-center transition-colors">🛒 Store</a>
       </nav>
     </div>
   </header>
 
-  <main class="flex-1 py-16 px-4">
-    <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-10">
+  <main class="flex-1 py-16 px-4 md:px-6">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-10">
       
       <!-- Vote Links Section -->
       <div class="lg:col-span-2">
-        <div class="text-center md:text-left mb-10">
-          <h1 class="font-serif text-4xl sm:text-5xl font-black text-amber-400 mb-4">Support AeonMC</h1>
-          <p class="text-slate-300 text-lg">Vote daily across all sites to maximize your rewards, help the server grow, and climb the leaderboard.</p>
+        <div class="text-center lg:text-left mb-12">
+          <h1 class="font-serif text-4xl sm:text-5xl md:text-6xl font-black text-gold-gradient mb-6 drop-shadow-xl">Support the Realm</h1>
+          <p class="text-slate-300 text-lg md:text-xl max-w-2xl mx-auto lg:mx-0 font-light leading-relaxed">
+            Vote daily across all sites to maximize your rewards, help the server grow, and climb the leaderboard.
+          </p>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <a href="https://minecraft.buzz/server/aeon-mc" target="_blank" rel="noopener" class="glass-card p-6 rounded-2xl hover:border-amber-500/60 transition-all flex flex-col items-center text-center gap-3 group">
-            <span class="text-4xl group-hover:scale-110 transition-transform">🗳️</span>
-            <h3 class="font-bold text-amber-300 text-xl">Minecraft Buzz</h3>
-            <span class="px-4 py-2 rounded-xl bg-amber-500/10 text-amber-400 font-bold text-sm uppercase">Vote Now</span>
+          <a href="https://minecraft.buzz/server/aeon-mc" target="_blank" rel="noopener" class="stone-card p-6 rounded-2xl hover:border-amber-500/60 transition-all duration-300 flex flex-col items-center text-center gap-4 group hover:-translate-y-1">
+            <span class="text-5xl group-hover:scale-110 transition-transform duration-300 drop-shadow-md">🗳️</span>
+            <h3 class="font-serif font-black text-amber-300 text-2xl tracking-wide">Minecraft Buzz</h3>
+            <span class="px-6 py-2.5 rounded-lg border border-amber-500/30 bg-amber-500/10 group-hover:bg-amber-500/20 text-amber-400 font-bold text-sm uppercase tracking-widest transition-colors">Vote Now</span>
           </a>
-          <a href="https://minecraftservers.org/server/690456" target="_blank" rel="noopener" class="glass-card p-6 rounded-2xl hover:border-amber-500/60 transition-all flex flex-col items-center text-center gap-3 group">
-            <span class="text-4xl group-hover:scale-110 transition-transform">🗳️</span>
-            <h3 class="font-bold text-amber-300 text-xl">Minecraft Servers</h3>
-            <span class="px-4 py-2 rounded-xl bg-amber-500/10 text-amber-400 font-bold text-sm uppercase">Vote Now</span>
+          <a href="https://minecraftservers.org/server/690456" target="_blank" rel="noopener" class="stone-card p-6 rounded-2xl hover:border-amber-500/60 transition-all duration-300 flex flex-col items-center text-center gap-4 group hover:-translate-y-1">
+            <span class="text-5xl group-hover:scale-110 transition-transform duration-300 drop-shadow-md">🗳️</span>
+            <h3 class="font-serif font-black text-amber-300 text-2xl tracking-wide">Minecraft Servers</h3>
+            <span class="px-6 py-2.5 rounded-lg border border-amber-500/30 bg-amber-500/10 group-hover:bg-amber-500/20 text-amber-400 font-bold text-sm uppercase tracking-widest transition-colors">Vote Now</span>
           </a>
-          <a href="https://minecraft-server-list.com/server/522015/" target="_blank" rel="noopener" class="glass-card p-6 rounded-2xl hover:border-amber-500/60 transition-all flex flex-col items-center text-center gap-3 group">
-            <span class="text-4xl group-hover:scale-110 transition-transform">🗳️</span>
-            <h3 class="font-bold text-amber-300 text-xl">Minecraft Server List</h3>
-            <span class="px-4 py-2 rounded-xl bg-amber-500/10 text-amber-400 font-bold text-sm uppercase">Vote Now</span>
+          <a href="https://minecraft-server-list.com/server/522015/" target="_blank" rel="noopener" class="stone-card p-6 rounded-2xl hover:border-amber-500/60 transition-all duration-300 flex flex-col items-center text-center gap-4 group hover:-translate-y-1">
+            <span class="text-5xl group-hover:scale-110 transition-transform duration-300 drop-shadow-md">🗳️</span>
+            <h3 class="font-serif font-black text-amber-300 text-2xl tracking-wide">MC Server List</h3>
+            <span class="px-6 py-2.5 rounded-lg border border-amber-500/30 bg-amber-500/10 group-hover:bg-amber-500/20 text-amber-400 font-bold text-sm uppercase tracking-widest transition-colors">Vote Now</span>
           </a>
-          <a href="https://mcservertime.com/server-aeon-mc.2859" target="_blank" rel="noopener" class="glass-card p-6 rounded-2xl hover:border-amber-500/60 transition-all flex flex-col items-center text-center gap-3 group">
-            <span class="text-4xl group-hover:scale-110 transition-transform">🗳️</span>
-            <h3 class="font-bold text-amber-300 text-xl">MC Server Time</h3>
-            <span class="px-4 py-2 rounded-xl bg-amber-500/10 text-amber-400 font-bold text-sm uppercase">Vote Now</span>
+          <a href="https://mcservertime.com/server-aeon-mc.2859" target="_blank" rel="noopener" class="stone-card p-6 rounded-2xl hover:border-amber-500/60 transition-all duration-300 flex flex-col items-center text-center gap-4 group hover:-translate-y-1">
+            <span class="text-5xl group-hover:scale-110 transition-transform duration-300 drop-shadow-md">🗳️</span>
+            <h3 class="font-serif font-black text-amber-300 text-2xl tracking-wide">MC Server Time</h3>
+            <span class="px-6 py-2.5 rounded-lg border border-amber-500/30 bg-amber-500/10 group-hover:bg-amber-500/20 text-amber-400 font-bold text-sm uppercase tracking-widest transition-colors">Vote Now</span>
           </a>
-          <a href="https://topg.org/minecraft-servers/server-684378" target="_blank" rel="noopener" class="glass-card p-6 rounded-2xl hover:border-amber-500/60 transition-all flex flex-col items-center text-center gap-3 group sm:col-span-2 md:col-span-1 md:col-start-1 md:col-end-3 lg:col-span-2 w-full max-w-sm mx-auto">
-            <span class="text-4xl group-hover:scale-110 transition-transform">🗳️</span>
-            <h3 class="font-bold text-amber-300 text-xl">TopG</h3>
-            <span class="px-4 py-2 rounded-xl bg-amber-500/10 text-amber-400 font-bold text-sm uppercase">Vote Now</span>
+          <a href="https://topg.org/minecraft-servers/server-684378" target="_blank" rel="noopener" class="stone-card p-6 rounded-2xl hover:border-amber-500/60 transition-all duration-300 flex flex-col items-center text-center gap-4 group hover:-translate-y-1 sm:col-span-2 md:col-span-1 md:col-start-1 md:col-end-3 lg:col-span-2 w-full max-w-md mx-auto">
+            <span class="text-5xl group-hover:scale-110 transition-transform duration-300 drop-shadow-md">🗳️</span>
+            <h3 class="font-serif font-black text-amber-300 text-2xl tracking-wide">TopG</h3>
+            <span class="px-6 py-2.5 rounded-lg border border-amber-500/30 bg-amber-500/10 group-hover:bg-amber-500/20 text-amber-400 font-bold text-sm uppercase tracking-widest transition-colors">Vote Now</span>
           </a>
         </div>
       </div>
 
       <!-- Rewards Sidebar Section -->
-      <div class="glass-card rounded-2xl p-6 border-amber-500/30">
-        <h2 class="font-serif text-2xl font-black text-amber-400 mb-6 text-center border-b border-amber-500/20 pb-4">💎 Vote Rewards</h2>
+      <div class="stone-card rounded-2xl p-6 lg:p-8 border-amber-500/30 self-start sticky top-28">
+        <h2 class="font-serif text-3xl font-black text-gold-gradient mb-8 text-center border-b border-amber-500/20 pb-4">💎 Rewards</h2>
         
-        <div class="space-y-6">
+        <div class="space-y-8">
           <div>
-            <h4 class="font-bold text-amber-100 flex items-center gap-2 mb-2">
-              <span class="text-xl">🎁</span> Every Single Vote
+            <h4 class="font-serif font-bold text-amber-200 flex items-center gap-3 mb-3 text-xl">
+              <span class="text-2xl drop-shadow-[0_0_8px_rgba(245,158,11,0.5)]">🎁</span> Every Vote
             </h4>
-            <ul class="text-sm text-slate-300 space-y-2 ml-7">
-              <li><span class="text-emerald-400 font-bold">+$250</span> In-game Currency</li>
-              <li><span class="text-blue-400 font-bold">+50</span> Claim Blocks</li>
-              <li><span class="text-cyan-400 font-bold">+2x</span> Aeon Vote Gems</li>
-              <li class="text-amber-500/80 text-xs italic">10% Chance for 30-Day Tin Rank!</li>
+            <ul class="text-sm md:text-base text-slate-300 space-y-3 ml-10">
+              <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span><strong class="text-emerald-400">+$250</strong> Coins</li>
+              <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-blue-400"></span><strong class="text-blue-400">+50</strong> Claim Blocks</li>
+              <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span><strong class="text-cyan-400">+2x</strong> Vote Gems</li>
+              <li class="flex items-center gap-2 text-amber-400 text-sm mt-2 italic border-l-2 border-amber-500/50 pl-3">10% Chance for Tin Rank (30d)</li>
             </ul>
           </div>
 
-          <div>
-            <h4 class="font-bold text-amber-100 flex items-center gap-2 mb-2">
-              <span class="text-xl">🎉</span> Vote Party (50 Votes)
+          <div class="border-t border-slate-700 pt-6">
+            <h4 class="font-serif font-bold text-amber-200 flex items-center gap-3 mb-3 text-xl">
+              <span class="text-2xl drop-shadow-[0_0_8px_rgba(245,158,11,0.5)]">🎉</span> 50-Vote Party
             </h4>
-            <p class="text-sm text-slate-300 ml-7">
-              When the community hits 50 total votes, <strong class="text-emerald-400">EVERYONE</strong> online gets a bonus <strong class="text-cyan-400">5 Diamonds & $500</strong>!
+            <p class="text-sm md:text-base text-slate-300 ml-10 leading-relaxed">
+              When the server hits 50 total votes, <strong class="text-emerald-400">EVERYONE</strong> online receives <strong class="text-cyan-400">5 Diamonds</strong> and <strong class="text-emerald-400">$500</strong>!
             </p>
           </div>
 
-          <div class="p-4 bg-amber-500/10 rounded-xl border border-amber-500/20">
-            <h4 class="font-bold text-amber-400 flex items-center gap-2 mb-2 justify-center">
-              <span class="text-xl">👑</span> Monthly Top Voter
+          <div class="p-5 bg-gradient-to-br from-amber-500/10 to-amber-900/20 rounded-xl border border-amber-500/30 shadow-[inset_0_0_20px_rgba(245,158,11,0.1)] mt-8">
+            <h4 class="font-serif font-black text-amber-400 flex items-center gap-2 mb-3 justify-center text-xl tracking-wide uppercase">
+              <span class="text-2xl drop-shadow-[0_0_8px_rgba(245,158,11,0.8)]">👑</span> Top Voter
             </h4>
-            <p class="text-sm text-center text-amber-100">
-              The #1 voter each month receives an incredible <strong class="text-emerald-400">$10,000</strong> and <strong class="text-cyan-400">5 Diamond Blocks</strong>!
+            <p class="text-sm md:text-base text-center text-amber-100 leading-relaxed">
+              The #1 voter each month receives <strong class="text-emerald-400 text-lg">$10,000</strong> and <strong class="text-cyan-400 text-lg">5 Diamond Blocks</strong>!
             </p>
           </div>
         </div>
@@ -124,13 +163,28 @@
   </main>
 
   <!-- Footer -->
-  <footer class="mt-auto border-t border-amber-500/20 py-8 bg-slate-950/80">
-    <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-400 space-y-3">
-      <p>© 2026 AeonMC. All rights reserved. Not affiliated with Mojang Studios or Microsoft.</p>
-      <div class="flex flex-wrap items-center justify-center gap-4">
-        <span class="text-amber-400/80 font-mono">Java IP: play.aeonmc.com</span>
-        <span class="text-slate-600 hidden sm:inline">•</span>
-        <span class="text-blue-400/80 font-mono">Bedrock Port: 19132</span>
+  <footer class="mt-auto border-t border-slate-800 bg-[#0b1120]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 grid grid-cols-1 md:grid-cols-3 gap-12 items-center">
+      <div class="text-center md:text-left flex flex-col items-center md:items-start">
+        <a href="index.html" class="inline-flex items-center gap-3 group mb-4">
+          <img src="assets/img/62b8530f-faae-4c33-899f-3efcdb3faa94.jpg" alt="AeonMC Logo" class="w-10 h-10 rounded-lg border border-amber-500/30 object-cover shadow-[0_0_10px_rgba(245,158,11,0.2)]">
+          <span class="font-serif font-black text-xl text-amber-100 tracking-widest">AEON<span class="text-amber-500">MC</span></span>
+        </a>
+        <p class="text-xs text-slate-500 leading-relaxed max-w-xs text-center md:text-left">
+          © 2026 AeonMC Network.<br>Not affiliated with Mojang Studios or Microsoft.
+        </p>
+      </div>
+      
+      <div class="text-center flex flex-col items-center">
+        <h4 class="font-serif font-black text-slate-300 mb-4 text-sm uppercase tracking-widest border-b border-slate-700 pb-2 inline-block">Connection Info</h4>
+        <div class="flex flex-col gap-3">
+          <span class="text-amber-400 font-mono text-sm bg-slate-900/80 px-4 py-2 rounded border border-amber-500/20 shadow-inner">Java: play.aeonmc.com</span>
+          <span class="text-blue-400 font-mono text-sm bg-slate-900/80 px-4 py-2 rounded border border-blue-500/20 shadow-inner">Bedrock: play.aeonmc.com:19132</span>
+        </div>
+      </div>
+      
+      <div class="flex justify-center md:justify-end">
+        <iframe src="https://discord.com/widget?id=1528463107792572657&theme=dark" width="280" height="150" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts" class="rounded-xl border border-[#5865F2]/20 shadow-2xl bg-[#111827]"></iframe>
       </div>
     </div>
   </footer>

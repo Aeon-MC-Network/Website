@@ -14,64 +14,124 @@
 
   <style>
     body {
-      background-color: #07090e;
-      color: #f1f5f9;
+      background-color: #0f172a; /* Deep charcoal / slate-900 */
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(217, 119, 6, 0.12), transparent 50%),
+        radial-gradient(circle at 100% 50%, rgba(15, 23, 42, 0.9), transparent 50%),
+        radial-gradient(circle at 0% 80%, rgba(217, 119, 6, 0.05), transparent 50%);
+      color: #f8fafc;
     }
-    .glass-card {
-      background: rgba(15, 23, 42, 0.75);
-      backdrop-filter: blur(16px);
-      border: 1px solid rgba(245, 158, 11, 0.2);
+    .starfield {
+      background-image: radial-gradient(1.5px 1.5px at 20px 30px, #ffffff, rgba(0,0,0,0)),
+                        radial-gradient(2px 2px at 40px 70px, #fbbf24, rgba(0,0,0,0)),
+                        radial-gradient(1px 1px at 90px 40px, #ffffff, rgba(0,0,0,0)),
+                        radial-gradient(1.5px 1.5px at 160px 120px, #f59e0b, rgba(0,0,0,0));
+      background-repeat: repeat;
+      background-size: 250px 250px;
+    }
+    .stone-card {
+      background: linear-gradient(145deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(245, 158, 11, 0.15);
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+    .text-gold-gradient {
+      background: linear-gradient(135deg, #fef3c7 0%, #fbbf24 40%, #d97706 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
   </style>
 </head>
-<body class="min-h-screen flex flex-col antialiased selection:bg-amber-500 selection:text-slate-950">
+<body class="min-h-screen flex flex-col antialiased selection:bg-amber-500 selection:text-slate-950 starfield">
 
   <!-- Header -->
-  <header class="sticky top-0 z-40 w-full border-b border-amber-500/20 glass-card">
+  <header class="sticky top-0 z-50 w-full border-b border-amber-500/20 bg-slate-900/90 backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
       <a href="index.html" class="flex items-center gap-3 group">
-        <img src="assets/img/62b8530f-faae-4c33-899f-3efcdb3faa94.jpg" alt="AeonMC Logo" class="w-10 h-10 rounded-xl border border-amber-500/40 shadow-lg shadow-amber-500/20 object-cover group-hover:scale-105 transition-transform">
-        <span class="font-serif font-extrabold text-xl text-amber-100 tracking-wider group-hover:text-amber-400 transition-colors">AEON<span class="text-amber-500">MC</span></span>
+        <img src="assets/img/62b8530f-faae-4c33-899f-3efcdb3faa94.jpg" alt="AeonMC Logo" class="w-12 h-12 rounded-lg border border-amber-500/40 shadow-[0_0_15px_rgba(245,158,11,0.3)] object-cover group-hover:scale-105 transition-transform duration-300">
+        <span class="font-serif font-extrabold text-2xl text-amber-50 tracking-widest group-hover:text-amber-400 transition-colors duration-300">AEON<span class="text-amber-500">MC</span></span>
       </a>
-      <nav class="hidden lg:flex items-center gap-6">
-        <a href="index.html" class="text-sm font-semibold text-slate-300 hover:text-amber-400 transition-colors">Home</a>
-        <a href="vote.html" class="text-sm font-semibold text-slate-300 hover:text-amber-400 transition-colors">Vote</a>
-        <a href="contact.html" class="text-sm font-bold text-amber-400 hover:text-amber-300 transition-colors">Contact</a>
+      
+      <!-- Desktop Nav -->
+      <nav class="hidden md:flex items-center gap-8">
+        <a href="index.html" class="text-sm font-semibold text-slate-300 hover:text-amber-400 transition-colors tracking-wider uppercase">Home</a>
+        <a href="vote.html" class="text-sm font-semibold text-slate-300 hover:text-amber-400 transition-colors tracking-wider uppercase">Vote</a>
+        <a href="contact.html" class="text-sm font-bold text-amber-400 hover:text-amber-300 transition-colors tracking-wider uppercase">Contact</a>
+        <a href="https://aeon-mc.tebex.store/" target="_blank" rel="noopener" class="text-sm font-semibold text-slate-300 hover:text-amber-400 transition-colors tracking-wider flex items-center gap-2 uppercase">
+          🛒 Store
+        </a>
+      </nav>
+
+      <!-- Mobile Hamburger -->
+      <button id="mobileMenuBtn" class="md:hidden p-3 text-amber-500 hover:text-amber-400 transition-colors focus:outline-none" aria-label="Toggle Menu">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path id="menuIcon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Mobile Nav Drawer -->
+    <div id="mobileMenuDrawer" class="hidden md:hidden bg-slate-900 border-b border-amber-500/20 shadow-xl overflow-hidden">
+      <nav class="flex flex-col px-6 py-6 space-y-4">
+        <a href="index.html" class="text-lg font-semibold text-slate-300 block px-4 py-3 rounded-lg hover:bg-slate-800 uppercase tracking-widest text-center transition-colors">Home</a>
+        <a href="vote.html" class="text-lg font-semibold text-slate-300 block px-4 py-3 rounded-lg hover:bg-slate-800 uppercase tracking-widest text-center transition-colors">Vote</a>
+        <a href="contact.html" class="text-lg font-bold text-amber-400 block px-4 py-3 rounded-lg bg-amber-500/10 uppercase tracking-widest text-center">Contact</a>
+        <a href="https://aeon-mc.tebex.store/" target="_blank" rel="noopener" class="text-lg font-semibold text-slate-300 block px-4 py-3 rounded-lg hover:bg-slate-800 uppercase tracking-widest text-center transition-colors">🛒 Store</a>
       </nav>
     </div>
   </header>
 
-  <main class="flex-1 py-16 px-4">
-    <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+  <main class="flex-1 py-16 px-4 md:px-6 flex items-center justify-center">
+    <div class="max-w-5xl w-full grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20 items-center">
       
-      <div class="text-center md:text-left">
-        <h1 class="font-serif text-4xl sm:text-5xl font-black text-amber-400 mb-6">Support & Community</h1>
-        <p class="text-slate-300 text-lg mb-8 leading-relaxed">
-          For all inquiries, player reports, support tickets, bug tracking, and staff applications, please join our official Discord community. 
-          Our staff team is active 24/7 to assist you.
+      <!-- Text Content -->
+      <div class="text-center md:text-left order-2 md:order-1">
+        <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl font-black text-gold-gradient mb-6 drop-shadow-xl">Community & Support</h1>
+        <p class="text-slate-300 text-lg md:text-xl mb-10 leading-relaxed font-light">
+          For all support tickets, bug reports, creator partnerships, and staff applications, please join our official Discord community. Our staff team is active 24/7 to assist you.
         </p>
         
-        <a href="https://discord.gg/VQgsh8kW2F" target="_blank" rel="noopener" class="inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-[#5865F2] hover:bg-[#4752C4] text-white font-black text-sm uppercase tracking-wider shadow-lg shadow-[#5865F2]/25 transition-all">
-          <span class="text-xl">💬</span> Join the Discord
+        <a href="https://discord.gg/VQgsh8kW2F" target="_blank" rel="noopener" class="inline-flex items-center gap-4 px-10 py-5 rounded-xl bg-[#5865F2] hover:bg-[#4752C4] text-white font-black text-sm md:text-base uppercase tracking-widest shadow-[0_0_30px_rgba(88,101,242,0.4)] hover:shadow-[0_0_40px_rgba(88,101,242,0.6)] transition-all duration-300 group">
+          <span class="text-2xl group-hover:-rotate-12 transition-transform duration-300">💬</span> Join the Discord
         </a>
       </div>
       
-      <div class="flex justify-center md:justify-end">
-        <!-- Live Discord Widget -->
-        <iframe src="https://discord.com/widget?id=1528463107792572657&theme=dark" width="350" height="400" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts" class="rounded-xl shadow-2xl border border-[#5865F2]/30"></iframe>
+      <!-- Widget Content -->
+      <div class="flex justify-center md:justify-end order-1 md:order-2">
+        <div class="relative w-full max-w-sm">
+          <!-- Decorative glow behind widget -->
+          <div class="absolute -inset-1 bg-gradient-to-r from-[#5865F2] to-amber-500 rounded-2xl blur opacity-20"></div>
+          <iframe src="https://discord.com/widget?id=1528463107792572657&theme=dark" width="100%" height="450" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts" class="relative z-10 rounded-2xl shadow-2xl border border-[#5865F2]/40 bg-[#111827]"></iframe>
+        </div>
       </div>
       
     </div>
   </main>
 
   <!-- Footer -->
-  <footer class="mt-auto border-t border-amber-500/20 py-8 bg-slate-950/80">
-    <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-400 space-y-3">
-      <p>© 2026 AeonMC. All rights reserved. Not affiliated with Mojang Studios or Microsoft.</p>
-      <div class="flex flex-wrap items-center justify-center gap-4">
-        <span class="text-amber-400/80 font-mono">Java IP: play.aeonmc.com</span>
-        <span class="text-slate-600 hidden sm:inline">•</span>
-        <span class="text-blue-400/80 font-mono">Bedrock Port: 19132</span>
+  <footer class="mt-auto border-t border-slate-800 bg-[#0b1120]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 grid grid-cols-1 md:grid-cols-3 gap-12 items-center">
+      <div class="text-center md:text-left flex flex-col items-center md:items-start">
+        <a href="index.html" class="inline-flex items-center gap-3 group mb-4">
+          <img src="assets/img/62b8530f-faae-4c33-899f-3efcdb3faa94.jpg" alt="AeonMC Logo" class="w-10 h-10 rounded-lg border border-amber-500/30 object-cover shadow-[0_0_10px_rgba(245,158,11,0.2)]">
+          <span class="font-serif font-black text-xl text-amber-100 tracking-widest">AEON<span class="text-amber-500">MC</span></span>
+        </a>
+        <p class="text-xs text-slate-500 leading-relaxed max-w-xs text-center md:text-left">
+          © 2026 AeonMC Network.<br>Not affiliated with Mojang Studios or Microsoft.
+        </p>
+      </div>
+      
+      <div class="text-center flex flex-col items-center">
+        <h4 class="font-serif font-black text-slate-300 mb-4 text-sm uppercase tracking-widest border-b border-slate-700 pb-2 inline-block">Connection Info</h4>
+        <div class="flex flex-col gap-3">
+          <span class="text-amber-400 font-mono text-sm bg-slate-900/80 px-4 py-2 rounded border border-amber-500/20 shadow-inner">Java: play.aeonmc.com</span>
+          <span class="text-blue-400 font-mono text-sm bg-slate-900/80 px-4 py-2 rounded border border-blue-500/20 shadow-inner">Bedrock: play.aeonmc.com:19132</span>
+        </div>
+      </div>
+      
+      <div class="flex justify-center md:justify-end">
+        <!-- Reusing discord widget here might be redundant but keeping layout same as index -->
+        <iframe src="https://discord.com/widget?id=1528463107792572657&theme=dark" width="280" height="150" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts" class="rounded-xl border border-[#5865F2]/20 shadow-2xl bg-[#111827]"></iframe>
       </div>
     </div>
   </footer>
