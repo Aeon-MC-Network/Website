@@ -4,15 +4,6 @@
  */
 
 function getApiBaseUrl() {
-  if (typeof window !== 'undefined') {
-    if (window.API_BASE_URL) return window.API_BASE_URL;
-    if (localStorage.getItem('aeon_api_url')) return localStorage.getItem('aeon_api_url');
-
-    const host = window.location.hostname.toLowerCase();
-    if (host.includes('github.io') || host.includes('aeonmc.com')) {
-      return 'https://aeon-mc-network.vercel.app/api';
-    }
-  }
   return '/api';
 }
 
