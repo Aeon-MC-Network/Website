@@ -6,23 +6,33 @@
   <title>AeonMC | Premier Medieval RPG Minecraft SMP Network</title>
   <meta name="description" content="AeonMC is a premier medieval RPG Minecraft SMP server featuring custom Towny kingdom wars, boss dungeons, dynamic player economy, and daily vote rewards. Join today at play.aeonmc.com.">
   <meta name="keywords" content="Minecraft SMP, Towny Server, Medieval RPG Minecraft, AeonMC, Play AeonMC, Minecraft Survival">
+  
+  <!-- OpenGraph & Twitter Cards SEO -->
+  <meta property="og:title" content="AeonMC | Premier Medieval RPG Minecraft SMP Network">
+  <meta property="og:description" content="AeonMC is a premier medieval RPG Minecraft SMP server featuring custom Towny kingdom wars, boss dungeons, dynamic player economy, and daily vote rewards.">
+  <meta property="og:image" content="https://aeonmc.com/assets/img/62b8530f-faae-4c33-899f-3efcdb3faa94.jpg">
+  <meta property="og:url" content="https://aeonmc.com/">
+  <meta name="twitter:card" content="summary_large_image">
 
-  <!-- Google Fonts & Tailwind CSS -->
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "VideoGame",
+    "name": "AeonMC",
+    "description": "Premier Medieval RPG Minecraft SMP server.",
+    "playMode": "MultiPlayer",
+    "applicationCategory": "Game",
+    "operatingSystem": "Java, Windows, iOS, Android"
+  }
+  </script>
+
+  <!-- Google Fonts & Local Tailwind CSS -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   
-  <script>
-    // Suppress Tailwind Play CDN production warning in browser console
-    (function() {
-      const origWarn = console.warn;
-      console.warn = function(...args) {
-        if (args[0] && typeof args[0] === 'string' && args[0].includes('cdn.tailwindcss.com should not be used in production')) return;
-        origWarn.apply(console, args);
-      };
-    })();
-  </script>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="assets/css/styles.css">
 
   <script>
     tailwind.config = {
@@ -83,20 +93,25 @@
       
       <!-- Brand Logo -->
       <a href="index.html" class="flex items-center gap-3 group">
-        <img src="assets/img/62b8530f-faae-4c33-899f-3efcdb3faa94.jpg" alt="AeonMC Logo" class="w-10 h-10 rounded-xl border border-amber-500/40 shadow-lg shadow-amber-500/20 object-cover group-hover:scale-105 transition-transform" onerror="this.onerror=null; this.src='62b8530f-faae-4c33-899f-3efcdb3faa94.jpg';">
+        <img src="assets/img/62b8530f-faae-4c33-899f-3efcdb3faa94.jpg" alt="AeonMC Logo" class="w-10 h-10 rounded-xl border border-amber-500/40 shadow-lg shadow-amber-500/20 object-cover group-hover:scale-105 transition-transform fallback-logo">
         <div class="flex flex-col">
           <span class="font-serif font-extrabold text-xl text-amber-100 tracking-wider group-hover:text-amber-400 transition-colors">AEON<span class="text-amber-500">MC</span></span>
         </div>
       </a>
 
-      <!-- Primary Navigation Links (Strictly: Home | Vote | Wiki | Forums | Creators | Contact) -->
+      <!-- Primary Navigation Links -->
       <nav class="hidden lg:flex items-center gap-6">
-        <a href="index.html" onclick="trackTelemetryClick('index.html', 'Home')" class="text-sm font-bold text-amber-400 hover:text-amber-300 transition-colors">Home</a>
-        <a href="vote.html" onclick="trackTelemetryClick('vote.html', 'Vote Nav')" class="text-sm font-semibold text-slate-300 hover:text-amber-400 transition-colors">Vote</a>
-        <a href="wiki.html" onclick="trackTelemetryClick('wiki.html', 'Wiki')" class="text-sm font-semibold text-slate-300 hover:text-amber-400 transition-colors">Wiki</a>
-        <a href="forums.html" onclick="trackTelemetryClick('forums.html', 'Forums')" class="text-sm font-semibold text-slate-300 hover:text-amber-400 transition-colors">Forums</a>
-        <a href="creators.html" onclick="trackTelemetryClick('creators.html', 'Creators Nav')" class="text-sm font-semibold text-slate-300 hover:text-amber-400 transition-colors">Creators</a>
-        <a href="contact.html" onclick="trackTelemetryClick('contact.html', 'Contact Nav')" class="text-sm font-semibold text-slate-300 hover:text-amber-400 transition-colors">Contact</a>
+        <a href="index.html" data-telemetry-link="index.html" data-telemetry-title="Home" class="text-sm font-bold text-amber-400 hover:text-amber-300 transition-colors">Home</a>
+        <a href="vote.html" data-telemetry-link="vote.html" data-telemetry-title="Vote Nav" class="text-sm font-semibold text-slate-300 hover:text-amber-400 transition-colors">Vote</a>
+        <a href="wiki.html" data-telemetry-link="wiki.html" data-telemetry-title="Wiki" class="text-sm font-semibold text-slate-300 hover:text-amber-400 transition-colors">Wiki</a>
+        <a href="forums.html" data-telemetry-link="forums.html" data-telemetry-title="Forums" class="text-sm font-semibold text-slate-300 hover:text-amber-400 transition-colors">Forums</a>
+        <a href="creators.html" data-telemetry-link="creators.html" data-telemetry-title="Creators Nav" class="text-sm font-semibold text-slate-300 hover:text-amber-400 transition-colors">Creators</a>
+        <a href="contact.html" data-telemetry-link="contact.html" data-telemetry-title="Contact Nav" class="text-sm font-semibold text-slate-300 hover:text-amber-400 transition-colors">Contact</a>
+        
+        <!-- Discord Integration in Header -->
+        <a href="https://discord.gg/VQgsh8kW2F" target="_blank" rel="noopener" data-telemetry-link="https://discord.gg/VQgsh8kW2F" data-telemetry-title="Header Discord" class="text-sm font-semibold text-[#5865F2] hover:text-[#4752C4] transition-colors flex items-center gap-1">
+          💬 Discord
+        </a>
 
         <!-- Dynamic Staff Navigation Container -->
         <div id="staffNavContainer"></div>
@@ -109,9 +124,11 @@
     </div>
   </header>
 
-  <!-- Hero Section -->
-  <section class="relative py-24 px-4 overflow-hidden text-center">
-    <div class="max-w-5xl mx-auto relative z-10">
+  <!-- Main Content wrapped in <main> for Semantic HTML SEO -->
+  <main>
+    <!-- Hero Section -->
+    <section class="relative py-24 px-4 overflow-hidden text-center">
+      <div class="max-w-5xl mx-auto relative z-10">
       
       <!-- Live Server Player Count Badge -->
       <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-300 text-xs font-semibold uppercase tracking-widest mb-8">
@@ -134,43 +151,72 @@
       <!-- Action Buttons -->
       <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
         <!-- Server IP Copy Button -->
-        <button onclick="copyServerIp()" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-sm uppercase tracking-wider shadow-lg shadow-amber-500/25 transition-all flex items-center justify-center gap-3 group">
+        <button id="copyIpBtn" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-sm uppercase tracking-wider shadow-lg shadow-amber-500/25 transition-all flex items-center justify-center gap-3 group">
           <span>⚔️</span>
           <span id="ipCopyBtnText">COPY SERVER IP: PLAY.AEONMC.COM</span>
         </button>
 
         <!-- Store Button (Directly: Store -> https://aeon-mc.tebex.store/) -->
-        <a href="https://aeon-mc.tebex.store/" target="_blank" rel="noopener" onclick="trackTelemetryClick('https://aeon-mc.tebex.store/', 'Store CTA')" class="w-full sm:w-auto px-8 py-4 rounded-xl glass-card hover:bg-slate-900 border-amber-500/40 text-amber-300 font-bold text-sm uppercase tracking-wider transition-all flex items-center justify-center gap-2">
+        <a href="https://aeon-mc.tebex.store/" target="_blank" rel="noopener" data-telemetry-link="https://aeon-mc.tebex.store/" data-telemetry-title="Store CTA" class="w-full sm:w-auto px-8 py-4 rounded-xl glass-card hover:bg-slate-900 border-amber-500/40 text-amber-300 font-bold text-sm uppercase tracking-wider transition-all flex items-center justify-center gap-2">
           <span>🛒</span> Store
         </a>
       </div>
     </div>
   </section>
 
-  <!-- Top 9 Frequent Destinations (Telemetry Dashboard Grid) -->
-  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
-    <div class="glass-card p-6 rounded-2xl border-amber-500/30">
-      <div class="flex items-center justify-between mb-4 pb-3 border-b border-amber-500/20">
-        <div>
-          <h3 class="font-serif text-lg font-bold text-amber-200">🔥 Your Top Frequent Destinations</h3>
-          <p class="text-xs text-slate-400">Personalized quick-access links based on your website interaction frequency</p>
-        </div>
-        <span class="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-amber-500/10 text-amber-300 border border-amber-500/30">Telemetry Engine</span>
       </div>
+    </section>
 
-      <div id="topLinksGridContainer" class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 gap-3">
-        <div class="col-span-full text-center py-4 text-xs text-slate-400">Login to track your top 9 frequent destinations across AeonMC!</div>
+    <!-- Featured Gameplay Features (New Section) -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
+      <div class="text-center mb-10">
+        <h2 class="font-serif text-3xl font-black text-amber-200">Epic Adventures Await</h2>
+        <p class="text-slate-400 mt-2">Discover what makes AeonMC the premier medieval experience.</p>
       </div>
-    </div>
-  </section>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="glass-card p-6 rounded-2xl border-amber-500/30 text-center hover:border-amber-500/60 transition-all">
+          <div class="text-4xl mb-4">🏰</div>
+          <h3 class="font-bold text-amber-300 text-lg mb-2">Custom Towny Kingdom</h3>
+          <p class="text-sm text-slate-300">Build your empire, form alliances, and engage in epic kingdom wars for territorial control.</p>
+        </div>
+        <div class="glass-card p-6 rounded-2xl border-amber-500/30 text-center hover:border-amber-500/60 transition-all">
+          <div class="text-4xl mb-4">🐉</div>
+          <h3 class="font-bold text-amber-300 text-lg mb-2">Boss Dungeon Raids</h3>
+          <p class="text-sm text-slate-300">Party up to conquer challenging dungeons and earn celestial weapons & rare artifacts.</p>
+        </div>
+        <div class="glass-card p-6 rounded-2xl border-amber-500/30 text-center hover:border-amber-500/60 transition-all">
+          <div class="text-4xl mb-4">⚖️</div>
+          <h3 class="font-bold text-amber-300 text-lg mb-2">Player Economy</h3>
+          <p class="text-sm text-slate-300">Master custom jobs, trade in dynamic player markets, and become a wealthy merchant.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Top 9 Frequent Destinations (Telemetry Dashboard Grid) -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
+      <div class="glass-card p-6 rounded-2xl border-amber-500/30">
+        <div class="flex items-center justify-between mb-4 pb-3 border-b border-amber-500/20">
+          <div>
+            <h3 class="font-serif text-lg font-bold text-amber-200">🔥 Your Top Frequent Destinations</h3>
+            <p class="text-xs text-slate-400">Personalized quick-access links based on your website interaction frequency</p>
+          </div>
+          <span class="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-amber-500/10 text-amber-300 border border-amber-500/30">Telemetry Engine</span>
+        </div>
+
+        <div id="topLinksGridContainer" class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 gap-3">
+          <div class="col-span-full text-center py-4 text-xs text-slate-400">Login to track your top 9 frequent destinations across AeonMC!</div>
+        </div>
+      </div>
+    </section>
+  </main>
 
   <!-- Login Modal Dialog -->
-  <div id="loginModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
+  <div id="loginModal" role="dialog" aria-modal="true" aria-labelledby="loginModalTitle" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
     <div class="glass-card max-w-md w-full p-8 rounded-2xl border-amber-500/40 relative shadow-2xl">
-      <button onclick="closeModal('loginModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg">✕</button>
+      <button id="closeLoginModalBtn" onclick="closeModal('loginModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg" aria-label="Close login modal">✕</button>
       
       <div class="text-center mb-6">
-        <h3 class="font-serif text-2xl font-black text-gold-gradient">Player Login</h3>
+        <h3 id="loginModalTitle" class="font-serif text-2xl font-black text-gold-gradient">Player Login</h3>
         <p class="text-xs text-slate-400 mt-1">Authenticate to access community features</p>
       </div>
 
@@ -190,18 +236,18 @@
 
       <div class="mt-6 text-center text-xs text-slate-400">
         Don't have an account? 
-        <button onclick="closeModal('loginModal'); openModal('registerModal');" class="text-amber-400 hover:underline font-bold">Register here</button>
+        <button id="switchToRegisterBtn" class="text-amber-400 hover:underline font-bold">Register here</button>
       </div>
     </div>
   </div>
 
   <!-- Register Modal Dialog -->
-  <div id="registerModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
+  <div id="registerModal" role="dialog" aria-modal="true" aria-labelledby="registerModalTitle" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
     <div class="glass-card max-w-md w-full p-8 rounded-2xl border-amber-500/40 relative shadow-2xl max-h-[90vh] overflow-y-auto">
-      <button onclick="closeModal('registerModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg">✕</button>
+      <button id="closeRegisterModalBtn" onclick="closeModal('registerModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg" aria-label="Close register modal">✕</button>
       
       <div class="text-center mb-6">
-        <h3 class="font-serif text-2xl font-black text-gold-gradient">Create Player Account</h3>
+        <h3 id="registerModalTitle" class="font-serif text-2xl font-black text-gold-gradient">Create Player Account</h3>
         <p class="text-xs text-slate-400 mt-1">Register for persistent community features</p>
       </div>
 
@@ -241,7 +287,7 @@
 
       <div class="mt-6 text-center text-xs text-slate-400">
         Already registered? 
-        <button onclick="closeModal('registerModal'); openModal('loginModal');" class="text-amber-400 hover:underline font-bold">Login here</button>
+        <button id="switchToLoginBtn" class="text-amber-400 hover:underline font-bold">Login here</button>
       </div>
     </div>
   </div>
@@ -253,7 +299,7 @@
       <div class="flex items-center justify-center gap-4">
         <span class="text-amber-400/80 font-mono">Server IP: play.aeonmc.com</span>
         <span class="text-slate-600">•</span>
-        <a href="https://discord.gg/VQgsh8kW2F" target="_blank" rel="noopener" onclick="trackTelemetryClick('https://discord.gg/VQgsh8kW2F', 'Footer Discord')" class="text-indigo-400 hover:text-indigo-300 font-bold transition-colors flex items-center gap-1">
+        <a href="https://discord.gg/VQgsh8kW2F" target="_blank" rel="noopener" data-telemetry-link="https://discord.gg/VQgsh8kW2F" data-telemetry-title="Footer Discord" class="text-indigo-400 hover:text-indigo-300 font-bold transition-colors flex items-center gap-1">
           <span>💬</span> Join Official Discord Community
         </a>
       </div>
@@ -261,6 +307,6 @@
   </footer>
 
   <!-- App Client Script -->
-  <script src="js/app.js"></script>
+  <script type="module" src="js/app.js"></script>
 </body>
 </html>

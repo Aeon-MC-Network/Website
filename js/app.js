@@ -52,23 +52,20 @@ async function safeApiFetch(endpoint, options = {}) {
   }
 }
 
-// Expose safeApiFetch globally immediately upon file parsing
-if (typeof window !== 'undefined') {
-  window.safeApiFetch = safeApiFetch;
-}
+// Ensure safeApiFetch can be exported for other modules if needed
+export { safeApiFetch };
 
 // --- Live Minecraft Server Query API Status ---
 async function fetchMinecraftServerStatus() {
   const badgeElement = document.getElementById('playerCountBadge');
-  const serverHost = 'play.aeonmc.com';
-
+  
   try {
-    const res = await fetch(`https://api.mcsrvstat.us/3/${serverHost}`);
+    const res = await fetch('/api/server-status');
     if (res.ok) {
       const data = await res.json().catch(() => null);
-      if (data && data.online) {
-        const online = data.players?.online || 0;
-        const max = data.players?.max || 500;
+      if (data && data.success) {
+        const online = data.online || 0;
+        const max = data.max || 500;
         if (badgeElement) {
           badgeElement.innerHTML = `
             <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
@@ -78,23 +75,7 @@ async function fetchMinecraftServerStatus() {
         return;
       }
     }
-
-    const resFB = await fetch(`https://api.mcstatus.io/v2/status/java/${serverHost}`);
-    if (resFB.ok) {
-      const dataFB = await resFB.json().catch(() => null);
-      if (dataFB && dataFB.online) {
-        const online = dataFB.players?.online || 0;
-        const max = dataFB.players?.max || 500;
-        if (badgeElement) {
-          badgeElement.innerHTML = `
-            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-            Online: ${online} / ${max} Players
-          `;
-        }
-        return;
-      }
-    }
-
+    
     if (badgeElement) {
       badgeElement.innerHTML = `
         <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
@@ -455,7 +436,7 @@ function renderUserHeader(user) {
             ${user.role || user.role_name || 'Player'}
           </span>
         </div>
-        <button onclick="handleLogout()" class="px-3 py-1.5 rounded-lg bg-rose-950/70 hover:bg-rose-900 border border-rose-500/40 text-rose-200 text-xs font-semibold transition-all shadow">
+        <button id="logoutBtn" class="px-3 py-1.5 rounded-lg bg-rose-950/70 hover:bg-rose-900 border border-rose-500/40 text-rose-200 text-xs font-semibold transition-all shadow">
           Logout
         </button>
       </div>
@@ -463,10 +444,10 @@ function renderUserHeader(user) {
   } else {
     container.innerHTML = `
       <div class="flex items-center gap-2">
-        <button onclick="openModal('loginModal')" class="px-3.5 py-1.5 rounded-lg bg-slate-900/90 hover:bg-slate-800 border border-amber-500/40 text-amber-200 text-xs font-bold transition-all shadow">
+        <button id="headerLoginBtn" class="px-3.5 py-1.5 rounded-lg bg-slate-900/90 hover:bg-slate-800 border border-amber-500/40 text-amber-200 text-xs font-bold transition-all shadow">
           Login
         </button>
-        <button onclick="openModal('registerModal')" class="px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-xs uppercase tracking-wider shadow-lg shadow-amber-500/25 transition-all">
+        <button id="headerRegisterBtn" class="px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-xs uppercase tracking-wider shadow-lg shadow-amber-500/25 transition-all">
           Register
         </button>
       </div>
@@ -495,15 +476,15 @@ function renderStaffNav(user) {
   let links = [];
 
   if (perms.can_manage_wikis || user.role_id <= 4) {
-    links.push(`<a href="wiki.html" onclick="trackTelemetryClick('wiki.html', 'Staff Wiki')" class="px-2.5 py-1 rounded-md text-xs font-medium text-amber-300 hover:bg-amber-500/15 border border-amber-500/30 transition-all">Staff Wiki</a>`);
+    links.push(`<a href="wiki.html" data-telemetry-link="wiki.html" data-telemetry-title="Staff Wiki" class="px-2.5 py-1 rounded-md text-xs font-medium text-amber-300 hover:bg-amber-500/15 border border-amber-500/30 transition-all">Staff Wiki</a>`);
   }
 
   if (perms.can_moderate_users || user.role_id <= 4) {
-    links.push(`<a href="https://plan.aeonmc.com:8804" target="_blank" rel="noopener" onclick="trackTelemetryClick('https://plan.aeonmc.com:8804', 'Plan Analytics')" class="px-2.5 py-1 rounded-md text-xs font-medium text-purple-300 hover:bg-purple-500/15 border border-purple-500/30 transition-all">Plan Analytics</a>`);
+    links.push(`<a href="https://plan.aeonmc.com:8804" target="_blank" rel="noopener" data-telemetry-link="https://plan.aeonmc.com:8804" data-telemetry-title="Plan Analytics" class="px-2.5 py-1 rounded-md text-xs font-medium text-purple-300 hover:bg-purple-500/15 border border-purple-500/30 transition-all">Plan Analytics</a>`);
   }
 
   if (user.role_id <= 3) {
-    links.push(`<a href="staff.html" onclick="trackTelemetryClick('staff.html', 'Staff Portal')" class="px-2.5 py-1 rounded-md text-xs font-bold text-amber-400 hover:bg-amber-500/20 border border-amber-500/50 transition-all">Staff Portal</a>`);
+    links.push(`<a href="staff.html" data-telemetry-link="staff.html" data-telemetry-title="Staff Portal" class="px-2.5 py-1 rounded-md text-xs font-bold text-amber-400 hover:bg-amber-500/20 border border-amber-500/50 transition-all">Staff Portal</a>`);
   }
 
   container.innerHTML = `
@@ -526,7 +507,7 @@ function renderTopLinksDashboard(topLinks) {
 
   container.innerHTML = topLinks.map((item, index) => `
     <a href="${item.link_destination}" target="${item.link_destination.startsWith('http') ? '_blank' : '_self'}"
-       onclick="trackTelemetryClick('${item.link_destination}', '${item.link_title}')"
+       data-telemetry-link="${item.link_destination}" data-telemetry-title="${item.link_title}"
        class="glass-card p-3 rounded-xl hover:border-amber-500/60 transition-all flex items-center justify-between group">
       <div class="flex items-center gap-2.5 overflow-hidden">
         <span class="w-6 h-6 rounded-lg bg-amber-500/20 border border-amber-500/30 flex items-center justify-center font-mono text-xs font-bold text-amber-300">#${index + 1}</span>
@@ -574,23 +555,50 @@ function closeModal(id) {
   }
 }
 
-// Global Window Exports
-if (typeof window !== 'undefined') {
-  window.safeApiFetch = safeApiFetch;
-  window.getAuthToken = getAuthToken;
-  window.copyServerIp = copyServerIp;
-  window.performLogin = performLogin;
-  window.performRegister = performRegister;
-  window.handleLogout = handleLogout;
-  window.openModal = openModal;
-  window.closeModal = closeModal;
-  window.showToast = showToast;
-  window.trackTelemetryClick = trackTelemetryClick;
-  window.createThread = createThread;
-  window.pinThread = pinThread;
-  window.setRank = setRank;
-  window.fetchMinecraftServerStatus = fetchMinecraftServerStatus;
-}
+// Modal accessibility keyboard support
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    closeModal('loginModal');
+    closeModal('registerModal');
+  }
+});
+
+// Global Event Delegation for clicks
+document.addEventListener('click', (e) => {
+  // Telemetry Links
+  const telemetryLink = e.target.closest('[data-telemetry-link]');
+  if (telemetryLink) {
+    trackTelemetryClick(telemetryLink.getAttribute('data-telemetry-link'), telemetryLink.getAttribute('data-telemetry-title'));
+  }
+  
+  // Copy IP Button
+  if (e.target.closest('#copyIpBtn')) {
+    copyServerIp();
+  }
+  
+  // Header Buttons
+  if (e.target.closest('#headerLoginBtn')) {
+    openModal('loginModal');
+  }
+  if (e.target.closest('#headerRegisterBtn')) {
+    openModal('registerModal');
+  }
+  
+  // Modal switch buttons
+  if (e.target.closest('#switchToRegisterBtn')) {
+    closeModal('loginModal');
+    openModal('registerModal');
+  }
+  if (e.target.closest('#switchToLoginBtn')) {
+    closeModal('registerModal');
+    openModal('loginModal');
+  }
+  
+  // Logout Button
+  if (e.target.closest('#logoutBtn')) {
+    handleLogout();
+  }
+});
 
 // --- Initialize App ---
 document.addEventListener('DOMContentLoaded', () => {
@@ -625,3 +633,4 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+

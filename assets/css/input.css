@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+img.fallback-logo {
+  position: relative;
+  font-size: 0;
+}
+img.fallback-logo::after {
+  content: attr(alt);
+  display: flex;
+  position: absolute;
+  z-index: 2;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-color: #0f172a;
+  color: #fbbf24;
+  font-size: 10px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border-radius: inherit;
+}

@@ -677,4 +677,41 @@ app.get('/api/health', (req, res) => {
   });
 });
 
+// Server Status Proxy Cache
+let serverStatusCache = null;
+let lastStatusFetch = 0;
+
+app.get('/api/server-status', async (req, res) => {
+  const now = Date.now();
+  if (serverStatusCache && now - lastStatusFetch < 60000) {
+    return res.json(serverStatusCache);
+  }
+
+  const serverHost = 'play.aeonmc.com';
+  try {
+    let fetchRes = await fetch(`https://api.mcsrvstat.us/3/${serverHost}`);
+    let data = await fetchRes.json().catch(() => null);
+    
+    if (fetchRes.ok && data && data.online) {
+      serverStatusCache = { success: true, online: data.players?.online || 0, max: data.players?.max || 500 };
+      lastStatusFetch = now;
+      return res.json(serverStatusCache);
+    }
+    
+    fetchRes = await fetch(`https://api.mcstatus.io/v2/status/java/${serverHost}`);
+    data = await fetchRes.json().catch(() => null);
+    
+    if (fetchRes.ok && data && data.online) {
+      serverStatusCache = { success: true, online: data.players?.online || 0, max: data.players?.max || 500 };
+      lastStatusFetch = now;
+      return res.json(serverStatusCache);
+    }
+    
+    return res.json({ success: false });
+  } catch (err) {
+    console.error('Server status proxy error:', err);
+    return res.json({ success: false });
+  }
+});
+
 export default app;

@@ -8,14 +8,21 @@
     "start": "node server.js",
     "dev": "node server.js",
     "migrate": "node scripts/migrate.js",
-    "verify": "node scripts/verify-deploy.js"
+    "verify": "node scripts/verify-deploy.js",
+    "build:css": "tailwindcss -i ./assets/css/input.css -o ./assets/css/styles.css"
   },
   "dependencies": {
+    "@tailwindcss/cli": "^4.3.3",
     "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
     "mysql2": "^3.23.2"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.5.4",
+    "postcss": "^8.5.25",
+    "tailwindcss": "^4.3.3"
   }
 }
