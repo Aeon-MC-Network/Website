@@ -43,8 +43,7 @@ async function safeApiFetch(endpoint, options = {}) {
   }
 }
 
-// Ensure safeApiFetch can be exported for other modules if needed
-export { safeApiFetch };
+// safeApiFetch is globally available
 
 // --- Live Minecraft Server Query API Status ---
 async function fetchMinecraftServerStatus() {
