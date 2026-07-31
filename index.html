@@ -10,6 +10,22 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   
+  <!-- Tailwind CSS CDN Fallback/Inclusion -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['Cinzel', 'serif'],
+            sans: ['Inter', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+  
   <link rel="stylesheet" href="assets/css/styles.css">
 
   <script type="application/ld+json">
@@ -111,71 +127,71 @@
   </header>
 
   <main class="flex-1">
-    <!-- Hero Section -->
-    <section class="relative py-12 md:py-16 px-4 overflow-hidden text-center">
+    <!-- Hero Section with tighter, balanced padding to prevent dead vertical space -->
+    <section class="relative py-8 md:py-12 px-4 overflow-hidden text-center">
       <div class="max-w-5xl mx-auto relative z-10">
-        <div class="inline-flex items-center gap-3 px-5 py-2 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-300 text-xs md:text-sm font-semibold uppercase tracking-widest mb-8 shadow-[0_0_20px_rgba(245,158,11,0.15)]">
+        <div class="inline-flex items-center gap-3 px-5 py-2 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-300 text-xs md:text-sm font-semibold uppercase tracking-widest mb-6 shadow-[0_0_20px_rgba(245,158,11,0.15)]">
           <span id="playerCountBadge" class="flex items-center gap-2">
             <span class="w-3 h-3 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_rgba(52,211,153,0.8)]"></span>
             Server Online: play.aeonmc.com
           </span>
         </div>
-        <h1 class="font-serif text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter text-gold-gradient leading-tight mb-6 drop-shadow-2xl">
+        <h1 class="font-serif text-4xl sm:text-5xl md:text-6xl font-black tracking-tight text-gold-gradient leading-tight mb-4 drop-shadow-2xl">
           HARDCORE CUSTOM SURVIVAL RPG
         </h1>
-        <p class="text-slate-300 text-base md:text-xl max-w-3xl mx-auto mb-10 font-light leading-relaxed drop-shadow-md">
+        <p class="text-slate-300 text-sm md:text-lg max-w-2xl mx-auto mb-8 font-light leading-relaxed drop-shadow-md">
           Survive and thrive in a brutal, dynamic world. Master custom AuraSkills, rise through Jobs Reborn, conquer persistent raidable dungeons, and dominate the player-driven economy.
         </p>
         
-        <div class="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-6 mb-6">
-          <button id="copyIpBtn" class="w-full md:w-auto px-10 py-4 rounded-xl bg-gradient-to-br from-amber-500 to-amber-700 hover:from-amber-400 hover:to-amber-600 text-slate-950 font-black text-sm md:text-base uppercase tracking-widest shadow-[0_0_30px_rgba(245,158,11,0.3)] hover:shadow-[0_0_40px_rgba(245,158,11,0.5)] transition-all duration-300 flex items-center justify-center gap-3 group">
-            <span class="text-xl group-hover:scale-110 transition-transform">⚔️</span>
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-4">
+          <button id="copyIpBtn" class="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-gradient-to-br from-amber-500 to-amber-700 hover:from-amber-400 hover:to-amber-600 text-slate-950 font-black text-xs md:text-sm uppercase tracking-widest shadow-[0_0_25px_rgba(245,158,11,0.3)] hover:shadow-[0_0_35px_rgba(245,158,11,0.5)] transition-all duration-300 flex items-center justify-center gap-2.5 group">
+            <span class="text-lg group-hover:scale-110 transition-transform">⚔️</span>
             <span id="ipCopyBtnText">COPY JAVA IP</span>
           </button>
           
-          <button id="copyBedrockIpBtn" class="w-full md:w-auto px-10 py-4 rounded-xl border border-blue-500/50 bg-slate-900/50 hover:bg-blue-900/30 text-blue-300 font-black text-sm md:text-base uppercase tracking-widest shadow-[0_0_20px_rgba(59,130,246,0.15)] hover:shadow-[0_0_30px_rgba(59,130,246,0.3)] transition-all duration-300 flex items-center justify-center gap-3 backdrop-blur-sm group">
-            <span class="text-xl group-hover:scale-110 transition-transform">📱</span>
+          <button id="copyBedrockIpBtn" class="w-full sm:w-auto px-8 py-3.5 rounded-xl border border-blue-500/50 bg-slate-900/50 hover:bg-blue-900/30 text-blue-300 font-black text-xs md:text-sm uppercase tracking-widest shadow-[0_0_20px_rgba(59,130,246,0.15)] hover:shadow-[0_0_30px_rgba(59,130,246,0.3)] transition-all duration-300 flex items-center justify-center gap-2.5 backdrop-blur-sm group">
+            <span class="text-lg group-hover:scale-110 transition-transform">📱</span>
             <span id="bedrockIpCopyBtnText">BEDROCK: 19132</span>
           </button>
         </div>
         
-        <p class="text-xs md:text-sm text-slate-400 uppercase tracking-widest font-semibold"><span class="text-amber-500/90 font-bold">Java & Bedrock</span> Cross-Play Supported</p>
+        <p class="text-xs text-slate-400 uppercase tracking-widest font-semibold"><span class="text-amber-500/90 font-bold">Java & Bedrock</span> Cross-Play Supported</p>
       </div>
     </section>
 
-    <!-- Features -->
-    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div class="stone-card p-8 rounded-2xl text-center hover:border-amber-500/50 transition-all duration-300 group hover:-translate-y-1">
-          <div class="text-5xl mb-6 group-hover:scale-110 transition-transform duration-300 drop-shadow-[0_0_10px_rgba(245,158,11,0.3)]">⚖️</div>
-          <h3 class="font-serif font-black text-amber-400 text-xl md:text-2xl mb-4 tracking-wide">Player Economics</h3>
-          <p class="text-slate-300 leading-relaxed text-sm md:text-base">Master multiple professions via Jobs Reborn, trade in dynamic, entirely player-driven markets, and rise to wealth.</p>
+    <!-- Features with tightened spacing -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="stone-card p-6 md:p-8 rounded-2xl text-center hover:border-amber-500/50 transition-all duration-300 group hover:-translate-y-1">
+          <div class="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300 drop-shadow-[0_0_10px_rgba(245,158,11,0.3)]">⚖️</div>
+          <h3 class="font-serif font-black text-amber-400 text-lg md:text-xl mb-3 tracking-wide">Player Economics</h3>
+          <p class="text-slate-300 leading-relaxed text-sm">Master multiple professions via Jobs Reborn, trade in dynamic, entirely player-driven markets, and rise to wealth.</p>
         </div>
-        <div class="stone-card p-8 rounded-2xl text-center hover:border-amber-500/50 transition-all duration-300 group hover:-translate-y-1">
-          <div class="text-5xl mb-6 group-hover:scale-110 transition-transform duration-300 drop-shadow-[0_0_10px_rgba(245,158,11,0.3)]">🐉</div>
-          <h3 class="font-serif font-black text-amber-400 text-xl md:text-2xl mb-4 tracking-wide">Persistent Dungeons</h3>
-          <p class="text-slate-300 leading-relaxed text-sm md:text-base">Gather your party to conquer brutal, raidable dungeons. Utilize custom AuraSkills to survive and earn rare mythical artifacts.</p>
+        <div class="stone-card p-6 md:p-8 rounded-2xl text-center hover:border-amber-500/50 transition-all duration-300 group hover:-translate-y-1">
+          <div class="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300 drop-shadow-[0_0_10px_rgba(245,158,11,0.3)]">🐉</div>
+          <h3 class="font-serif font-black text-amber-400 text-lg md:text-xl mb-3 tracking-wide">Persistent Dungeons</h3>
+          <p class="text-slate-300 leading-relaxed text-sm">Gather your party to conquer brutal, raidable dungeons. Utilize custom AuraSkills to survive and earn rare mythical artifacts.</p>
         </div>
-        <div class="stone-card p-8 rounded-2xl text-center hover:border-amber-500/50 transition-all duration-300 group hover:-translate-y-1">
-          <div class="text-5xl mb-6 group-hover:scale-110 transition-transform duration-300 drop-shadow-[0_0_10px_rgba(245,158,11,0.3)]">📜</div>
-          <h3 class="font-serif font-black text-amber-400 text-xl md:text-2xl mb-4 tracking-wide">Community-Led</h3>
-          <p class="text-slate-300 leading-relaxed text-sm md:text-base">Using SOP-008, Silver ranks and above propose changes that are put to a public community vote for upcoming seasons.</p>
+        <div class="stone-card p-6 md:p-8 rounded-2xl text-center hover:border-amber-500/50 transition-all duration-300 group hover:-translate-y-1">
+          <div class="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300 drop-shadow-[0_0_10px_rgba(245,158,11,0.3)]">📜</div>
+          <h3 class="font-serif font-black text-amber-400 text-lg md:text-xl mb-3 tracking-wide">Community-Led</h3>
+          <p class="text-slate-300 leading-relaxed text-sm">Using SOP-008, Silver ranks and above propose changes that are put to a public community vote for upcoming seasons.</p>
         </div>
       </div>
     </section>
 
     <!-- Store Preview Section -->
-    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-      <div class="text-center mb-10">
-        <h2 class="font-serif text-3xl md:text-4xl font-black text-gold-gradient mb-4 drop-shadow-lg">Support the Realm</h2>
-        <p class="text-slate-400 text-lg">Unlock premium ranks, mystical crate keys, and exclusive cosmetics.</p>
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+      <div class="text-center mb-8">
+        <h2 class="font-serif text-2xl md:text-3xl font-black text-gold-gradient mb-2 drop-shadow-lg">Support the Realm</h2>
+        <p class="text-slate-400 text-sm md:text-base">Unlock premium ranks, mystical crate keys, and exclusive cosmetics.</p>
       </div>
-      <div id="tebex-packages" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+      <div id="tebex-packages" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <!-- Injected via app.js -->
-        <div class="col-span-full text-center text-amber-500/50 py-10 font-serif text-xl animate-pulse tracking-widest">Summoning Webstore...</div>
+        <div class="col-span-full text-center text-amber-500/50 py-8 font-serif text-lg animate-pulse tracking-widest">Summoning Webstore...</div>
       </div>
-      <div class="text-center mt-10">
-        <a href="https://aeon-mc.tebex.store/" target="_blank" rel="noopener" class="inline-flex items-center justify-center px-8 py-4 rounded-xl border border-amber-500/40 bg-slate-900/50 hover:bg-amber-500/20 text-amber-400 font-bold text-sm uppercase tracking-widest transition-all duration-300 hover:shadow-[0_0_20px_rgba(245,158,11,0.2)]">
+      <div class="text-center mt-8">
+        <a href="https://aeon-mc.tebex.store/" target="_blank" rel="noopener" class="inline-flex items-center justify-center px-7 py-3.5 rounded-xl border border-amber-500/40 bg-slate-900/50 hover:bg-amber-500/20 text-amber-400 font-bold text-xs uppercase tracking-widest transition-all duration-300 hover:shadow-[0_0_20px_rgba(245,158,11,0.2)]">
           View All Treasures &rarr;
         </a>
       </div>
@@ -185,10 +201,10 @@
 
   <!-- Footer -->
   <footer class="mt-auto border-t border-slate-800 bg-[#0b1120]">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grid grid-cols-1 md:grid-cols-3 gap-10 items-center">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
       <div class="text-center md:text-left flex flex-col items-center md:items-start">
-        <a href="index.html" class="inline-flex items-center gap-3 group mb-4">
-          <img src="assets/img/62b8530f-faae-4c33-899f-3efcdb3faa94.jpg" alt="AeonMC Logo" class="w-8 h-8 rounded-lg border border-amber-500/30 object-cover shadow-[0_0_10px_rgba(245,158,11,0.2)]">
+        <a href="index.html" class="inline-flex items-center gap-3 group mb-3">
+          <img src="assets/img/62b8530f-faae-4c33-899f-3efcdb3faa94.jpg" alt="AeonMC Logo" class="constrained-logo rounded-lg border border-amber-500/30 object-cover shadow-[0_0_10px_rgba(245,158,11,0.2)]">
           <span class="font-serif font-black text-lg text-amber-100 tracking-widest">AEON<span class="text-amber-500">MC</span></span>
         </a>
         <p class="text-xs text-slate-500 leading-relaxed max-w-xs text-center md:text-left">
@@ -197,10 +213,10 @@
       </div>
       
       <div class="text-center flex flex-col items-center">
-        <h4 class="font-serif font-black text-slate-300 mb-3 text-xs uppercase tracking-widest border-b border-slate-700 pb-2 inline-block">Connection Info</h4>
+        <h4 class="font-serif font-black text-slate-300 mb-2.5 text-xs uppercase tracking-widest border-b border-slate-700 pb-1.5 inline-block">Connection Info</h4>
         <div class="flex flex-col gap-2">
           <span class="text-amber-400 font-mono text-xs bg-slate-900/80 px-3 py-1.5 rounded border border-amber-500/20 shadow-inner">Java: play.aeonmc.com</span>
-          <span class="text-blue-400 font-mono text-xs bg-slate-900/80 px-3 py-1.5 rounded border border-blue-500/20 shadow-inner">Bedrock: play.aeonmc.com:19132</span>
+          <span class="text-blue-400 font-mono text-xs bg-slate-900/80 px-3 py-1.5 rounded border border-blue-500/20 shadow-inner">Bedrock: play.aeonmc.com : 19132</span>
         </div>
       </div>
       
@@ -214,5 +230,15 @@
   <div id="toast-container" class="fixed bottom-6 right-6 z-[100] flex flex-col gap-3 pointer-events-none w-full max-w-xs"></div>
 
   <script src="js/app.js"></script>
+  <script>
+    // Simple mobile menu toggle script fallback
+    const mobileBtn = document.getElementById('mobileMenuBtn');
+    const mobileDrawer = document.getElementById('mobileMenuDrawer');
+    if (mobileBtn && mobileDrawer) {
+      mobileBtn.addEventListener('click', () => {
+        mobileDrawer.classList.toggle('hidden');
+      });
+    }
+  </script>
 </body>
 </html>

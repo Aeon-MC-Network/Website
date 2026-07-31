@@ -10,6 +10,22 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   
+  <!-- Tailwind CSS CDN Fallback/Inclusion -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['Cinzel', 'serif'],
+            sans: ['Inter', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+  
   <link rel="stylesheet" href="assets/css/styles.css">
 
   <style>
@@ -96,21 +112,21 @@
     </div>
   </header>
 
-  <main class="flex-1 py-12 md:py-16 px-4 md:px-6 flex items-center justify-center">
-    <div class="max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16 items-center">
+  <main class="flex-1 py-8 md:py-12 px-4 md:px-6 flex items-center justify-center">
+    <div class="max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 items-center">
       
       <!-- Text Content -->
       <div class="text-center md:text-left order-2 md:order-1">
-        <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl font-black text-gold-gradient mb-6 drop-shadow-xl">Community Hub</h1>
-        <p class="text-slate-300 text-base md:text-lg mb-8 leading-relaxed font-light">
+        <h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-black text-gold-gradient mb-4 drop-shadow-xl">Community Hub</h1>
+        <p class="text-slate-300 text-sm md:text-base mb-6 leading-relaxed font-light">
           We process <strong class="text-amber-400 font-bold">100%</strong> of player support tickets, bug reports, cheater reports, staff applications, and content creator inquiries directly through our official Discord community. 
         </p>
-        <p class="text-slate-400 text-sm md:text-base mb-10 leading-relaxed font-light italic">
+        <p class="text-slate-400 text-xs md:text-sm mb-8 leading-relaxed font-light italic">
           There are zero embedded forms on this website. Please join the Discord using the button below to open a secure ticket with our 24/7 staff team.
         </p>
         
-        <a href="https://discord.gg/VQgsh8kW2F" target="_blank" rel="noopener" class="inline-flex items-center gap-4 px-10 py-5 rounded-xl bg-[#5865F2] hover:bg-[#4752C4] text-white font-black text-sm md:text-base uppercase tracking-widest shadow-[0_0_30px_rgba(88,101,242,0.4)] hover:shadow-[0_0_40px_rgba(88,101,242,0.6)] transition-all duration-300 group">
-          <span class="text-2xl group-hover:-rotate-12 transition-transform duration-300">💬</span> Join Discord
+        <a href="https://discord.gg/VQgsh8kW2F" target="_blank" rel="noopener" class="inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-[#5865F2] hover:bg-[#4752C4] text-white font-black text-xs md:text-sm uppercase tracking-widest shadow-[0_0_25px_rgba(88,101,242,0.4)] hover:shadow-[0_0_35px_rgba(88,101,242,0.6)] transition-all duration-300 group">
+          <span class="text-xl group-hover:-rotate-12 transition-transform duration-300">💬</span> Join Discord
         </a>
       </div>
       
@@ -118,7 +134,7 @@
       <div class="flex justify-center md:justify-end order-1 md:order-2 w-full">
         <div class="relative w-full max-w-sm mx-auto md:mx-0">
           <div class="absolute -inset-1 bg-gradient-to-r from-[#5865F2] to-amber-500 rounded-2xl blur opacity-20"></div>
-          <iframe src="https://discord.com/widget?id=1528463107792572657&theme=dark" width="100%" height="450" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts" class="relative z-10 rounded-2xl shadow-2xl border border-[#5865F2]/40 bg-[#111827]"></iframe>
+          <iframe src="https://discord.com/widget?id=1528463107792572657&theme=dark" width="100%" height="420" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts" class="relative z-10 rounded-2xl shadow-2xl border border-[#5865F2]/40 bg-[#111827]"></iframe>
         </div>
       </div>
       
@@ -127,10 +143,10 @@
 
   <!-- Footer -->
   <footer class="mt-auto border-t border-slate-800 bg-[#0b1120]">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grid grid-cols-1 md:grid-cols-3 gap-10 items-center">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
       <div class="text-center md:text-left flex flex-col items-center md:items-start">
-        <a href="index.html" class="inline-flex items-center gap-3 group mb-4">
-          <img src="assets/img/62b8530f-faae-4c33-899f-3efcdb3faa94.jpg" alt="AeonMC Logo" class="w-8 h-8 rounded-lg border border-amber-500/30 object-cover shadow-[0_0_10px_rgba(245,158,11,0.2)]">
+        <a href="index.html" class="inline-flex items-center gap-3 group mb-3">
+          <img src="assets/img/62b8530f-faae-4c33-899f-3efcdb3faa94.jpg" alt="AeonMC Logo" class="constrained-logo rounded-lg border border-amber-500/30 object-cover shadow-[0_0_10px_rgba(245,158,11,0.2)]">
           <span class="font-serif font-black text-lg text-amber-100 tracking-widest">AEON<span class="text-amber-500">MC</span></span>
         </a>
         <p class="text-xs text-slate-500 leading-relaxed max-w-xs text-center md:text-left">
@@ -139,10 +155,10 @@
       </div>
       
       <div class="text-center flex flex-col items-center">
-        <h4 class="font-serif font-black text-slate-300 mb-3 text-xs uppercase tracking-widest border-b border-slate-700 pb-2 inline-block">Connection Info</h4>
+        <h4 class="font-serif font-black text-slate-300 mb-2.5 text-xs uppercase tracking-widest border-b border-slate-700 pb-1.5 inline-block">Connection Info</h4>
         <div class="flex flex-col gap-2">
           <span class="text-amber-400 font-mono text-xs bg-slate-900/80 px-3 py-1.5 rounded border border-amber-500/20 shadow-inner">Java: play.aeonmc.com</span>
-          <span class="text-blue-400 font-mono text-xs bg-slate-900/80 px-3 py-1.5 rounded border border-blue-500/20 shadow-inner">Bedrock: play.aeonmc.com:19132</span>
+          <span class="text-blue-400 font-mono text-xs bg-slate-900/80 px-3 py-1.5 rounded border border-blue-500/20 shadow-inner">Bedrock: play.aeonmc.com : 19132</span>
         </div>
       </div>
       
@@ -153,5 +169,14 @@
   </footer>
 
   <script src="js/app.js"></script>
+  <script>
+    // Simple mobile menu toggle script fallback
+    const mobileBtn = document.getElementById('mobileMenuBtn');
+    const mobileDrawer = document.getElementById('mobileMenuDrawer');
+    if (mobileBtn && mobileDrawer) {
+      mobileBtn.addEventListener('click', () => {
+        mobileDrawer.classList.toggle('hidden');
+      });
+    }
+  </script>
 </body>
-</html>
